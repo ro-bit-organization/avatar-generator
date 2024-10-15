@@ -1,0 +1,157 @@
+{
+	"app": {
+		"name": "PixPersona",
+		"description": "Transform your photos into stunning cartoon avatars with the power of AI."
+	},
+	"common": {
+		"credits_left": "{value} credits left",
+		"buy_credits": "Buy Credits",
+		"sign_in": "Sign in",
+		"sign_out": "Sign out",
+		"generate": "Generate"
+	},
+	"navigation": {
+		"credits_left": "{{value}} credits left",
+		"buy_credits": "Buy Credits",
+		"beta_banner": {
+			"title": "Beta Mode",
+			"description": "We're currently in beta testing! Explore and help us shape what's coming next."
+		}
+	},
+	"footer": {
+		"quick_links": {
+			"title": "Quick Links",
+			"features": "Features",
+			"how_it_works": "How It Works",
+			"generate": "Generate"
+		},
+		"legal": {
+			"title": "Legal",
+			"terms_of_service": "Terms of Service",
+			"privacy_policy": "Privacy Policy",
+			"refund_policy": "Refund Policy",
+			"cookie_policy": "Cookie Policy"
+		},
+		"connect_with_us": {
+			"title": "Connect With Us"
+		},
+		"all_rights_reserved": "{year} {name}. All rights reserved."
+	},
+	"components": {
+		"file_picker": {
+			"placeholder": "Drag and drop to load image"
+		},
+		"buy_credits_modal": {
+			"title": "Purchase Credits",
+			"description": "Choose a credit package to start generating stunning images and bring your creativity to life.",
+			"no_credit_packages": "There are no credit packages available for the moment.",
+			"credits_value": "for {value} credits",
+			"bonus": "+{value} bonus",
+			"action": "Purchase"
+		}
+	},
+	"homepage": {
+		"hero": {
+			"greeting": "Welcome to",
+			"subtitles": {
+				"subtitle_1": "Transform your photos into personalized avatars with {name}!",
+				"subtitle_2": "Upload, customize, and create unique digital profiles in seconds.",
+				"subtitle_3": "Fun, fast, and creative — your avatar, your style!"
+			}
+		},
+		"features": {
+			"title": "Why Choose PixPersona?",
+			"feature_1": {
+				"title": "Lightning Fast",
+				"description": "Generate avatars in seconds with our powerful AI"
+			},
+			"feature_2": {
+				"title": "Customizable Styles",
+				"description": "Choose from various cartoon styles to match your preference"
+			},
+			"feature_3": {
+				"title": "Free Retries",
+				"description": "Generate your avatar up to three times, ensuring you get the perfect result."
+			},
+			"feature_4": {
+				"title": "Privacy Focused",
+				"description": "Your photos are processed securely and never stored"
+			}
+		},
+		"how_it_works": {
+			"title": "How It Works",
+			"step_1": {
+				"title": "Upload Your Photo",
+				"description": "Select and upload any clear photo of yourself"
+			},
+			"step_2": {
+				"title": "AI Magic",
+				"description": "Our AI analyzes and transforms your photo into a cartoon"
+			},
+			"step_3": {
+				"title": "Download Avatar",
+				"description": "Get your new cartoonish avatar in high resolution"
+			}
+		}
+	},
+	"generate": {
+		"common": {
+			"download": "Download",
+			"new_generation": "Generate another avatar"
+		},
+		"ongoing_generation": {
+			"fields": {
+				"regeneration": {
+					"placeholder": "Don't like it? Please provide details on how you'd like the image to be regenerated. You can mention aspects like color changes, adjustments in style, pose, facial expression, background elements, or any other modifications you'd like to see."
+				}
+			}
+		},
+		"messages": {
+			"intro_typein": "Great choice! Now, let's bring your character to life. Each avatar generation costs (strong){cost} credits(/strong), and you have the opportunity to create up to (strong)3 avatars(/strong), with (strong)2 free retries(/strong) to make sure you get the perfect look!",
+			"style_select": "Please choose a style for your avatar creation! Select from options like (strong)Cartoonish(/strong), (strong)Pixelated(/strong), (strong)Realistic(/strong) or (strong)Retro(/strong). This style will guide the design and vibe of your character.",
+			"image_select": "To create your personalized avatar, please upload a photo of yourself. This image will serve as a reference for designing your avatar with realistic details or in a stylized way. Make sure the photo is clear and shows your face for the best results.",
+			"ongoing_generation": "✨ Hang tight, your avatar is coming to life!",
+			"ongoing_images": "🪄 Your PixPersona is all set. Enjoy your creation!",
+			"final_images": "🖼️ Here are the three generations of avatars you've created! Each version is displayed below with its corresponding image."
+		},
+		"styles": {
+			"CARTOONISH": "Cartoonish",
+			"CLAY": "Clay",
+			"DISNEY": "Disney",
+			"FLAT": "Flat",
+			"HAND_DRAWN": "Hand-drawn",
+			"ILLUSTRATED": "Illustrated",
+			"NEON": "Neon",
+			"PIXELATED": "Pixelated",
+			"POLYGON": "Polygon",
+			"POP_ART": "Pop art",
+			"REALISTIC": "Realistic",
+			"RETRO": "Retro",
+			"STICKER": "Sticker",
+			"THREE_DIMENSIONAL": "3D"
+		}
+	},
+	"thank_you": {
+		"title": "Thank You for your purchase!",
+		"description": "Your credit package has been successfully activated.",
+		"transaction_details": {
+			"title": "Transaction Details",
+			"id": "ID: {value}",
+			"date": "Date: {value}"
+		},
+		"package_details": {
+			"title": "Package Details",
+			"package": "Package: {value} credits",
+			"bonus": "+{value} bonus",
+			"price": "Price: {value}"
+		},
+		"credits_pending": {
+			"title": "Credits Pending",
+			"description": "If not enabled already, your credits will be enabled soon. Refresh the page to update and see your new balance."
+		},
+		"what_is_next": {
+			"title": "What's Next?",
+			"description": "Once enabled, your credits will be available in your account. You can use them immediately for all eligible services and features."
+		}
+	}
+}

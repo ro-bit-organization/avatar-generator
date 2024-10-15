@@ -1,0 +1,156 @@
+import { Upload } from '@aws-sdk/lib-storage';
+import { verifyAuth } from '@hono/auth-js';
+import { GenerationStyle, prisma } from '@repo/db';
+import { Hono } from 'hono';
+import { nanoid } from 'nanoid';
+import { s3 } from '../lib/clients/aws.js';
+import openai from '../lib/clients/openai.js';
+import { GENERATION_CREDITS_COST, STYLE_DESCRIPTION } from '../lib/const.js';
+import { fileToBase64 } from '../lib/utils.js';
+import { generationSchema } from '../lib/validation/generation.js';
+
+const app = new Hono();
+
+const OPEN_AI_SYSTEM_PROMPT = `
+	You are an expert image analyst. You can extract accurate information from an image.
+	Your Job is to accept an image which can be a photo of a human and respond with as much details as you can.
+	Give additional details about facial expression, shape of specs if person has wore specs, pose of the person, hair style, type and color of outfit, hand expression, type of beard person has if one has, details about facial anatomy, color of skin, camera angle, how much of a person is visible
+`;
+
+const OPENAI_USER_PROMPT = `
+	Here is an image. Analyze carefully and give me the details.
+`;
+
+const prefix = `
+	Create a single avatar that can be used on social media, [STYLE], based on the following prompt:
+	
+	[PROMPT]
+	
+	The colors should not match the original image; instead, use colors that fit the style's artistic look.
+`;
+
+app.use('/', verifyAuth());
+
+app.post('/', async (c) => {
+	const formData = await c.req.formData();
+
+	const id = formData.get('id') as string;
+	const image = formData.get('image') as File;
+	const style = formData.get('style') as GenerationStyle;
+
+	const validation = generationSchema.safeParse({
+		id,
+		image,
+		style
+	});
+
+	if (!validation.success) {
+		return c.json({
+			error: 'Payload is invalid!'
+		});
+	}
+
+	const session = c.get('authUser');
+
+	if (session.user!.credits < GENERATION_CREDITS_COST) {
+		return c.json({
+			error: `You don't have enough credits!`
+		});
+	}
+
+	try {
+		const imageBase64 = await fileToBase64(image!);
+
+		const completion = await openai.chat.completions.create({
+			model: 'gpt-4o-mini',
+			max_completion_tokens: 4096,
+			temperature: 0,
+			messages: [
+				{
+					role: 'system',
+					content: OPEN_AI_SYSTEM_PROMPT
+				},
+				{
+					role: 'user',
+					content: [
+						{
+							type: 'image_url',
+							image_url: {
+								url: imageBase64,
+								detail: 'high'
+							}
+						},
+						{
+							type: 'text',
+							text: OPENAI_USER_PROMPT
+						}
+					]
+				}
+			]
+		});
+
+		if (!completion.choices?.[0]?.message?.content) {
+			throw new Error('An error occured during completion generation!');
+		}
+
+		const generate = await openai.images.generate({
+			prompt: prefix.replace('[STYLE]', STYLE_DESCRIPTION[style]).replace('[PROMPT]', completion.choices[0].message.content),
+			model: 'dall-e-3',
+			size: '1024x1024',
+			quality: 'standard'
+		});
+
+		if (!generate.data[0].url) {
+			throw new Error('An error occured during image generation!');
+		}
+
+		const response = await fetch(generate.data[0].url);
+
+		const upload = new Upload({
+			client: s3,
+			params: {
+				Bucket: 'ro-bit-icon-generator-58707082674555',
+				Key: `${nanoid(10)}.png`,
+				Body: response.body!
+			}
+		});
+
+		const { Location } = await upload.done();
+
+		if (!Location) {
+			throw new Error('An error occured during file upload!');
+		}
+
+		await Promise.all([
+			prisma.generation.update({
+				where: {
+					id
+				},
+				data: {
+					style,
+					entries: {
+						create: [
+							{
+								prompt: null,
+								imageUrl: Location
+							}
+						]
+					}
+				}
+			}),
+
+			prisma.user.update({
+				where: {
+					id: session.user!.id
+				},
+				data: {
+					credits: session.user!.credits - GENERATION_CREDITS_COST
+				}
+			})
+		]);
+	} catch (e) {
+		return c.json({ error: e });
+	}
+});
+
+export default app;
