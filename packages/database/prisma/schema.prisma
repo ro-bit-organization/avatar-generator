@@ -1,0 +1,149 @@
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["driverAdapters"]
+}
+
+model User {
+    id            String    @id @default(cuid())
+    name          String?
+    email         String    @unique
+    emailVerified DateTime?
+    image         String?
+    credits       Float     @default(0)
+
+    accounts    Account[]
+    sessions    Session[]
+    payment     Payment[]
+    generations Generation[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("users")
+}
+
+model Account {
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String?
+    access_token      String?
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String?
+    session_state     String?
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@id([provider, providerAccountId])
+    @@map("accounts")
+}
+
+model Session {
+    sessionToken String   @unique
+    expires      DateTime
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("sessions")
+}
+
+model VerificationToken {
+    identifier String
+    token      String
+    expires    DateTime
+
+    @@id([identifier, token])
+    @@map("verification_tokens")
+}
+
+enum PaymentStatus {
+    PENDING
+    COMPLETED
+    EXPIRED
+}
+
+model Payment {
+    id            String        @id @default(cuid())
+    status        PaymentStatus @default(PENDING)
+    creditPackage Json
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("payments")
+}
+
+model CreditPackage {
+    id      String @id @default(cuid())
+    price   Float
+    credits Float
+    bonus   Float? @default(0)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("credit_packages")
+}
+
+enum GenerationStyle {
+    CARTOONISH
+    CLAY
+    DISNEY
+    FLAT
+    HAND_DRAWN
+    ILLUSTRATED
+    NEON
+    PIXELATED
+    POLYGON
+    POP_ART
+    REALISTIC
+    RETRO
+    STICKER
+    THREE_DIMENSIONAL
+}
+
+model GenerationEntry {
+    id       String  @id @default(cuid())
+    prompt   String?
+    imageUrl String
+
+    generationId String
+    generation   Generation @relation(fields: [generationId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("generation_entry")
+}
+
+model Generation {
+    id      String            @id @default(cuid())
+    style   GenerationStyle?
+    entries GenerationEntry[]
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("generations")
+}

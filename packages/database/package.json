@@ -1,0 +1,19 @@
+{
+	"name": "@repo/db",
+	"version": "0.0.0",
+	"scripts": {
+		"db:generate": "prisma generate",
+		"db:push": "prisma db push --skip-generate"
+	},
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"dependencies": {
+		"@neondatabase/serverless": "^0.10.1",
+		"@prisma/adapter-neon": "^5.20.0",
+		"@prisma/client": "^5.20.0"
+	},
+	"devDependencies": {
+		"prisma": "^5.20.0"
+	}
+}
