@@ -11,6 +11,8 @@ const neon = new Pool({
 	connectionString: process.env.DATABASE_URL
 });
 
+console.log(process.env);
+
 const adapter = new PrismaNeon(neon);
 const prisma = new PrismaClient({ adapter });
 
