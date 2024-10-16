@@ -1,9 +1,8 @@
 import GoogleProvider from '@auth/core/providers/google';
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import { initAuthConfig, type AuthConfig } from '@hono/auth-js';
+import { initAuthConfig, verifyAuth, type AuthConfig } from '@repo/auth-js';
 import { prisma } from '@repo/db';
-import * as dotenv from 'dotenv';
-import { Context, Hono } from 'hono';
+import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import creditPackages from './routes/credit-packages.js';
 import payments from './routes/payments.js';
@@ -26,9 +25,9 @@ app.route('/api/stripe', stripe);
 app.route('/api/credit-packages', creditPackages);
 app.route('/api/payments', payments);
 
-function getAuthConfig(c: Context): AuthConfig {
+function getAuthConfig(): AuthConfig {
 	return {
-		secret: c.env.AUTH_SECRET,
+		secret: process.env.AUTH_SECRET,
 		adapter: PrismaAdapter(prisma),
 		cookies: {
 			sessionToken: {
@@ -89,8 +88,8 @@ function getAuthConfig(c: Context): AuthConfig {
 		},
 		providers: [
 			GoogleProvider({
-				clientId: c.env.GOOGLE_CLIENT_ID,
-				clientSecret: c.env.GOOGLE_CLIENT_SECRET,
+				clientId: process.env.GOOGLE_CLIENT_ID,
+				clientSecret: process.env.GOOGLE_CLIENT_SECRET,
 				authorization: {
 					params: {
 						prompt: 'consent',

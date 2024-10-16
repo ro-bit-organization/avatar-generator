@@ -1,4 +1,4 @@
-import { verifyAuth } from '@hono/auth-js';
+import { verifyAuth } from '@repo/auth-js';
 import { prisma } from '@repo/db';
 import { Context, Hono } from 'hono';
 import { nanoid } from 'nanoid';
@@ -6,7 +6,7 @@ import Stripe from 'stripe';
 
 const app = new Hono();
 
-app.use('/api/*', verifyAuth());
+app.use('/', verifyAuth());
 
 app.post('/', async (c: Context) => {
 	const body = await c.req.json<{ packageId: string | undefined }>();
@@ -17,6 +17,7 @@ app.post('/', async (c: Context) => {
 	}
 
 	const session = c.get('authUser');
+
 	const paymentId = nanoid(10);
 	const creditPackage = await prisma.creditPackage.findFirst({ where: { id: packageId } });
 
@@ -42,11 +43,11 @@ app.post('/', async (c: Context) => {
 			payment_id: paymentId
 		},
 		locale: 'ro',
-		success_url: `${c.env.PUBLIC_WEBSITE_URL}/thank-you?payment-id=${paymentId}`,
-		cancel_url: c.env.PUBLIC_WEBSITE_URL
+		success_url: `${process.env.PUBLIC_WEBSITE_URL}/thank-you?payment-id=${paymentId}`,
+		cancel_url: process.env.PUBLIC_WEBSITE_URL
 	};
 
-	const stripe = new Stripe(c.env.STRIPE_SECRET_KEY!);
+	const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 	const payment = await stripe.checkout.sessions.create(params);
 
 	await prisma.payment.create({

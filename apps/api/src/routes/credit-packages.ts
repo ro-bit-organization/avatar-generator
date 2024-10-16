@@ -1,6 +1,6 @@
 import { prisma } from '@repo/db';
 import { Hono } from 'hono';
-import { verifyAuth } from '@hono/auth-js';
+import { verifyAuth } from '@repo/auth-js';
 
 const app = new Hono();
 

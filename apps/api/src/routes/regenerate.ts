@@ -1,5 +1,5 @@
 import { Upload } from '@aws-sdk/lib-storage';
-import { verifyAuth } from '@hono/auth-js';
+import { verifyAuth } from '@repo/auth-js';
 import { prisma } from '@repo/db';
 import { Hono } from 'hono';
 import { nanoid } from 'nanoid';

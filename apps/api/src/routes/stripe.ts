@@ -6,10 +6,10 @@ const app = new Hono();
 
 app.post('/hooks', async (c: Context) => {
 	try {
-		const stripe = new Stripe(c.env.STRIPE_SECRET_KEY);
+		const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 		const body = await c.req.text();
 		const signature = c.header('stripe-signature');
-		const event = stripe.webhooks.constructEvent(body, signature!, c.env.STRIPE_WEBHOOK_SECRET!);
+		const event = stripe.webhooks.constructEvent(body, signature!, process.env.STRIPE_WEBHOOK_SECRET!);
 
 		return await handleEvent(event);
 	} catch (e) {
