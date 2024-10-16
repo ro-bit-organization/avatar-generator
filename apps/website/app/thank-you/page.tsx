@@ -1,13 +1,14 @@
 import { prisma } from '@repo/db';
 import { CheckCircle, Package, Receipt, RefreshCw, Zap } from 'lucide-react';
 import { Metadata } from 'next';
+import { getServerSession } from 'next-auth/next';
 import { getFormatter, getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
 import { buttonVariants } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
-import { auth } from '~/lib/auth';
+import { authOptions } from '~/lib/auth';
 import { cn } from '~/lib/utils';
 
 export const metadata: Metadata = {
@@ -39,9 +40,11 @@ export default async function ThankYou({ searchParams }: Props) {
 		redirect('/');
 	}
 
-	const session = await auth();
+	const session = await getServerSession(authOptions);
 
-	if (session?.user.id !== payment.userId) {
+	console.log(session);
+
+	if (session?.user?.id !== payment.userId) {
 		redirect('/');
 	}
 

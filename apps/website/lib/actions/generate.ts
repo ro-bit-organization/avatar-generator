@@ -3,11 +3,11 @@
 import { Upload } from '@aws-sdk/lib-storage';
 import { GenerationStyle, prisma } from '@repo/db';
 import { nanoid } from 'nanoid';
+import { getServerSession } from 'next-auth/next';
 import { revalidatePath } from 'next/cache';
-import { auth } from '~/lib/auth';
+import { authOptions } from '~/lib/auth';
 import { s3 } from '~/lib/clients/aws';
 import openAI from '~/lib/clients/openai';
-
 import { GENERATION_CREDITS_COST, STYLE_DESCRIPTION } from '~/lib/const';
 import { generationSchema } from '~/lib/forms/generation';
 import { server_fileToBase64 } from '~/lib/utils';
@@ -45,9 +45,9 @@ export async function generate(formData: FormData): Promise<{ error?: string } |
 		throw new Error('hello');
 	}
 
-	const session = await auth();
+	const session = await getServerSession(authOptions);
 
-	if (!session) {
+	if (!session?.user) {
 		return {
 			error: 'You must be authenticated!'
 		};

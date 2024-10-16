@@ -1,7 +1,8 @@
 import { prisma } from '@repo/db';
 import { Metadata } from 'next';
+import { getServerSession } from 'next-auth/next';
 import { redirect } from 'next/navigation';
-import { auth } from '~/lib/auth';
+import { authOptions } from '~/lib/auth';
 
 export const metadata: Metadata = {
 	robots: {
@@ -11,9 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default async function Generate() {
-	const session = await auth();
+	const session = await getServerSession(authOptions);
 
-	if (!session) {
+	if (!session?.user) {
 		redirect('/');
 	}
 
