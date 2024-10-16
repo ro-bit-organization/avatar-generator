@@ -10,8 +10,6 @@ import stripe from './routes/stripe.js';
 
 const app = new Hono();
 
-console.log(process.env);
-
 app.use('*', initAuthConfig(getAuthConfig));
 
 app.use(

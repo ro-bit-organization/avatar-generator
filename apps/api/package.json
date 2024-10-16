@@ -9,7 +9,7 @@
 	},
 	"scripts": {
 		"dev": "bun run --hot src/index.ts",
-		"start": "bun --env-file=../../.env run src/index.ts"
+		"start": "bun --env-file=/app/.env run src/index.ts"
 	},
 	"dependencies": {
 		"@auth/core": "^0.37.0",
