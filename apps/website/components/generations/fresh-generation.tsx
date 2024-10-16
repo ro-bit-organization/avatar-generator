@@ -266,7 +266,7 @@ export default function FreshGeneration({ generation }: Props) {
 													return;
 												}
 
-												if (session!.user.credits < GENERATION_CREDITS_COST) {
+												if (session!.user!.credits < GENERATION_CREDITS_COST) {
 													setModalOpen(true);
 													return;
 												}

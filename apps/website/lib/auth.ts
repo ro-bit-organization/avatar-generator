@@ -80,9 +80,7 @@ export const authOptions: NextAuthOptions = {
 		strategy: 'database'
 	},
 	callbacks: {
-		jwt({ token, trigger, account, session }) {
-			console.log(session);
-
+		jwt({ token, trigger }) {
 			if (trigger === 'update') {
 				/*token.name = session?.user?.name;*/
 			}

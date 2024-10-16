@@ -112,13 +112,6 @@ export async function regenerate(formData: FormData): Promise<{ error?: string }
 			throw new Error('An error occured!');
 		}
 
-		console.log(
-			prefix
-				.replace('[STYLE]', STYLE_DESCRIPTION[generation.style!])
-				.replace('[PROMPT]', completion.choices[0].message.content)
-				.replace('[REQUIREMENTS]', prompt)
-		);
-
 		const generate = await openAI.images.generate({
 			prompt: prefix
 				.replace('[STYLE]', STYLE_DESCRIPTION[generation.style!])

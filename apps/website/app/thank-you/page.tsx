@@ -42,8 +42,6 @@ export default async function ThankYou({ searchParams }: Props) {
 
 	const session = await getServerSession(authOptions);
 
-	console.log(session);
-
 	if (session?.user?.id !== payment.userId) {
 		redirect('/');
 	}
