@@ -1,4 +1,3 @@
-import { Facebook, Instagram, Twitter } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -66,15 +65,30 @@ export default async function Footer() {
 					<div>
 						<h4 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">{t('footer.connect_with_us.title')}</h4>
 						<div className="flex space-x-4">
-							<a href="#" className="hover:text-blue-600 dark:hover:text-blue-400">
-								<Facebook className="h-6 w-6" />
-							</a>
-							<a href="#" className="hover:text-blue-600 dark:hover:text-blue-400">
-								<Twitter className="h-6 w-6" />
-							</a>
-							<a href="#" className="hover:text-blue-600 dark:hover:text-blue-400">
-								<Instagram className="h-6 w-6" />
-							</a>
+							{process.env.TIKTOK_URL && (
+								<Link
+									href={process.env.TIKTOK_URL}
+									target="_blank"
+									className="rounded-sm bg-white p-[2px] hover:text-blue-600 dark:hover:text-blue-400"
+								>
+									<Image src="/images/icons/tiktok.svg" alt="TikTok" width="20" height="20" className="h-5 w-5" />
+								</Link>
+							)}
+							{process.env.FACEBOOK_URL && (
+								<Link href={process.env.FACEBOOK_URL} target="_blank" className="hover:text-blue-600 dark:hover:text-blue-400">
+									<Image src="/images/icons/facebook.svg" alt="Facebook" width="24" height="24" className="h-6 w-6" />
+								</Link>
+							)}
+							{process.env.INSTAGRAM_URL && (
+								<Link href={process.env.INSTAGRAM_URL} target="_blank" className="hover:text-blue-600 dark:hover:text-blue-400">
+									<Image src="/images/icons/instagram.svg" alt="Instagram" width="24" height="24" className="h-6 w-6" />
+								</Link>
+							)}
+							{process.env.TWITTER_URL && (
+								<Link href={process.env.TWITTER_URL} target="_blank" className="text-white hover:text-blue-600 dark:hover:text-blue-400">
+									<Image src="/images/icons/twitter.svg" alt="Twitter" width="24" height="24" className="h-6 w-6" />
+								</Link>
+							)}
 						</div>
 					</div>
 				</div>
