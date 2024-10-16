@@ -76,9 +76,8 @@ export const authOptions: NextAuthOptions = {
 		})
 	],
 	session: {
-		strategy: 'jwt'
+		strategy: 'database'
 	},
-
 	callbacks: {
 		jwt({ token, trigger /*, session*/ }) {
 			if (trigger === 'update') {
@@ -87,9 +86,8 @@ export const authOptions: NextAuthOptions = {
 
 			return token;
 		},
-		session: async ({ session, token }) => {
-			const user = await prisma.user.findUniqueOrThrow({ where: { id: token.sub } });
-			return { ...session, user };
+		async session({ session }) {
+			return session;
 		}
 	}
 };
