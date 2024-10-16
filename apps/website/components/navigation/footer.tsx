@@ -65,27 +65,39 @@ export default async function Footer() {
 					<div>
 						<h4 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">{t('footer.connect_with_us.title')}</h4>
 						<div className="flex space-x-4">
-							{process.env.TIKTOK_URL && (
+							{process.env.NEXT_PUBLIC_TIKTOK_URL && (
 								<Link
-									href={process.env.TIKTOK_URL}
+									href={process.env.NEXT_PUBLIC_TIKTOK_URL}
 									target="_blank"
-									className="rounded-sm bg-white p-[2px] hover:text-blue-600 dark:hover:text-blue-400"
+									className="rounded-sm bg-white p-[2px] transition-transform hover:brightness-[1.1] dark:hover:brightness-[0.9]"
 								>
 									<Image src="/images/icons/tiktok.svg" alt="TikTok" width="20" height="20" className="h-5 w-5" />
 								</Link>
 							)}
-							{process.env.FACEBOOK_URL && (
-								<Link href={process.env.FACEBOOK_URL} target="_blank" className="hover:text-blue-600 dark:hover:text-blue-400">
+							{process.env.NEXT_PUBLIC_FACEBOOK_URL && (
+								<Link
+									href={process.env.NEXT_PUBLIC_FACEBOOK_URL}
+									target="_blank"
+									className="transition-transform hover:brightness-[1.1] dark:hover:brightness-[0.9]"
+								>
 									<Image src="/images/icons/facebook.svg" alt="Facebook" width="24" height="24" className="h-6 w-6" />
 								</Link>
 							)}
-							{process.env.INSTAGRAM_URL && (
-								<Link href={process.env.INSTAGRAM_URL} target="_blank" className="hover:text-blue-600 dark:hover:text-blue-400">
+							{process.env.NEXT_PUBLIC_INSTAGRAM_URL && (
+								<Link
+									href={process.env.NEXT_PUBLIC_INSTAGRAM_URL}
+									target="_blank"
+									className="transition-transform hover:brightness-[1.1] dark:hover:brightness-[0.9]"
+								>
 									<Image src="/images/icons/instagram.svg" alt="Instagram" width="24" height="24" className="h-6 w-6" />
 								</Link>
 							)}
-							{process.env.TWITTER_URL && (
-								<Link href={process.env.TWITTER_URL} target="_blank" className="text-white hover:text-blue-600 dark:hover:text-blue-400">
+							{process.env.NEXT_PUBLIC_TWITTER_URL && (
+								<Link
+									href={process.env.NEXT_PUBLIC_TWITTER_URL}
+									target="_blank"
+									className="transition-transform hover:brightness-[1.1] dark:hover:brightness-[0.9]"
+								>
 									<Image src="/images/icons/twitter.svg" alt="Twitter" width="24" height="24" className="h-6 w-6" />
 								</Link>
 							)}
