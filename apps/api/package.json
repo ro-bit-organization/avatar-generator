@@ -8,10 +8,10 @@
 		"url": "https://www.ro-bit.ro"
 	},
 	"scripts": {
-		"dev": "bun run --hot src/index.ts",
-		"start": "bun run src/index.ts"
+		"dev": "npx bun run --hot src/index.ts",
+		"start": "npx bun run src/index.ts"
 	},
-	"packageManager": "bun@1.1.26",
+	"packageManager": "bun@1.1.30",
 	"dependencies": {
 		"@auth/core": "^0.37.0",
 		"@auth/prisma-adapter": "^2.7.0",
