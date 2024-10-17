@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Prisma } from '@repo/db';
 import { saveAs } from 'file-saver';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Download } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -11,6 +11,7 @@ import { useRef, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import ChatMessage from '~/components/chat/message';
 import { Button, buttonVariants } from '~/components/ui/button';
+import { Card } from '~/components/ui/card';
 import { Form, FormControl, FormField, FormItem } from '~/components/ui/form';
 import { Textarea } from '~/components/ui/textarea';
 import { useToast } from '~/hooks/use-toast';
@@ -61,7 +62,7 @@ const initialState: {
 ];
 
 export default function OngoingGeneration({ generation }: Props) {
-	const t = useTranslations('generate');
+	const t = useTranslations();
 	const { toast } = useToast();
 	const [, startTransition] = useTransition();
 
@@ -158,9 +159,9 @@ export default function OngoingGeneration({ generation }: Props) {
 	return (
 		<div className="flex h-full w-full flex-col gap-4">
 			{getStepStatus(Step.GENERATION_TYPEIN) !== Status.HIDDEN && (
-				<div className="bg-card flex flex-col gap-4 rounded-md p-4">
+				<Card className="flex flex-col gap-4 rounded-md p-4">
 					<ChatMessage
-						text={t('messages.ongoing_images')}
+						text={t('generate.messages.ongoing_images')}
 						onComplete={() => {
 							updateSteps([
 								{ id: Step.GENERATION_TYPEIN, status: Status.IDLE },
@@ -171,12 +172,14 @@ export default function OngoingGeneration({ generation }: Props) {
 					>
 						<Button
 							type="button"
-							className={cn('h-0 translate-y-4 overflow-hidden opacity-0 transition-all', {
-								'h-auto translate-y-0 overflow-visible opacity-100': getStepStatus(Step.PROMPT) !== Status.HIDDEN,
+							size="sm"
+							className={cn('translate-y-4 overflow-hidden opacity-0 transition-all', {
+								'translate-y-0 overflow-visible opacity-100': getStepStatus(Step.PROMPT) !== Status.HIDDEN,
 								'pointer-events-none': getStepStatus(Step.PROMPT) === Status.HIDDEN
 							})}
 							onClick={() => download()}
 						>
+							<Download className="mr-2 h-4 w-4" />
 							{t('common.download')}
 						</Button>
 					</ChatMessage>
@@ -190,15 +193,15 @@ export default function OngoingGeneration({ generation }: Props) {
 							<Image key={entry.id} src={entry.imageUrl} width="256" height="256" alt="avatar" className="mx-auto rounded-md" />
 						))}
 					</div>
-				</div>
+				</Card>
 			)}
 			{getStepStatus(Step.GENERATION_PENDING) !== Status.HIDDEN && (
-				<div className="bg-card flex flex-col gap-4 rounded-md p-4">
+				<Card className="flex flex-col gap-4 rounded-md p-4">
 					<ChatMessage
-						text={t('messages.ongoing_generation')}
+						text={t('generate.messages.ongoing_generation')}
 						onComplete={() => updateSteps([{ id: Step.GENERATION_PENDING, status: Status.LOADING }])}
 					/>
-				</div>
+				</Card>
 			)}
 			<Form {...form}>
 				<form
@@ -246,7 +249,7 @@ export default function OngoingGeneration({ generation }: Props) {
 												<Textarea
 													{...field}
 													autoFocus
-													placeholder={t('ongoing_generation.fields.regeneration.placeholder')}
+													placeholder={t('generate.ongoing_generation.fields.regeneration.placeholder')}
 													disabled={[Status.WRITING, Status.LOADING].includes(getStepStatus(Step.GENERATION_PENDING))}
 													className="bg-card max-h-[250px] min-h-[135px] w-full resize-y overflow-y-auto border-0 py-4 pl-4 pr-16 text-sm outline-0 focus-visible:ring-purple-600"
 												/>
@@ -278,7 +281,7 @@ export default function OngoingGeneration({ generation }: Props) {
 					'translate-y-0 overflow-visible opacity-100': getStepStatus(Step.PROMPT) !== Status.HIDDEN
 				})}
 			>
-				<span className="flex items-center justify-center py-4 text-center text-white">{t('ongoing_generation.or_you_can')}</span>
+				<span className="flex items-center justify-center py-4 text-center text-white">{t('generate.ongoing_generation.or_you_can')}</span>
 				<Link
 					href="/generate"
 					className={cn(
@@ -288,7 +291,7 @@ export default function OngoingGeneration({ generation }: Props) {
 						})
 					)}
 				>
-					{t('common.new_generation')}
+					{t('generate.common.new_generation')}
 				</Link>
 			</div>
 		</div>

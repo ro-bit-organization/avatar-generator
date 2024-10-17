@@ -8,14 +8,18 @@
 		"buy_credits": "Buy Credits",
 		"sign_in": "Sign in",
 		"sign_out": "Sign out",
-		"generate": "Generate"
+		"generate": "Generate",
+		"download": "Download"
 	},
 	"navigation": {
 		"credits_left": "{{value}} credits left",
-		"buy_credits": "Buy Credits",
+		"theme": "Theme",
 		"beta_banner": {
 			"title": "Beta Mode",
 			"description": "We're currently in beta testing! Explore and help us shape what's coming next."
+		},
+		"menu": {
+			"generations": "Generations"
 		}
 	},
 	"footer": {
@@ -131,6 +135,12 @@
 			"STICKER": "Sticker",
 			"THREE_DIMENSIONAL": "3D"
 		}
+	},
+	"generations": {
+		"title": "Generations",
+		"generation_id": "Generation #{id}",
+		"no_entries": "No images generated yet.",
+		"generation_image": "Generation image {index}"
 	},
 	"thank_you": {
 		"title": "Thank You for your purchase!",

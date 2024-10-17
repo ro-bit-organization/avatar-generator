@@ -70,7 +70,9 @@ export default async function ThankYou({ searchParams }: Props) {
 										value: format.dateTime(payment.updatedAt, {
 											year: 'numeric',
 											month: 'short',
-											day: 'numeric'
+											day: 'numeric',
+											hour: 'numeric',
+											minute: 'numeric'
 										})
 									})}
 								</p>

@@ -11,7 +11,7 @@ type Props = {
 export default function Menu({ open, children, onOpenChange }: Props) {
 	return (
 		<Sheet open={open} onOpenChange={onOpenChange}>
-			<SheetContent side="right" className="flex flex-col justify-between">
+			<SheetContent side="right" className="flex w-full flex-col justify-between">
 				{children}
 			</SheetContent>
 		</Sheet>

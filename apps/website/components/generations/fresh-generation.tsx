@@ -12,6 +12,7 @@ import { useForm } from 'react-hook-form';
 import BuyCreditsModal from '~/components/buy-credits-modal/buy-credits-modal';
 import ChatMessage from '~/components/chat/message';
 import { Button } from '~/components/ui/button';
+import { Card } from '~/components/ui/card';
 import { FileInput, FileUploader } from '~/components/ui/file-uploader';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '~/components/ui/form';
 import { useToast } from '~/hooks/use-toast';
@@ -163,9 +164,9 @@ export default function FreshGeneration({ generation }: Props) {
 		<>
 			<div className="flex h-full w-full flex-col gap-4">
 				<Form {...form}>
-					<form ref={formRef} onSubmit={form.handleSubmit(onSubmit)} className="flex flex-1 flex-col gap-8 overflow-auto p-4">
+					<form ref={formRef} onSubmit={form.handleSubmit(onSubmit)} className="flex flex-1 flex-col gap-8">
 						{getStepStatus(Step.INTRO_TYPEIN) !== Status.HIDDEN && (
-							<div className="bg-card flex flex-col gap-4 rounded-md p-4">
+							<Card className="flex flex-col gap-4 rounded-md p-4">
 								<ChatMessage
 									text={t('generate.messages.intro_typein', {
 										cost: GENERATION_CREDITS_COST
@@ -174,10 +175,10 @@ export default function FreshGeneration({ generation }: Props) {
 										.replaceAll('(/strong)', '</strong>')}
 									onComplete={() => updateSteps([{ id: Step.STYLE_TYPEIN, status: Status.WRITING }])}
 								/>
-							</div>
+							</Card>
 						)}
 						{getStepStatus(Step.STYLE_TYPEIN) !== Status.HIDDEN && (
-							<div className="bg-card flex flex-col gap-4 rounded-md p-4">
+							<Card className="flex flex-col gap-4 rounded-md p-4">
 								<ChatMessage
 									text={t('generate.messages.style_select').replaceAll('(strong)', '<strong>').replaceAll('(/strong)', '</strong>')}
 									onComplete={() =>
@@ -188,7 +189,7 @@ export default function FreshGeneration({ generation }: Props) {
 										])
 									}
 								/>
-							</div>
+							</Card>
 						)}
 
 						<div
@@ -216,7 +217,7 @@ export default function FreshGeneration({ generation }: Props) {
 						</div>
 
 						{getStepStatus(Step.IMAGE_TYPEIN) !== Status.HIDDEN && (
-							<div className="bg-card flex flex-col gap-4 rounded-md p-4">
+							<Card className="flex flex-col gap-4 rounded-md p-4">
 								<ChatMessage
 									text={t('generate.messages.image_select')}
 									onComplete={() =>
@@ -226,7 +227,7 @@ export default function FreshGeneration({ generation }: Props) {
 										])
 									}
 								/>
-							</div>
+							</Card>
 						)}
 
 						<FormField
@@ -325,13 +326,13 @@ export default function FreshGeneration({ generation }: Props) {
 						/>
 
 						{getStepStatus(Step.GENERATION_PENDING) !== Status.HIDDEN && (
-							<div className="bg-card flex flex-col gap-4 rounded-md p-4">
+							<Card className="flex flex-col gap-4 rounded-md p-4">
 								<ChatMessage
 									text={t('generate.messages.ongoing_generation')}
 									loading={getStepStatus(Step.GENERATION_PENDING) === Status.LOADING}
 									onComplete={() => updateSteps([{ id: Step.GENERATION_PENDING, status: Status.LOADING }])}
 								/>
-							</div>
+							</Card>
 						)}
 					</form>
 				</Form>

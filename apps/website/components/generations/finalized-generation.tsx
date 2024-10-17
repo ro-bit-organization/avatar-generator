@@ -2,12 +2,14 @@
 
 import { Prisma } from '@repo/db';
 import { saveAs } from 'file-saver';
+import { Download } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import ChatMessage from '~/components/chat/message';
 import { Button, buttonVariants } from '~/components/ui/button';
+import { Card } from '~/components/ui/card';
 import { cn } from '~/lib/utils';
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -22,7 +24,7 @@ type Props = {
 };
 
 export default function FinalizedGeneration({ generation }: Props) {
-	const t = useTranslations('generate');
+	const t = useTranslations();
 
 	const [showImages, setShowImages] = useState<boolean>(false);
 
@@ -31,17 +33,19 @@ export default function FinalizedGeneration({ generation }: Props) {
 	}
 
 	return (
-		<div className="flex flex-1 flex-col gap-8 overflow-auto p-8">
-			<div className="bg-card flex flex-col gap-4 rounded-md p-4">
-				<ChatMessage text={t('messages.final_images')} onComplete={() => setShowImages(true)}>
+		<div className="flex flex-1 flex-col gap-8">
+			<Card className="flex flex-col gap-4 rounded-md p-4">
+				<ChatMessage text={t('generate.messages.final_images')} onComplete={() => setShowImages(true)}>
 					<Button
 						type="button"
-						className={cn('h-0 translate-y-4 overflow-hidden opacity-0 transition-all', {
-							'h-auto translate-y-0 overflow-visible opacity-100': showImages,
+						size="sm"
+						className={cn('translate-y-4 overflow-hidden opacity-0 transition-all', {
+							'translate-y-0 overflow-visible opacity-100': showImages,
 							'pointer-events-none': !showImages
 						})}
 						onClick={() => download()}
 					>
+						<Download className="mr-2 h-4 w-4" />
 						{t('common.download')}
 					</Button>
 				</ChatMessage>
@@ -55,7 +59,7 @@ export default function FinalizedGeneration({ generation }: Props) {
 						<Image key={entry.id} src={entry.imageUrl} width="256" height="256" alt="avatar" className="mx-auto rounded-md" />
 					))}
 				</div>
-			</div>
+			</Card>
 
 			<Link
 				href="/generate"
@@ -69,7 +73,7 @@ export default function FinalizedGeneration({ generation }: Props) {
 					}
 				)}
 			>
-				{t('common.new_generation')}
+				{t('generate.common.new_generation')}
 			</Link>
 		</div>
 	);
