@@ -8,6 +8,7 @@ const nextConfig = {
 		}
 	},
 	images: {
+		unoptimized: true,
 		remotePatterns: [
 			{
 				hostname: 'ro-bit-icon-generator-58707082674555.s3.eu-central-1.amazonaws.com'
