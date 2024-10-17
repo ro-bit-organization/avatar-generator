@@ -3,20 +3,20 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Prisma } from '@repo/db';
 import { saveAs } from 'file-saver';
-import { ArrowRight, LoaderIcon } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRef, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
-import Typewriter from 'typewriter-effect';
+import ChatMessage from '~/components/chat/message';
 import { Button, buttonVariants } from '~/components/ui/button';
 import { Form, FormControl, FormField, FormItem } from '~/components/ui/form';
 import { Textarea } from '~/components/ui/textarea';
 import { useToast } from '~/hooks/use-toast';
 import { revalidate } from '~/lib/actions/generate';
 import { RegenerationSchema, regenerationSchema } from '~/lib/forms/generation';
-import { cn, stringSplitter } from '~/lib/utils';
+import { cn } from '~/lib/utils';
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 const Generation = Prisma.validator<Prisma.GenerationDefaultArgs>()({
@@ -106,36 +106,42 @@ export default function OngoingGeneration({ generation }: Props) {
 		formData.append('prompt', prompt);
 
 		try {
-			const { error } = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/regenerate`, {
+			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/regenerate`, {
 				method: 'POST',
 				body: formData,
 				credentials: 'include'
-			}).then((response) => response.json());
+			});
+
+			if (response.status === 204) {
+				startTransition(async () => {
+					await revalidate(generation.id);
+
+					form.reset({
+						prompt: ''
+					});
+
+					setSteps(
+						steps.map((step) => ({
+							...step,
+							status: Status.HIDDEN
+						}))
+					);
+
+					setTimeout(() => {
+						setSteps(initialState);
+					}, 50);
+
+					textareaRef.current?.focus();
+				});
+
+				return;
+			}
+
+			const { error } = await response.json();
 
 			if (error) {
 				throw error;
 			}
-
-			startTransition(async () => {
-				await revalidate(generation.id);
-
-				form.reset({
-					prompt: ''
-				});
-
-				setSteps(
-					steps.map((step) => ({
-						...step,
-						status: Status.HIDDEN
-					}))
-				);
-
-				setTimeout(() => {
-					setSteps(initialState);
-				}, 50);
-
-				textareaRef.current?.focus();
-			});
 		} catch (e) {
 			//show toast or show error message
 			// toast({
@@ -153,8 +159,16 @@ export default function OngoingGeneration({ generation }: Props) {
 		<div className="flex h-full w-full flex-col gap-4">
 			{getStepStatus(Step.GENERATION_TYPEIN) !== Status.HIDDEN && (
 				<div className="bg-card flex flex-col gap-4 rounded-md p-4">
-					<div className="flex items-center justify-between">
-						<Image src="/images/logo.svg" width="36" height="36" alt="logo" className="shrink-0 rounded-md" />
+					<ChatMessage
+						text={t('messages.ongoing_images')}
+						onComplete={() => {
+							updateSteps([
+								{ id: Step.GENERATION_TYPEIN, status: Status.IDLE },
+								{ id: Step.PROMPT, status: Status.IDLE }
+							]);
+							textareaRef.current?.focus();
+						}}
+					>
 						<Button
 							type="button"
 							className={cn('h-0 translate-y-4 overflow-hidden opacity-0 transition-all', {
@@ -165,25 +179,7 @@ export default function OngoingGeneration({ generation }: Props) {
 						>
 							{t('common.download')}
 						</Button>
-					</div>
-					<Typewriter
-						options={{
-							delay: 15,
-							stringSplitter
-						}}
-						onInit={(typewriter) => {
-							typewriter
-								.typeString(t('messages.ongoing_images'))
-								.callFunction(() => {
-									updateSteps([
-										{ id: Step.GENERATION_TYPEIN, status: Status.IDLE },
-										{ id: Step.PROMPT, status: Status.IDLE }
-									]);
-									textareaRef.current?.focus();
-								})
-								.start();
-						}}
-					/>
+					</ChatMessage>
 
 					<div
 						className={cn('grid h-0 translate-y-4 grid-cols-3 gap-2 overflow-hidden opacity-0 transition-all', {
@@ -198,22 +194,10 @@ export default function OngoingGeneration({ generation }: Props) {
 			)}
 			{getStepStatus(Step.GENERATION_PENDING) !== Status.HIDDEN && (
 				<div className="bg-card flex flex-col gap-4 rounded-md p-4">
-					<Image src="/images/logo.svg" width="36" height="36" alt="logo" className="rounded-md" />
-					<div className="flex items-center gap-2">
-						<Typewriter
-							options={{
-								delay: 15,
-								stringSplitter
-							}}
-							onInit={(typewriter) => {
-								typewriter
-									.typeString(t('messages.ongoing_generation'))
-									.callFunction(() => updateSteps([{ id: Step.GENERATION_PENDING, status: Status.LOADING }]))
-									.start();
-							}}
-						/>
-						{getStepStatus(Step.GENERATION_PENDING) === Status.LOADING && <LoaderIcon className="h-4 w-4 animate-spin" />}
-					</div>
+					<ChatMessage
+						text={t('messages.ongoing_generation')}
+						onComplete={() => updateSteps([{ id: Step.GENERATION_PENDING, status: Status.LOADING }])}
+					/>
 				</div>
 			)}
 			<Form {...form}>
@@ -289,21 +273,24 @@ export default function OngoingGeneration({ generation }: Props) {
 					</div>
 				</form>
 			</Form>
-			<span className="my-4 flex items-center justify-center text-center text-white">{t('ongoing_generation.or_you_can')}</span>
-			<Link
-				href="/generate"
-				className={cn(
-					buttonVariants({
-						className:
-							'mx-auto h-14 w-fit translate-y-4 overflow-hidden bg-gradient-to-tl from-blue-500 via-purple-600 via-40% to-blue-500 bg-[length:200%_200%] bg-left-top px-8 py-3 text-lg font-semibold !text-white opacity-0 transition-all duration-500 hover:bg-right-bottom'
-					}),
-					{
-						'translate-y-0 overflow-visible opacity-100': getStepStatus(Step.PROMPT) !== Status.HIDDEN
-					}
-				)}
+			<div
+				className={cn('mx-auto flex translate-y-4 flex-col gap-4 opacity-0 transition-all', {
+					'translate-y-0 overflow-visible opacity-100': getStepStatus(Step.PROMPT) !== Status.HIDDEN
+				})}
 			>
-				{t('common.new_generation')}
-			</Link>
+				<span className="flex items-center justify-center py-4 text-center text-white">{t('ongoing_generation.or_you_can')}</span>
+				<Link
+					href="/generate"
+					className={cn(
+						buttonVariants({
+							className:
+								'mx-auto h-14 w-fit overflow-hidden bg-gradient-to-tl from-blue-500 via-purple-600 via-40% to-blue-500 bg-[length:200%_200%] bg-left-top px-8 py-3 text-lg font-semibold !text-white transition-all duration-500 hover:bg-right-bottom'
+						})
+					)}
+				>
+					{t('common.new_generation')}
+				</Link>
+			</div>
 		</div>
 	);
 }

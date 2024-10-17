@@ -3,15 +3,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AspectRatio } from '@radix-ui/react-aspect-ratio';
 import { GenerationStyle, Prisma } from '@repo/db';
-import { LoaderIcon } from 'lucide-react';
 import { nanoid } from 'nanoid';
 import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useRef, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
-import Typewriter from 'typewriter-effect';
 import BuyCreditsModal from '~/components/buy-credits-modal/buy-credits-modal';
+import ChatMessage from '~/components/chat/message';
 import { Button } from '~/components/ui/button';
 import { FileInput, FileUploader } from '~/components/ui/file-uploader';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '~/components/ui/form';
@@ -130,21 +129,27 @@ export default function FreshGeneration({ generation }: Props) {
 		formData.append('style', style!);
 
 		try {
-			const { error } = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/generate`, {
+			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/generate`, {
 				method: 'POST',
 				body: formData,
 				credentials: 'include'
-			}).then((response) => response.json());
+			});
+
+			if (response.status === 204) {
+				startTransition(async () => {
+					await revalidate(generation.id);
+
+					update();
+				});
+
+				return;
+			}
+
+			const { error } = await response.json();
 
 			if (error) {
 				throw error;
 			}
-
-			startTransition(async () => {
-				await revalidate(generation.id);
-
-				update();
-			});
 		} catch (e) {
 			//show toast or show error message
 			// toast({
@@ -161,49 +166,27 @@ export default function FreshGeneration({ generation }: Props) {
 					<form ref={formRef} onSubmit={form.handleSubmit(onSubmit)} className="flex flex-1 flex-col gap-8 overflow-auto p-4">
 						{getStepStatus(Step.INTRO_TYPEIN) !== Status.HIDDEN && (
 							<div className="bg-card flex flex-col gap-4 rounded-md p-4">
-								<Image src="/images/logo.svg" width="36" height="36" alt="logo" className="rounded-md" />
-								<Typewriter
-									options={{
-										delay: 15
-									}}
-									onInit={(typewriter) => {
-										typewriter
-											.typeString(
-												t('generate.messages.intro_typein', {
-													cost: GENERATION_CREDITS_COST
-												})
-													.replaceAll('(strong)', '<strong>')
-													.replaceAll('(/strong)', '</strong>')
-											)
-											.callFunction(() => {
-												updateSteps([{ id: Step.STYLE_TYPEIN, status: Status.WRITING }]);
-											})
-											.start();
-									}}
+								<ChatMessage
+									text={t('generate.messages.intro_typein', {
+										cost: GENERATION_CREDITS_COST
+									})
+										.replaceAll('(strong)', '<strong>')
+										.replaceAll('(/strong)', '</strong>')}
+									onComplete={() => updateSteps([{ id: Step.STYLE_TYPEIN, status: Status.WRITING }])}
 								/>
 							</div>
 						)}
 						{getStepStatus(Step.STYLE_TYPEIN) !== Status.HIDDEN && (
 							<div className="bg-card flex flex-col gap-4 rounded-md p-4">
-								<Image src="/images/logo.svg" width="36" height="36" alt="logo" className="rounded-md" />
-								<Typewriter
-									options={{
-										delay: 15
-									}}
-									onInit={(typewriter) => {
-										typewriter
-											.typeString(
-												t('generate.messages.style_select').replaceAll('(strong)', '<strong>').replaceAll('(/strong)', '</strong>')
-											)
-											.callFunction(() => {
-												updateSteps([
-													{ id: Step.STYLE_TYPEIN, status: Status.IDLE },
-													{ id: Step.STYLE_SELECT, status: Status.IDLE },
-													{ id: Step.IMAGE_TYPEIN, status: style ? Status.WRITING : Status.HIDDEN }
-												]);
-											})
-											.start();
-									}}
+								<ChatMessage
+									text={t('generate.messages.style_select').replaceAll('(strong)', '<strong>').replaceAll('(/strong)', '</strong>')}
+									onComplete={() =>
+										updateSteps([
+											{ id: Step.STYLE_TYPEIN, status: Status.IDLE },
+											{ id: Step.STYLE_SELECT, status: Status.IDLE },
+											{ id: Step.IMAGE_TYPEIN, status: style ? Status.WRITING : Status.HIDDEN }
+										])
+									}
 								/>
 							</div>
 						)}
@@ -234,22 +217,14 @@ export default function FreshGeneration({ generation }: Props) {
 
 						{getStepStatus(Step.IMAGE_TYPEIN) !== Status.HIDDEN && (
 							<div className="bg-card flex flex-col gap-4 rounded-md p-4">
-								<Image src="/images/logo.svg" width="36" height="36" alt="logo" className="rounded-md" />
-								<Typewriter
-									options={{
-										delay: 15
-									}}
-									onInit={(typewriter) => {
-										typewriter
-											.typeString(t('generate.messages.image_select'))
-											.callFunction(() => {
-												updateSteps([
-													{ id: Step.IMAGE_TYPEIN, status: Status.IDLE },
-													{ id: Step.IMAGE_SELECT, status: Status.IDLE }
-												]);
-											})
-											.start();
-									}}
+								<ChatMessage
+									text={t('generate.messages.image_select')}
+									onComplete={() =>
+										updateSteps([
+											{ id: Step.IMAGE_TYPEIN, status: Status.IDLE },
+											{ id: Step.IMAGE_SELECT, status: Status.IDLE }
+										])
+									}
 								/>
 							</div>
 						)}
@@ -351,21 +326,11 @@ export default function FreshGeneration({ generation }: Props) {
 
 						{getStepStatus(Step.GENERATION_PENDING) !== Status.HIDDEN && (
 							<div className="bg-card flex flex-col gap-4 rounded-md p-4">
-								<Image src="/images/logo.svg" width="36" height="36" alt="logo" className="rounded-md" />
-								<div className="flex items-center gap-2">
-									<Typewriter
-										options={{
-											delay: 15
-										}}
-										onInit={(typewriter) => {
-											typewriter
-												.typeString(t('generate.messages.ongoing_generation'))
-												.callFunction(() => updateSteps([{ id: Step.GENERATION_PENDING, status: Status.LOADING }]))
-												.start();
-										}}
-									/>
-									{getStepStatus(Step.GENERATION_PENDING) === Status.LOADING && <LoaderIcon className="h-4 w-4 animate-spin" />}
-								</div>
+								<ChatMessage
+									text={t('generate.messages.ongoing_generation')}
+									loading={getStepStatus(Step.GENERATION_PENDING) === Status.LOADING}
+									onComplete={() => updateSteps([{ id: Step.GENERATION_PENDING, status: Status.LOADING }])}
+								/>
 							</div>
 						)}
 					</form>

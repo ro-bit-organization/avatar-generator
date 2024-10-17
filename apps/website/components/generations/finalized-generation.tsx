@@ -6,9 +6,9 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import Typewriter from 'typewriter-effect';
+import ChatMessage from '~/components/chat/message';
 import { Button, buttonVariants } from '~/components/ui/button';
-import { cn, stringSplitter } from '~/lib/utils';
+import { cn } from '~/lib/utils';
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 const Generation = Prisma.validator<Prisma.GenerationDefaultArgs>()({
@@ -33,8 +33,7 @@ export default function FinalizedGeneration({ generation }: Props) {
 	return (
 		<div className="flex flex-1 flex-col gap-8 overflow-auto p-8">
 			<div className="bg-card flex flex-col gap-4 rounded-md p-4">
-				<div className="flex items-center justify-between">
-					<Image src="/images/logo.svg" width="36" height="36" alt="logo" className="shrink-0 rounded-md" />
+				<ChatMessage text={t('messages.final_images')} onComplete={() => setShowImages(true)}>
 					<Button
 						type="button"
 						className={cn('h-0 translate-y-4 overflow-hidden opacity-0 transition-all', {
@@ -45,19 +44,7 @@ export default function FinalizedGeneration({ generation }: Props) {
 					>
 						{t('common.download')}
 					</Button>
-				</div>
-				<Typewriter
-					options={{
-						delay: 15,
-						stringSplitter
-					}}
-					onInit={(typewriter) => {
-						typewriter
-							.typeString(t('messages.final_images'))
-							.callFunction(() => setShowImages(true))
-							.start();
-					}}
-				/>
+				</ChatMessage>
 
 				<div
 					className={cn('grid h-0 translate-y-4 grid-cols-3 gap-2 overflow-hidden opacity-0 transition-all', {
