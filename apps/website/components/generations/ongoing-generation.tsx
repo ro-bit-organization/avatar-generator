@@ -6,14 +6,15 @@ import { saveAs } from 'file-saver';
 import { ArrowRight, LoaderIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRef, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import Typewriter from 'typewriter-effect';
-import { Button } from '~/components/ui/button';
+import { Button, buttonVariants } from '~/components/ui/button';
 import { Form, FormControl, FormField, FormItem } from '~/components/ui/form';
 import { Textarea } from '~/components/ui/textarea';
 import { useToast } from '~/hooks/use-toast';
-import { regenerate } from '~/lib/actions/regenerate';
+import { revalidate } from '~/lib/actions/generate';
 import { RegenerationSchema, regenerationSchema } from '~/lib/forms/generation';
 import { cn, stringSplitter } from '~/lib/utils';
 
@@ -99,40 +100,49 @@ export default function OngoingGeneration({ generation }: Props) {
 	async function onSubmit({ prompt }: RegenerationSchema) {
 		updateSteps([{ id: Step.GENERATION_PENDING, status: Status.WRITING }]);
 
-		startTransition(async () => {
-			const formData = new FormData();
+		const formData = new FormData();
 
-			formData.append('id', generation.id);
-			formData.append('prompt', prompt);
+		formData.append('id', generation.id);
+		formData.append('prompt', prompt);
 
-			const response = await regenerate(formData);
+		try {
+			const { error } = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/regenerate`, {
+				method: 'POST',
+				body: formData,
+				credentials: 'include'
+			}).then((response) => response.json());
 
-			if (response?.error) {
-				toast({
-					variant: 'destructive',
-					description: response?.error
-				});
-
-				return;
+			if (error) {
+				throw error;
 			}
 
-			form.reset({
-				prompt: ''
+			startTransition(async () => {
+				await revalidate(generation.id);
+
+				form.reset({
+					prompt: ''
+				});
+
+				setSteps(
+					steps.map((step) => ({
+						...step,
+						status: Status.HIDDEN
+					}))
+				);
+
+				setTimeout(() => {
+					setSteps(initialState);
+				}, 50);
+
+				textareaRef.current?.focus();
 			});
-
-			setSteps(
-				steps.map((step) => ({
-					...step,
-					status: Status.HIDDEN
-				}))
-			);
-
-			setTimeout(() => {
-				setSteps(initialState);
-			}, 50);
-
-			textareaRef.current?.focus();
-		});
+		} catch (e) {
+			//show toast or show error message
+			// toast({
+			// 	variant: 'destructive',
+			// 	description: response?.error
+			// });
+		}
 	}
 
 	function download(): void {
@@ -186,7 +196,6 @@ export default function OngoingGeneration({ generation }: Props) {
 					</div>
 				</div>
 			)}
-
 			{getStepStatus(Step.GENERATION_PENDING) !== Status.HIDDEN && (
 				<div className="bg-card flex flex-col gap-4 rounded-md p-4">
 					<Image src="/images/logo.svg" width="36" height="36" alt="logo" className="rounded-md" />
@@ -207,7 +216,6 @@ export default function OngoingGeneration({ generation }: Props) {
 					</div>
 				</div>
 			)}
-
 			<Form {...form}>
 				<form
 					ref={formRef}
@@ -281,6 +289,21 @@ export default function OngoingGeneration({ generation }: Props) {
 					</div>
 				</form>
 			</Form>
+			<span className="my-4 flex items-center justify-center text-center text-white">{t('ongoing_generation.or_you_can')}</span>
+			<Link
+				href="/generate"
+				className={cn(
+					buttonVariants({
+						className:
+							'mx-auto h-14 w-fit translate-y-4 overflow-hidden bg-gradient-to-tl from-blue-500 via-purple-600 via-40% to-blue-500 bg-[length:200%_200%] bg-left-top px-8 py-3 text-lg font-semibold !text-white opacity-0 transition-all duration-500 hover:bg-right-bottom'
+					}),
+					{
+						'translate-y-0 overflow-visible opacity-100': getStepStatus(Step.PROMPT) !== Status.HIDDEN
+					}
+				)}
+			>
+				{t('common.new_generation')}
+			</Link>
 		</div>
 	);
 }

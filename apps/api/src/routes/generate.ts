@@ -3,11 +3,11 @@ import { verifyAuth } from '@repo/auth-js';
 import { GenerationStyle, prisma } from '@repo/db';
 import { Hono } from 'hono';
 import { nanoid } from 'nanoid';
-import { s3 } from '../lib/clients/aws.js';
-import openai from '../lib/clients/openai.js';
-import { GENERATION_CREDITS_COST, STYLE_DESCRIPTION } from '../lib/const.js';
-import { fileToBase64 } from '../lib/utils.js';
-import { generationSchema } from '../lib/validation/generation.js';
+import { s3 } from '../lib/clients/aws';
+import openai from '../lib/clients/openai';
+import { GENERATION_CREDITS_COST, STYLE_DESCRIPTION } from '../lib/const';
+import { fileToBase64 } from '../lib/utils';
+import { generationSchema } from '../lib/validation/generation';
 
 const app = new Hono();
 
@@ -148,6 +148,8 @@ app.post('/', async (c) => {
 				}
 			})
 		]);
+
+		return c.body(null, 204);
 	} catch (e) {
 		return c.json({ error: e });
 	}

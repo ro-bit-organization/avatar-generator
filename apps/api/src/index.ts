@@ -1,12 +1,13 @@
 import GoogleProvider from '@auth/core/providers/google';
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import { initAuthConfig, verifyAuth, type AuthConfig } from '@repo/auth-js';
+import { initAuthConfig, type AuthConfig } from '@repo/auth-js';
 import { prisma } from '@repo/db';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import creditPackages from './routes/credit-packages.js';
-import payments from './routes/payments.js';
-import stripe from './routes/stripe.js';
+import creditPackages from './routes/credit-packages';
+import generate from './routes/generate';
+import payments from './routes/payments';
+import stripe from './routes/stripe';
 
 const app = new Hono();
 
@@ -24,6 +25,7 @@ app.use(
 app.route('/api/stripe', stripe);
 app.route('/api/credit-packages', creditPackages);
 app.route('/api/payments', payments);
+app.route('/api/generate', generate);
 
 function getAuthConfig(): AuthConfig {
 	return {

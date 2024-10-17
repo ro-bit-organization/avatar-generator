@@ -3,10 +3,10 @@ import { verifyAuth } from '@repo/auth-js';
 import { prisma } from '@repo/db';
 import { Hono } from 'hono';
 import { nanoid } from 'nanoid';
-import { s3 } from '../lib/clients/aws.js';
-import openai from '../lib/clients/openai.js';
-import { GENERATION_CREDITS_COST, STYLE_DESCRIPTION } from '../lib/const.js';
-import { regenerationSchema } from '../lib/validation/regeneration.js';
+import { s3 } from '../lib/clients/aws';
+import openai from '../lib/clients/openai';
+import { GENERATION_CREDITS_COST, STYLE_DESCRIPTION } from '../lib/const';
+import { regenerationSchema } from '../lib/validation/regeneration';
 
 const app = new Hono();
 
@@ -168,10 +168,10 @@ app.post('/', async (c) => {
 				}
 			})
 		]);
-	} catch (e) {
-		console.log(e);
 
-		return c.json({ error: 'An error occured!' });
+		return c.body(null, 204);
+	} catch (e) {
+		return c.json({ error: e });
 	}
 });
 

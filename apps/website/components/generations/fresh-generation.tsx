@@ -16,7 +16,7 @@ import { Button } from '~/components/ui/button';
 import { FileInput, FileUploader } from '~/components/ui/file-uploader';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '~/components/ui/form';
 import { useToast } from '~/hooks/use-toast';
-import { generate } from '~/lib/actions/generate';
+import { revalidate } from '~/lib/actions/generate';
 import { GENERATION_CREDITS_COST } from '~/lib/const';
 import { generationSchema, GenerationSchema } from '~/lib/forms/generation';
 import { cn } from '~/lib/utils';
@@ -123,25 +123,35 @@ export default function FreshGeneration({ generation }: Props) {
 	async function onSubmit({ image, style }: GenerationSchema) {
 		updateSteps([{ id: Step.GENERATION_PENDING, status: Status.WRITING }]);
 
-		startTransition(async () => {
-			const formData = new FormData();
+		const formData = new FormData();
 
-			formData.append('id', generation.id);
-			formData.append('image', image!);
-			formData.append('style', style!);
+		formData.append('id', generation.id);
+		formData.append('image', image!);
+		formData.append('style', style!);
 
-			const response = await generate(formData);
+		try {
+			const { error } = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/generate`, {
+				method: 'POST',
+				body: formData,
+				credentials: 'include'
+			}).then((response) => response.json());
 
-			if (response?.error) {
-				toast({
-					variant: 'destructive',
-					description: response?.error
-				});
-				return;
+			if (error) {
+				throw error;
 			}
 
-			update();
-		});
+			startTransition(async () => {
+				await revalidate(generation.id);
+
+				update();
+			});
+		} catch (e) {
+			//show toast or show error message
+			// toast({
+			// 	variant: 'destructive',
+			// 	description: response?.error
+			// });
+		}
 	}
 
 	return (

@@ -100,6 +100,7 @@
 			"new_generation": "Generate another avatar"
 		},
 		"ongoing_generation": {
+			"or_you_can": "... or you can ...",
 			"fields": {
 				"regeneration": {
 					"placeholder": "Don't like it? Please provide details on how you'd like the image to be regenerated. You can mention aspects like color changes, adjustments in style, pose, facial expression, background elements, or any other modifications you'd like to see."
