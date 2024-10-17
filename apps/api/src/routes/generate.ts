@@ -109,7 +109,7 @@ app.post('/', async (c) => {
 		const upload = new Upload({
 			client: s3,
 			params: {
-				Bucket: 'ro-bit-icon-generator-58707082674555',
+				Bucket: process.env.S3_BUCKET_NAME,
 				Key: `${nanoid(10)}.png`,
 				Body: response.body!
 			}

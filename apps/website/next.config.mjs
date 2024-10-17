@@ -11,7 +11,7 @@ const nextConfig = {
 		unoptimized: true,
 		remotePatterns: [
 			{
-				hostname: 'ro-bit-icon-generator-58707082674555.s3.eu-central-1.amazonaws.com'
+				hostname: 'pixpersona-staging-3541781497047889658470530.s3.eu-central-1.amazonaws.com'
 			}
 		]
 	}
