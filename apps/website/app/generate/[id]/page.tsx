@@ -5,12 +5,15 @@ import { redirect } from 'next/navigation';
 import { authOptions } from '~/lib/auth';
 import GenerateClient from './client.page';
 
-export const metadata: Metadata = {
-	robots: {
-		index: false,
-		follow: false
-	}
-};
+export async function generateMetadata({ params: { id } }: { params: { id: string } }): Promise<Metadata> {
+	return {
+		title: `Generation #${id}`,
+		robots: {
+			index: false,
+			follow: false
+		}
+	};
+}
 
 type Props = {
 	params: { id: string };

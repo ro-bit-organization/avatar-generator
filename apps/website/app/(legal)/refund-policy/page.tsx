@@ -1,15 +1,25 @@
 import { Metadata } from 'next';
+import { getFormatter } from 'next-intl/server';
 
 export const metadata: Metadata = {
 	title: 'Refund Policy',
 	description: 'Learn about our refund policy, including eligibility, timelines, and how to request a return or exchange.'
 };
 
-export default function RefundPage() {
+export default async function RefundPage() {
+	const format = await getFormatter();
+
 	return (
-		<main className="mx-auto mb-24 flex max-w-screen-lg flex-1 flex-col gap-4 px-4 pt-24">
+		<main className="mx-auto mb-24 flex max-w-screen-lg flex-1 flex-col gap-4 px-4 pt-12">
 			<h1 className="text-4xl">Refund Policy</h1>
-			<p>Last updated: October 11, 2024</p>
+			<p className="text-muted-foreground">
+				Last updated:{' '}
+				{format.dateTime(new Date('2024-10-11'), {
+					year: 'numeric',
+					month: 'short',
+					day: 'numeric'
+				})}
+			</p>
 			<p>
 				At Pixpersona, we are committed to providing a unique and innovative experience through our AI-generated icons. We understand that AI, while
 				powerful and revolutionary, isn&apos;t perfect and may not always produce the results you expect. We want you to be fully aware of this inherent

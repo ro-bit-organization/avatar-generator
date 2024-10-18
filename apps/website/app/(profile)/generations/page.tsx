@@ -6,6 +6,7 @@ import { authOptions } from '~/lib/auth';
 import GenerationsClient from './client.page';
 
 export const metadata: Metadata = {
+	title: 'Generations',
 	robots: {
 		index: false,
 		follow: false

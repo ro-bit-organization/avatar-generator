@@ -45,7 +45,7 @@ export default function Generations({ page, count, generations }: Props) {
 	return (
 		<main className="mx-auto w-screen max-w-screen-md p-4">
 			<div className="flex flex-col">
-				<h1 className="mb-4 text-2xl font-bold">{t('generations.title')}</h1>
+				<h1 className="mb-2 text-2xl font-bold">{t('generations.title')}</h1>
 				<div className="space-y-4">
 					{generations?.map((generation) => (
 						<Card key={generation.id} className="overflow-hidden rounded-md">
@@ -92,17 +92,19 @@ export default function Generations({ page, count, generations }: Props) {
 						</Card>
 					))}
 				</div>
-				<Pagination className="mt-6">
-					<PaginationContent>
-						{new Array(Math.ceil(count / 10)).fill('').map((_, index) => (
-							<PaginationItem key={index}>
-								<PaginationLink href={getPageUrl(index + 1)} isActive={+page === index + 1}>
-									{index + 1}
-								</PaginationLink>
-							</PaginationItem>
-						))}
-					</PaginationContent>
-				</Pagination>
+				{count > 10 && (
+					<Pagination className="mt-6">
+						<PaginationContent>
+							{new Array(Math.ceil(count / 10)).fill('').map((_, index) => (
+								<PaginationItem key={index}>
+									<PaginationLink href={getPageUrl(index + 1)} isActive={+page === index + 1}>
+										{index + 1}
+									</PaginationLink>
+								</PaginationItem>
+							))}
+						</PaginationContent>
+					</Pagination>
+				)}
 			</div>
 		</main>
 	);

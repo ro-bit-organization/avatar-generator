@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { getFormatter } from 'next-intl/server';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
@@ -6,11 +7,20 @@ export const metadata: Metadata = {
 	description: 'Find out how we collect, use, and protect your personal information in our Privacy Policy. Your privacy and security are important to us.'
 };
 
-export default function PrivacyPolicyPage() {
+export default async function PrivacyPolicyPage() {
+	const format = await getFormatter();
+
 	return (
-		<main className="mx-auto mb-24 flex max-w-screen-lg flex-1 flex-col gap-4 px-4 pt-24">
+		<main className="mx-auto mb-24 flex max-w-screen-lg flex-1 flex-col gap-4 px-4 pt-12">
 			<h1 className="text-4xl">Privacy Policy</h1>
-			<p>Last updated: October 11, 2024</p>
+			<p className="text-muted-foreground">
+				Last updated:{' '}
+				{format.dateTime(new Date('2024-10-11'), {
+					year: 'numeric',
+					month: 'short',
+					day: 'numeric'
+				})}
+			</p>
 			<p>
 				This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and
 				tells You about Your privacy rights and how the law protects You.

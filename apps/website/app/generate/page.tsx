@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { authOptions } from '~/lib/auth';
 
 export const metadata: Metadata = {
+	title: 'Generate a new avatar',
 	robots: {
 		index: false,
 		follow: false

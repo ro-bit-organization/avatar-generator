@@ -1,16 +1,26 @@
 import { Metadata } from 'next';
+import { getFormatter } from 'next-intl/server';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
 	title: 'Terms of Service',
-	description:
-		'Review our Terms and Conditions to understand the rules and guidelines for using our services, including your rights, responsibilities, and our policies.'
+	description: 'Learn how we use cookies to enhance your experience, track site usage, and improve our services in our Cookies Policy.'
 };
 
-export default function TermsOfServicePage() {
+export default async function TermsOfServicePage() {
+	const format = await getFormatter();
+
 	return (
-		<main className="mx-auto mb-24 flex max-w-screen-lg flex-1 flex-col gap-4 px-4 pt-24">
+		<main className="mx-auto mb-24 flex max-w-screen-lg flex-1 flex-col gap-4 px-4 pt-12">
 			<h1 className="text-4xl">Manage Cookies</h1>
+			<p className="text-muted-foreground">
+				Last updated:{' '}
+				{format.dateTime(new Date('2024-10-11'), {
+					year: 'numeric',
+					month: 'short',
+					day: 'numeric'
+				})}
+			</p>
 			<p>
 				Cookies are small text files that are stored on your device when you visit a website. We use cookies to provide a better user experience,
 				analyze how users interact with our website, and to personalize content and ads.

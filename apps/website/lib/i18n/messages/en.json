@@ -136,6 +136,12 @@
 			"THREE_DIMENSIONAL": "3D"
 		}
 	},
+	"404": {
+		"title": "404 - Avatar Not Found",
+		"description": "We couldn’t find the page you were looking for. But don’t worry, there’s still plenty of creativity ahead!",
+		"home": "Return Home",
+		"new_generation": "Generate New Avatar"
+	},
 	"generations": {
 		"title": "Generations",
 		"generation_id": "Generation #{id}",

@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { getFormatter } from 'next-intl/server';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
@@ -7,11 +8,20 @@ export const metadata: Metadata = {
 		'Review our Terms and Conditions to understand the rules and guidelines for using our services, including your rights, responsibilities, and our policies.'
 };
 
-export default function TermsOfServicePage() {
+export default async function TermsOfServicePage() {
+	const format = await getFormatter();
+
 	return (
-		<main className="mx-auto mb-24 flex max-w-screen-lg flex-1 flex-col gap-4 px-4 pt-24">
+		<main className="mx-auto mb-24 flex max-w-screen-lg flex-1 flex-col gap-4 px-4 pt-12">
 			<h1 className="text-4xl">Terms and Conditions</h1>
-			<p>Last updated: October 11, 2024</p>
+			<p className="text-muted-foreground">
+				Last updated:{' '}
+				{format.dateTime(new Date('2024-10-11'), {
+					year: 'numeric',
+					month: 'short',
+					day: 'numeric'
+				})}
+			</p>
 			<p>Please read these terms and conditions carefully before using Our Service.</p>
 			<h2>Interpretation and Definitions</h2>
 			<h2>Interpretation</h2>
