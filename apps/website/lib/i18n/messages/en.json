@@ -13,7 +13,6 @@
 	},
 	"navigation": {
 		"credits_left": "{{value}} credits left",
-		"theme": "Theme",
 		"beta_banner": {
 			"title": "Beta Mode",
 			"description": "We're currently in beta testing! Explore and help us shape what's coming next."
