@@ -3,6 +3,8 @@ import { prisma } from '@repo/db';
 import { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 
+const domain = new URL(process.env.NEXT_PUBLIC_WEBSITE_URL!).hostname;
+
 export const authOptions: NextAuthOptions = {
 	secret: process.env.NEXTAUTH_SECRET,
 	adapter: PrismaAdapter(prisma),
@@ -12,6 +14,7 @@ export const authOptions: NextAuthOptions = {
 			options: {
 				httpOnly: true,
 				sameSite: 'lax',
+				domain: `.${domain}`,
 				path: '/',
 				secure: true
 			}
@@ -20,6 +23,7 @@ export const authOptions: NextAuthOptions = {
 			name: `next-auth.callback-url`,
 			options: {
 				sameSite: 'lax',
+				domain: `.${domain}`,
 				path: '/',
 				secure: true
 			}
@@ -29,6 +33,7 @@ export const authOptions: NextAuthOptions = {
 			options: {
 				httpOnly: true,
 				sameSite: 'lax',
+				domain: `.${domain}`,
 				path: '/',
 				secure: true
 			}
@@ -38,6 +43,7 @@ export const authOptions: NextAuthOptions = {
 			options: {
 				httpOnly: true,
 				sameSite: 'lax',
+				domain: `.${domain}`,
 				path: '/',
 				secure: true,
 				maxAge: 900
@@ -48,6 +54,7 @@ export const authOptions: NextAuthOptions = {
 			options: {
 				httpOnly: true,
 				sameSite: 'lax',
+				domain: `.${domain}`,
 				path: '/',
 				secure: true,
 				maxAge: 900
@@ -58,6 +65,7 @@ export const authOptions: NextAuthOptions = {
 			options: {
 				httpOnly: true,
 				sameSite: 'lax',
+				domain: `.${domain}`,
 				path: '/',
 				secure: true
 			}
