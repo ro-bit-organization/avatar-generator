@@ -151,7 +151,7 @@ app.post('/', async (c) => {
 
 		return c.body(null, 204);
 	} catch (e) {
-		return c.json({ error: e });
+		return c.json({ error: e instanceof Error ? e.message : 'An error occured during generation!' }, 500);
 	}
 });
 

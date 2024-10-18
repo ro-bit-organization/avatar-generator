@@ -130,7 +130,7 @@ app.post('/', async (c) => {
 		const upload = new Upload({
 			client: s3,
 			params: {
-				Bucket: 'ro-bit-icon-generator-58707082674555',
+				Bucket: process.env.S3_BUCKET_NAME,
 				Key: `${nanoid(10)}.png`,
 				Body: response.body!
 			}
@@ -171,7 +171,7 @@ app.post('/', async (c) => {
 
 		return c.body(null, 204);
 	} catch (e) {
-		return c.json({ error: e });
+		return c.json({ error: e instanceof Error ? e.message : 'An error occured during regeneration!' }, 500);
 	}
 });
 
