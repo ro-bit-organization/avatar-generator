@@ -13,6 +13,8 @@ app.post('/hooks', async (c: Context) => {
 
 		return await handleEvent(event);
 	} catch (e) {
+		console.log(e);
+
 		return Response.json({ success: false, error: e }, { status: 500 });
 	}
 });
