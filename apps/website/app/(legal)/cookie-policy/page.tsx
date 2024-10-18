@@ -2,10 +2,57 @@ import { Metadata } from 'next';
 import { getFormatter } from 'next-intl/server';
 import Link from 'next/link';
 
-export const metadata: Metadata = {
-	title: 'Terms of Service',
-	description: 'Learn how we use cookies to enhance your experience, track site usage, and improve our services in our Cookies Policy.'
-};
+export async function generateMetadata(): Promise<Metadata> {
+	const title = 'Terms of Service';
+	const description = 'Learn how we use cookies to enhance your experience, track site usage, and improve our services in our Cookies Policy.';
+	const url = `${process.env.NEXT_PUBLIC_WEBSITE_URL}/cookie-policy`;
+
+	return {
+		title,
+		description,
+		alternates: {
+			canonical: url
+		},
+		keywords: [
+			'ai avatars',
+			'cartoon avatars',
+			'avatar creator',
+			'cartoonify photos',
+			'ai avatar generator',
+			'personalized avatars',
+			'avatar design online',
+			'cartoon profile pictures',
+			'toon avatar maker',
+			'photo to cartoon avatar',
+			'custom avatar creation',
+			'cartoon yourself',
+			'ai photo editor',
+			'avatar app online',
+			'avatar for social media',
+			'animated avatar creator',
+			'avatar ai platform',
+			'create cartoon characters',
+			'avatar customization',
+			'digital avatars online'
+		],
+		metadataBase: new URL(process.env.NEXT_PUBLIC_WEBSITE_URL as string),
+		openGraph: {
+			title,
+			description,
+			url,
+			siteName: title,
+			images: [
+				{
+					url: `/images/logo.png`,
+					width: 512,
+					height: 512
+				}
+			],
+			locale: 'en_US',
+			type: 'website'
+		}
+	};
+}
 
 export default async function TermsOfServicePage() {
 	const format = await getFormatter();

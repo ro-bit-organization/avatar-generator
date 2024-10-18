@@ -1,10 +1,57 @@
 import { Metadata } from 'next';
 import { getFormatter } from 'next-intl/server';
 
-export const metadata: Metadata = {
-	title: 'Refund Policy',
-	description: 'Learn about our refund policy, including eligibility, timelines, and how to request a return or exchange.'
-};
+export async function generateMetadata(): Promise<Metadata> {
+	const title = 'Refund Policy';
+	const description = 'Learn about our refund policy, including eligibility, timelines, and how to request a return or exchange.';
+	const url = `${process.env.NEXT_PUBLIC_WEBSITE_URL}/refund-policy`;
+
+	return {
+		title,
+		description,
+		alternates: {
+			canonical: url
+		},
+		keywords: [
+			'ai avatars',
+			'cartoon avatars',
+			'avatar creator',
+			'cartoonify photos',
+			'ai avatar generator',
+			'personalized avatars',
+			'avatar design online',
+			'cartoon profile pictures',
+			'toon avatar maker',
+			'photo to cartoon avatar',
+			'custom avatar creation',
+			'cartoon yourself',
+			'ai photo editor',
+			'avatar app online',
+			'avatar for social media',
+			'animated avatar creator',
+			'avatar ai platform',
+			'create cartoon characters',
+			'avatar customization',
+			'digital avatars online'
+		],
+		metadataBase: new URL(process.env.NEXT_PUBLIC_WEBSITE_URL as string),
+		openGraph: {
+			title,
+			description,
+			url,
+			siteName: title,
+			images: [
+				{
+					url: `/images/logo.png`,
+					width: 512,
+					height: 512
+				}
+			],
+			locale: 'en_US',
+			type: 'website'
+		}
+	};
+}
 
 export default async function RefundPage() {
 	const format = await getFormatter();
