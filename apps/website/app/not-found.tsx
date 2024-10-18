@@ -1,4 +1,4 @@
-import { Ghost, Home, RefreshCw } from 'lucide-react';
+import { Home, RefreshCw } from 'lucide-react';
 import { getServerSession } from 'next-auth';
 import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';

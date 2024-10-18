@@ -149,14 +149,14 @@ export default function FreshGeneration({ generation }: Props) {
 			const { error } = await response.json();
 
 			if (error) {
-				throw error;
+				throw new Error(error);
 			}
 		} catch (e) {
 			//show toast or show error message
-			// toast({
-			// 	variant: 'destructive',
-			// 	description: response?.error
-			// });
+			toast({
+				variant: 'destructive',
+				description: e instanceof Error ? e.message : 'An error occured!'
+			});
 		}
 	}
 

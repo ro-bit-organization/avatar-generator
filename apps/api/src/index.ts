@@ -7,6 +7,7 @@ import { cors } from 'hono/cors';
 import creditPackages from './routes/credit-packages';
 import generate from './routes/generate';
 import payments from './routes/payments';
+import regenerate from './routes/regenerate';
 import stripe from './routes/stripe';
 
 const app = new Hono();
@@ -26,6 +27,7 @@ app.route('/api/stripe', stripe);
 app.route('/api/credit-packages', creditPackages);
 app.route('/api/payments', payments);
 app.route('/api/generate', generate);
+app.route('/api/regenerate', regenerate);
 
 function getAuthConfig(): AuthConfig {
 	return {

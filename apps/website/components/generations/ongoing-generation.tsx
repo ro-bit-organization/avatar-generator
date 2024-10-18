@@ -141,14 +141,14 @@ export default function OngoingGeneration({ generation }: Props) {
 			const { error } = await response.json();
 
 			if (error) {
-				throw error;
+				throw new Error(error);
 			}
 		} catch (e) {
 			//show toast or show error message
-			// toast({
-			// 	variant: 'destructive',
-			// 	description: response?.error
-			// });
+			toast({
+				variant: 'destructive',
+				description: e instanceof Error ? e.message : 'An error occured!'
+			});
 		}
 	}
 
@@ -199,6 +199,7 @@ export default function OngoingGeneration({ generation }: Props) {
 				<Card className="flex flex-col gap-4 rounded-md p-4">
 					<ChatMessage
 						text={t('generate.messages.ongoing_generation')}
+						loading={getStepStatus(Step.GENERATION_PENDING) === Status.LOADING}
 						onComplete={() => updateSteps([{ id: Step.GENERATION_PENDING, status: Status.LOADING }])}
 					/>
 				</Card>
