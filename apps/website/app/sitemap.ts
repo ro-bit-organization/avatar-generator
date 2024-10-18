@@ -3,22 +3,22 @@ import { MetadataRoute } from 'next';
 export default function Sitemap(): MetadataRoute.Sitemap {
 	return [
 		{
-			url: process.env.NEXT_PUBLIC_WEBSITE_ORIGIN!
+			url: process.env.NEXT_PUBLIC_WEBSITE_URL!
 		},
 		{
-			url: `${process.env.NEXT_PUBLIC_WEBSITE_ORIGIN}/terms-of-service`,
+			url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/terms-of-service`,
 			lastModified: new Date('2024-10-11')
 		},
 		{
-			url: `${process.env.NEXT_PUBLIC_WEBSITE_ORIGIN}/privacy-policy`,
+			url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/privacy-policy`,
 			lastModified: new Date('2024-10-11')
 		},
 		{
-			url: `${process.env.NEXT_PUBLIC_WEBSITE_ORIGIN}/refund-policy`,
+			url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/refund-policy`,
 			lastModified: new Date('2024-10-11')
 		},
 		{
-			url: `${process.env.NEXT_PUBLIC_WEBSITE_ORIGIN}/cookie-policy`,
+			url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/cookie-policy`,
 			lastModified: new Date('2024-10-11')
 		}
 	];
