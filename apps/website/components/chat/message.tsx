@@ -17,7 +17,7 @@ export default function ChatMessage({ text, loading, children, onComplete }: Pro
 	return (
 		<>
 			<div className="flex items-center justify-between">
-				<Image src="/images/logo.svg" width="36" height="36" alt="logo" className="shrink-0 rounded-md" />
+				<Image src="/images/logo.webp" width="36" height="36" alt="logo" className="shrink-0 rounded-md" />
 				{children}
 			</div>
 			<div className="flex items-center gap-2">

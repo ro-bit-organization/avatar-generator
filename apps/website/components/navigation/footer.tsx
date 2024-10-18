@@ -11,7 +11,7 @@ export default async function Footer() {
 				<div className="grid grid-cols-1 gap-8 md:grid-cols-4">
 					<div>
 						<div className="mb-4 flex items-center">
-							<Image src="/images/logo.svg" width="36" height="36" alt="logo" className="rounded-md" />
+							<Image src="/images/logo.webp" width="36" height="36" alt="logo" className="rounded-md" />
 							<h4 className="ml-2 text-lg font-semibold tracking-tighter text-gray-900 dark:text-white">{t('app.name')}</h4>
 						</div>
 

@@ -46,7 +46,7 @@ export default function Header() {
 			<header className="flex h-14 items-center justify-between border-b border-gray-200 px-4 lg:px-6 dark:border-gray-800">
 				<nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-7 md:text-sm lg:gap-8">
 					<Link href="/" className="flex items-center justify-center">
-						<Image src="/images/logo.svg" width="36" height="36" alt="logo" className="rounded-md" />
+						<Image src="/images/logo.webp" width="36" height="36" alt="logo" className="rounded-md" />
 						<span className="ml-2 inline-block text-xl font-semibold tracking-tighter text-gray-900 dark:text-white">{t('app.name')}</span>
 					</Link>
 					{status === 'authenticated' && (
@@ -100,7 +100,7 @@ export default function Header() {
 			<Menu open={menuOpen} onOpenChange={setMenuOpen}>
 				<div className="flex flex-col gap-2">
 					<div className="mb-6 flex items-center">
-						<Image src="/images/logo.svg" width="36" height="36" alt="logo" className="rounded-md" />
+						<Image src="/images/logo.webp" width="36" height="36" alt="logo" className="rounded-md" />
 						<span className="ml-2 inline-block text-xl font-semibold tracking-tighter text-gray-900 dark:text-white">{t('app.name')}</span>
 					</div>
 
