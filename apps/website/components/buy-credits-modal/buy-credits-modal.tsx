@@ -47,6 +47,10 @@ export default function BuyCreditsModal({ open, onOpenChange }: Props) {
 		if (open) {
 			getPackages();
 		}
+
+		if (!open) {
+			setSelectedCreditPackageId(undefined);
+		}
 	}, [open]);
 
 	async function handlePurchase(creditPackageId: string | undefined): Promise<void> {

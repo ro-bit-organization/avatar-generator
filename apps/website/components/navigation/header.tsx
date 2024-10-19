@@ -111,7 +111,9 @@ export default function Header() {
 
 					{status === 'authenticated' && (
 						<>
-							<Link href="/generations">{t('navigation.menu.generations')}</Link>
+							<Link href="/generations" onClick={() => setMenuOpen(false)}>
+								{t('navigation.menu.generations')}
+							</Link>
 							<hr className="my-2" />
 							<div className="flex items-center justify-between">
 								<span className="mr-2">{t('common.credits_left', { value: session?.user?.credits })}</span>
