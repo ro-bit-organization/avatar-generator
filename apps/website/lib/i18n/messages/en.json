@@ -12,6 +12,10 @@
 		"download": "Download",
 		"retry": "Retry"
 	},
+	"errors": {
+		"fetch_credit_packages": "An error ocurred while fetching credit packages. Please try again later.",
+		"payment_generation": "An error ocurred during payment generation. Please try again later."
+	},
 	"navigation": {
 		"credits_left": "{{value}} credits left",
 		"beta_banner": {

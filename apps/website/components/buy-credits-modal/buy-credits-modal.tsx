@@ -9,6 +9,7 @@ import { Button } from '~/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '~/components/ui/dialog';
 import { Label } from '~/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '~/components/ui/radio-group';
+import { useToast } from '~/hooks/use-toast';
 import { cn } from '~/lib/utils';
 
 type Props = {
@@ -19,9 +20,11 @@ type Props = {
 type CreditPackage = Pick<_CreditPackage, 'id' | 'credits' | 'bonus' | 'price'>;
 
 export default function BuyCreditsModal({ open, onOpenChange }: Props) {
-	const t = useTranslations('components.buy_credits_modal');
+	const t = useTranslations();
 	const format = useFormatter();
 	const router = useRouter();
+
+	const { toast } = useToast();
 
 	const [creditPackages, setCreditPackages] = useState<CreditPackage[] | undefined>();
 	const [selectedCreditPackageId, setSelectedCreditPackageId] = useState<string | undefined>();
@@ -38,7 +41,11 @@ export default function BuyCreditsModal({ open, onOpenChange }: Props) {
 
 			setCreditPackages(packages);
 		} catch {
-			//show toast
+			toast({
+				variant: 'destructive',
+				description: t('errors.fetch_credit_packages')
+			});
+
 			setCreditPackages([]);
 		}
 	}
@@ -76,7 +83,10 @@ export default function BuyCreditsModal({ open, onOpenChange }: Props) {
 
 			router.push(paymentUrl);
 		} catch {
-			//show toast
+			toast({
+				variant: 'destructive',
+				description: t('errors.payment_generation')
+			});
 		}
 	}
 
@@ -87,8 +97,8 @@ export default function BuyCreditsModal({ open, onOpenChange }: Props) {
 
 		const DialogHeaderComponent = (
 			<DialogHeader>
-				<DialogTitle>{t('title')}</DialogTitle>
-				<DialogDescription>{t('description')}</DialogDescription>
+				<DialogTitle>{t('components.buy_credits_modal.title')}</DialogTitle>
+				<DialogDescription>{t('components.buy_credits_modal.description')}</DialogDescription>
 			</DialogHeader>
 		);
 
@@ -96,7 +106,7 @@ export default function BuyCreditsModal({ open, onOpenChange }: Props) {
 			<DialogFooter>
 				<Button onClick={() => handlePurchase(selectedCreditPackageId)} disabled={!selectedCreditPackageId} className="w-full">
 					<CreditCard className="mr-2 h-4 w-4" />
-					{t('action')}
+					{t('components.buy_credits_modal.action')}
 				</Button>
 			</DialogFooter>
 		);
@@ -105,7 +115,7 @@ export default function BuyCreditsModal({ open, onOpenChange }: Props) {
 			return (
 				<>
 					{DialogHeaderComponent}
-					<span className="my-2 block text-sm">{t('no_credit_packages')}</span>
+					<span className="my-2 block text-sm">{t('components.buy_credits_modal.no_credit_packages')}</span>
 					{DialogFooterComponent}
 				</>
 			);
@@ -138,12 +148,12 @@ export default function BuyCreditsModal({ open, onOpenChange }: Props) {
 											'!text-white': selectedCreditPackageId === '' + creditPackage.id
 										})}
 									>
-										{t('credits_value', { value: format.number(creditPackage.credits, { style: 'decimal' }) })}
+										{t('components.buy_credits_modal.credits_value', { value: format.number(creditPackage.credits, { style: 'decimal' }) })}
 									</span>
 								</span>
 								{!!creditPackage.bonus && (
 									<span className="rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800">
-										{t('bonus', { value: format.number(creditPackage.bonus, { style: 'decimal' }) })}
+										{t('components.buy_credits_modal.bonus', { value: format.number(creditPackage.bonus, { style: 'decimal' }) })}
 									</span>
 								)}
 							</Label>
