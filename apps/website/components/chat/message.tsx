@@ -2,8 +2,8 @@
 
 import { LoaderIcon } from 'lucide-react';
 import Image from 'next/image';
-import { ReactNode } from 'react';
-import Typewriter from 'typewriter-effect';
+import { ReactNode, useEffect, useRef } from 'react';
+import Typewriter, { TypewriterClass } from 'typewriter-effect';
 import { stringSplitter } from '~/lib/utils';
 
 type Props = {
@@ -14,6 +14,38 @@ type Props = {
 };
 
 export default function ChatMessage({ text, loading, children, onComplete }: Props) {
+	const typewriter = useRef<TypewriterClass | null>(null);
+	const skipped = useRef<boolean>(false);
+
+	const stopTyping = () => {
+		if (!typewriter?.current) {
+			return;
+		}
+
+		const { cursor, wrapper } = (typewriter.current as any).state.elements;
+		wrapper.innerHTML = text;
+
+		cursor.setAttribute('hidden', 'hidden');
+		typewriter.current.stop();
+		skipped.current = true;
+
+		if (onComplete) {
+			onComplete();
+		}
+
+		clearEvent();
+	};
+
+	function clearEvent() {
+		document.removeEventListener('click', stopTyping);
+	}
+
+	useEffect(() => {
+		document.addEventListener('click', stopTyping);
+
+		return clearEvent;
+	}, []);
+
 	return (
 		<>
 			<div className="flex items-center justify-between">
@@ -23,13 +55,25 @@ export default function ChatMessage({ text, loading, children, onComplete }: Pro
 			<div className="flex items-center gap-2">
 				<Typewriter
 					options={{
-						delay: 2,
+						delay: 5,
 						stringSplitter
 					}}
-					onInit={(typewriter) => {
-						typewriter
+					onInit={(_typewriter) => {
+						typewriter.current = _typewriter;
+
+						_typewriter
 							.typeString(text)
-							.callFunction(() => (onComplete ? onComplete() : null))
+							.callFunction(() => {
+								if (skipped.current) {
+									return;
+								}
+
+								if (onComplete) {
+									onComplete();
+								}
+
+								clearEvent();
+							})
 							.start();
 					}}
 				/>

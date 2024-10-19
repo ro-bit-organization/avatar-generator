@@ -2,7 +2,7 @@
 
 import { Prisma } from '@repo/db';
 import { saveAs } from 'file-saver';
-import { Download } from 'lucide-react';
+import { Download, RefreshCw } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -73,6 +73,7 @@ export default function FinalizedGeneration({ generation }: Props) {
 					}
 				)}
 			>
+				<RefreshCw className="mr-2 h-4 w-4" />
 				{t('generate.common.new_generation')}
 			</Link>
 		</div>
