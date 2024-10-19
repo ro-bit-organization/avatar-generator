@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AspectRatio } from '@radix-ui/react-aspect-ratio';
 import { GenerationStyle, Prisma } from '@repo/db';
+import { RefreshCw } from 'lucide-react';
 import { nanoid } from 'nanoid';
 import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
@@ -15,7 +16,6 @@ import { Button } from '~/components/ui/button';
 import { Card } from '~/components/ui/card';
 import { FileInput, FileUploader } from '~/components/ui/file-uploader';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '~/components/ui/form';
-import { useToast } from '~/hooks/use-toast';
 import { revalidate } from '~/lib/actions/generate';
 import { GENERATION_CREDITS_COST } from '~/lib/const';
 import { generationSchema, GenerationSchema } from '~/lib/forms/generation';
@@ -38,7 +38,8 @@ enum Step {
 	STYLE_SELECT = 'style_select',
 	IMAGE_TYPEIN = 'image_typein',
 	IMAGE_SELECT = 'image_select',
-	GENERATION_PENDING = 'generation_pending'
+	GENERATION_PENDING = 'generation_pending',
+	ERROR = 'error'
 }
 
 enum Status {
@@ -75,13 +76,16 @@ const initialState: {
 	{
 		id: Step.GENERATION_PENDING,
 		status: Status.HIDDEN
+	},
+	{
+		id: Step.ERROR,
+		status: Status.HIDDEN
 	}
 ];
 
 export default function FreshGeneration({ generation }: Props) {
 	const t = useTranslations();
 
-	const { toast } = useToast();
 	const { data: session, update } = useSession();
 
 	const [, startTransition] = useTransition();
@@ -121,7 +125,10 @@ export default function FreshGeneration({ generation }: Props) {
 	}
 
 	async function onSubmit({ image, style }: GenerationSchema) {
-		updateSteps([{ id: Step.GENERATION_PENDING, status: Status.WRITING }]);
+		updateSteps([
+			{ id: Step.GENERATION_PENDING, status: Status.WRITING },
+			{ id: Step.ERROR, status: Status.HIDDEN }
+		]);
 
 		const formData = new FormData();
 
@@ -152,11 +159,10 @@ export default function FreshGeneration({ generation }: Props) {
 				throw new Error(error);
 			}
 		} catch (e) {
-			//show toast or show error message
-			toast({
-				variant: 'destructive',
-				description: e instanceof Error ? e.message : 'An error occured!'
-			});
+			updateSteps([
+				{ id: Step.GENERATION_PENDING, status: Status.HIDDEN },
+				{ id: Step.ERROR, status: Status.WRITING }
+			]);
 		}
 	}
 
@@ -177,6 +183,7 @@ export default function FreshGeneration({ generation }: Props) {
 								/>
 							</Card>
 						)}
+
 						{getStepStatus(Step.STYLE_TYPEIN) !== Status.HIDDEN && (
 							<Card className="flex flex-col gap-4 rounded-md p-4">
 								<ChatMessage
@@ -332,6 +339,23 @@ export default function FreshGeneration({ generation }: Props) {
 									loading={getStepStatus(Step.GENERATION_PENDING) === Status.LOADING}
 									onComplete={() => updateSteps([{ id: Step.GENERATION_PENDING, status: Status.LOADING }])}
 								/>
+							</Card>
+						)}
+
+						{getStepStatus(Step.ERROR) !== Status.HIDDEN && (
+							<Card className="bg-destructive flex flex-col gap-4 rounded-md p-4">
+								<ChatMessage text={t('generate.messages.error')} onComplete={() => updateSteps([{ id: Step.ERROR, status: Status.IDLE }])}>
+									<Button
+										type="button"
+										size="sm"
+										onClick={() => {
+											formRef.current?.requestSubmit();
+										}}
+									>
+										<RefreshCw className="mr-2 h-4 w-4" />
+										{t('common.retry')}
+									</Button>
+								</ChatMessage>
 							</Card>
 						)}
 					</form>

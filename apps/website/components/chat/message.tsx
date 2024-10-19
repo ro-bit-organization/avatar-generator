@@ -4,16 +4,17 @@ import { LoaderIcon } from 'lucide-react';
 import Image from 'next/image';
 import { ReactNode, useEffect, useRef } from 'react';
 import Typewriter, { TypewriterClass } from 'typewriter-effect';
-import { stringSplitter } from '~/lib/utils';
+import { cn, stringSplitter } from '~/lib/utils';
 
 type Props = {
 	text: string;
 	loading?: boolean;
 	children?: ReactNode;
+	classNames?: { text?: string };
 	onComplete?: () => void;
 };
 
-export default function ChatMessage({ text, loading, children, onComplete }: Props) {
+export default function ChatMessage({ text, loading, children, classNames, onComplete }: Props) {
 	const typewriter = useRef<TypewriterClass | null>(null);
 	const skipped = useRef<boolean>(false);
 
@@ -56,6 +57,7 @@ export default function ChatMessage({ text, loading, children, onComplete }: Pro
 				<Typewriter
 					options={{
 						delay: 5,
+						wrapperClassName: cn('Typewriter__wrapper', classNames?.text),
 						stringSplitter
 					}}
 					onInit={(_typewriter) => {

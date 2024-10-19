@@ -9,7 +9,8 @@
 		"sign_in": "Sign in",
 		"sign_out": "Sign out",
 		"generate": "Generate",
-		"download": "Download"
+		"download": "Download",
+		"retry": "Retry"
 	},
 	"navigation": {
 		"credits_left": "{{value}} credits left",
@@ -116,7 +117,8 @@
 			"image_select": "To create your personalized avatar, please upload a photo of yourself. This image will serve as a reference for designing your avatar with realistic details or in a stylized way. Make sure the photo is clear and shows your face for the best results.",
 			"ongoing_generation": "✨ Hang tight, your avatar is coming to life!",
 			"ongoing_images": "🪄 Your PixPersona is all set. Enjoy your creation!",
-			"final_images": "🖼️ Here are the three generations of avatars you've created! Each version is displayed below with its corresponding image."
+			"final_images": "🖼️ Here are the three generations of avatars you've created! Each version is displayed below with its corresponding image.",
+			"error": "🚨 Oops, something went wrong with the avatar generation. Would you like to retry?"
 		},
 		"styles": {
 			"CARTOONISH": "Cartoonish",

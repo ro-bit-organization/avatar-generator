@@ -33,7 +33,8 @@ type Props = {
 enum Step {
 	GENERATION_TYPEIN = 'generation_typein',
 	PROMPT = 'prompt',
-	GENERATION_PENDING = 'generation_pending'
+	GENERATION_PENDING = 'generation_pending',
+	ERROR = 'error'
 }
 
 enum Status {
@@ -58,12 +59,15 @@ const initialState: {
 	{
 		id: Step.GENERATION_PENDING,
 		status: Status.HIDDEN
+	},
+	{
+		id: Step.ERROR,
+		status: Status.HIDDEN
 	}
 ];
 
 export default function OngoingGeneration({ generation }: Props) {
 	const t = useTranslations();
-	const { toast } = useToast();
 	const [, startTransition] = useTransition();
 
 	const formRef = useRef<HTMLFormElement>(null);
@@ -99,7 +103,10 @@ export default function OngoingGeneration({ generation }: Props) {
 	}
 
 	async function onSubmit({ prompt }: RegenerationSchema) {
-		updateSteps([{ id: Step.GENERATION_PENDING, status: Status.WRITING }]);
+		updateSteps([
+			{ id: Step.GENERATION_PENDING, status: Status.WRITING },
+			{ id: Step.ERROR, status: Status.HIDDEN }
+		]);
 
 		const formData = new FormData();
 
@@ -144,11 +151,10 @@ export default function OngoingGeneration({ generation }: Props) {
 				throw new Error(error);
 			}
 		} catch (e) {
-			//show toast or show error message
-			toast({
-				variant: 'destructive',
-				description: e instanceof Error ? e.message : 'An error occured!'
-			});
+			updateSteps([
+				{ id: Step.GENERATION_PENDING, status: Status.HIDDEN },
+				{ id: Step.ERROR, status: Status.WRITING }
+			]);
 		}
 	}
 
@@ -195,6 +201,7 @@ export default function OngoingGeneration({ generation }: Props) {
 					</div>
 				</Card>
 			)}
+
 			{getStepStatus(Step.GENERATION_PENDING) !== Status.HIDDEN && (
 				<Card className="flex flex-col gap-4 rounded-md p-4">
 					<ChatMessage
@@ -204,6 +211,24 @@ export default function OngoingGeneration({ generation }: Props) {
 					/>
 				</Card>
 			)}
+
+			{getStepStatus(Step.ERROR) !== Status.HIDDEN && (
+				<Card className="bg-destructive flex flex-col gap-4 rounded-md p-4">
+					<ChatMessage text={t('generate.messages.error')} onComplete={() => updateSteps([{ id: Step.ERROR, status: Status.IDLE }])}>
+						<Button
+							type="button"
+							size="sm"
+							onClick={() => {
+								formRef.current?.requestSubmit();
+							}}
+						>
+							<RefreshCw className="mr-2 h-4 w-4" />
+							{t('common.retry')}
+						</Button>
+					</ChatMessage>
+				</Card>
+			)}
+
 			<Form {...form}>
 				<form
 					ref={formRef}
