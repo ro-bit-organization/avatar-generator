@@ -2,6 +2,7 @@ import { Upload } from '@aws-sdk/lib-storage';
 import { verifyAuth } from '@repo/auth-js';
 import { GenerationStyle, prisma } from '@repo/db';
 import { Hono } from 'hono';
+import { Base64 } from 'js-base64';
 import { nanoid } from 'nanoid';
 import { s3 } from '../lib/clients/aws';
 import openai from '../lib/clients/openai';
@@ -104,10 +105,11 @@ app.post('/', async (c) => {
 			throw new Error('An error occured during image generation!');
 		}
 
-		const id = nanoid(10);
-		const url = generate.data[0].url;
+		const url = process.env.PUBLIC_CDN_URL
+			? `${process.env.PUBLIC_CDN_URL}/format:png/quality:90/${Base64.encode(generate.data[0].url)}.png`
+			: generate.data[0].url;
 
-		console.log(url);
+		console.log(generate.data[0].url, url);
 
 		const response = await fetch(url);
 
@@ -115,14 +117,14 @@ app.post('/', async (c) => {
 			client: s3,
 			params: {
 				Bucket: process.env.S3_BUCKET_NAME,
-				Key: `${id}.png`,
+				Key: `${nanoid(10)}.png`,
 				Body: response.body!
 			}
 		});
 
-		const { Location: imageUrl } = await upload.done();
+		const { Location } = await upload.done();
 
-		if (!imageUrl) {
+		if (!Location) {
 			throw new Error('An error occured during file upload!');
 		}
 
@@ -137,7 +139,7 @@ app.post('/', async (c) => {
 						create: [
 							{
 								prompt: null,
-								imageUrl
+								imageUrl: Location
 							}
 						]
 					}
@@ -156,6 +158,8 @@ app.post('/', async (c) => {
 
 		return c.body(null, 204);
 	} catch (e) {
+		console.log(e);
+
 		return c.json({ error: e instanceof Error ? e.message : 'An error occured during generation!' }, 500);
 	}
 });
