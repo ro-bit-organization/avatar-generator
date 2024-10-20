@@ -99,7 +99,7 @@ export default async function RootLayout({ children }: Props) {
 			{process.env.NEXT_PUBLIC_GTM_ID && <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />}
 			{process.env.NEXT_PUBLIC_G_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_G_ID} />}
 			{process.env.NEXT_PUBLIC_G_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_G_ID} />}
-			{process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID && <FacebookPixel pixelId={'1223'} />}
+			{process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID && <FacebookPixel pixelId={process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID} />}
 		</html>
 	);
 }
