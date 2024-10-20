@@ -10,6 +10,8 @@ import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from '~/components/ui/pagination';
 
+const PAGE_SIZE = 10;
+
 const Generation = Prisma.validator<Prisma.GenerationDefaultArgs>()({
 	include: {
 		entries: true
@@ -92,10 +94,10 @@ export default function Generations({ page, count, generations }: Props) {
 						</Card>
 					))}
 				</div>
-				{count > 10 && (
+				{count > PAGE_SIZE && (
 					<Pagination className="mt-6">
 						<PaginationContent>
-							{new Array(Math.ceil(count / 10)).fill('').map((_, index) => (
+							{new Array(Math.ceil(count / PAGE_SIZE)).fill('').map((_, index) => (
 								<PaginationItem key={index}>
 									<PaginationLink href={getPageUrl(index + 1)} isActive={+page === index + 1}>
 										{index + 1}

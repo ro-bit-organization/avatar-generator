@@ -44,46 +44,57 @@ export default function Header() {
 				</div>
 			</div>
 			<header className="flex h-14 items-center justify-between border-b border-gray-200 px-4 lg:px-6 dark:border-gray-800">
-				<nav className="flex w-full items-center justify-end gap-2 md:justify-between">
+				<nav className="flex w-full items-center justify-between gap-2">
+					<Link href="/" className="md:hidden">
+						<Image src="/images/logo.webp" width="36" height="36" alt="logo" className="rounded-md" />
+					</Link>
 					<div className="hidden gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-7 md:text-sm lg:gap-8">
 						<Link href="/" className="flex items-center justify-center">
 							<Image src="/images/logo.webp" width="36" height="36" alt="logo" className="rounded-md" />
 							<span className="ml-2 inline-block text-xl font-semibold tracking-tighter text-gray-900 dark:text-white">{t('app.name')}</span>
 						</Link>
+						<Link href="/" className="text-muted-foreground hover:text-foreground font-bold transition-colors">
+							{t('navigation.menu.home')}
+						</Link>
 						{status === 'authenticated' && (
 							<Link href="/generations" className="text-muted-foreground hover:text-foreground font-bold transition-colors">
-								{t('navigation.menu.generations')}
+								{t('navigation.menu.my_generations')}
 							</Link>
 						)}
+						<Link href="/community/latest-generations" className="text-muted-foreground hover:text-foreground font-bold transition-colors">
+							{t('navigation.menu.latest_generations')}
+						</Link>
 					</div>
 					<div className="flex items-center gap-2">
-						{status === 'authenticated' ? (
-							<div className="hidden items-center gap-2 md:flex">
-								<span className="mr-2">{t('common.credits_left', { value: session?.user?.credits })}</span>
+						<div className="hidden items-center gap-2 md:flex">
+							{status === 'authenticated' ? (
+								<>
+									<span className="mr-2">{t('common.credits_left', { value: session?.user?.credits })}</span>
+									<Button
+										variant="default"
+										size="sm"
+										className="bg-blue-600 text-white hover:bg-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600"
+										onClick={() => setModalOpen(true)}
+									>
+										{t('common.buy_credits')}
+									</Button>
+									<Button size="sm" onClick={() => signOut()}>
+										{t('common.sign_out')}
+									</Button>
+								</>
+							) : (
 								<Button
-									variant="default"
 									size="sm"
-									className="bg-blue-600 text-white hover:bg-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600"
-									onClick={() => setModalOpen(true)}
+									onClick={() =>
+										signIn('google', {
+											redirectTo: process.env.NEXT_PUBLIC_WEBSITE_URL
+										})
+									}
 								>
-									{t('common.buy_credits')}
+									{t('common.sign_in')}
 								</Button>
-								<Button size="sm" onClick={() => signOut()}>
-									{t('common.sign_out')}
-								</Button>
-							</div>
-						) : (
-							<Button
-								size="sm"
-								onClick={() =>
-									signIn('google', {
-										redirectTo: process.env.NEXT_PUBLIC_WEBSITE_URL
-									})
-								}
-							>
-								{t('common.sign_in')}
-							</Button>
-						)}
+							)}
+						</div>
 						{theme && (
 							<Button
 								size="sm"
@@ -111,10 +122,6 @@ export default function Header() {
 
 					{status === 'authenticated' && (
 						<>
-							<Link href="/generations" onClick={() => setMenuOpen(false)}>
-								{t('navigation.menu.generations')}
-							</Link>
-							<hr className="my-2" />
 							<div className="flex items-center justify-between">
 								<span className="mr-2">{t('common.credits_left', { value: session?.user?.credits })}</span>
 								<Button
@@ -129,8 +136,23 @@ export default function Header() {
 									{t('common.buy_credits')}
 								</Button>
 							</div>
+							<hr className="my-2" />
 						</>
 					)}
+
+					<Link href="/" onClick={() => setMenuOpen(false)}>
+						{t('navigation.menu.home')}
+					</Link>
+
+					{status === 'authenticated' && (
+						<Link href="/generations" onClick={() => setMenuOpen(false)}>
+							{t('navigation.menu.my_generations')}
+						</Link>
+					)}
+
+					<Link href="/community/latest-generations" onClick={() => setMenuOpen(false)}>
+						{t('navigation.menu.latest_generations')}
+					</Link>
 				</div>
 
 				{status === 'authenticated' ? (

@@ -23,7 +23,9 @@
 			"description": "We're currently in beta testing! Explore and help us shape what's coming next."
 		},
 		"menu": {
-			"generations": "Generations"
+			"home": "Home",
+			"my_generations": "My Generations",
+			"latest_generations": "Latest Generations"
 		}
 	},
 	"footer": {
@@ -153,6 +155,10 @@
 		"generation_id": "Generation #{id}",
 		"no_entries": "No images generated yet.",
 		"generation_image": "Generation image {index}"
+	},
+	"latest-generations": {
+		"title": "Latest Generations",
+		"no_entries": "No images generated yet."
 	},
 	"thank_you": {
 		"title": "Thank You for your purchase!",

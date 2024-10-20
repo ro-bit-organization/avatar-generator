@@ -6,12 +6,14 @@ import { authOptions } from '~/lib/auth';
 import GenerationsClient from './client.page';
 
 export const metadata: Metadata = {
-	title: 'Generations',
+	title: 'My Generations',
 	robots: {
 		index: false,
 		follow: false
 	}
 };
+
+const PAGE_SIZE = 25;
 
 type Props = {
 	searchParams: { page?: string };
@@ -34,7 +36,7 @@ export default async function Generations({ searchParams }: Props) {
 		redirect('/generations');
 	}
 
-	if (isNaN(+page) || +page < 1 || (+page - 1) * 10 > count) {
+	if (isNaN(+page) || +page < 1 || (+page - 1) * PAGE_SIZE > count) {
 		redirect('/generations');
 	}
 
@@ -46,8 +48,8 @@ export default async function Generations({ searchParams }: Props) {
 		orderBy: {
 			updatedAt: 'desc'
 		},
-		skip: (+page - 1) * 10,
-		take: 10
+		skip: (+page - 1) * PAGE_SIZE,
+		take: PAGE_SIZE
 	});
 
 	return <GenerationsClient page={+page} count={count} generations={generations} />;
