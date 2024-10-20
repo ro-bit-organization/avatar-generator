@@ -10,7 +10,7 @@ type Props = {
 	children: React.ReactNode;
 };
 
-export default function Providers({ locale, messages, children }: Props) {
+export default function ClientProviders({ locale, messages, children }: Props) {
 	return (
 		<NextIntlClientProvider
 			locale={locale}

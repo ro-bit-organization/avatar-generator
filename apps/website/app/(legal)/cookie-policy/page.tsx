@@ -98,13 +98,20 @@ export default async function TermsOfServicePage() {
 				Stripe is our payment gateway that securely processes payments on our website. When a user makes a payment, Stripe temporarily stores their
 				payment information (e.g., credit card details) while processing. Stripe cookies store session information, like session IDs and payment
 				statuses, and are necessary for payments to function correctly. These cookies remain on the user's browser until the payment process is
-				complete. You can review and manage these settings on <a href="https://stripe.com/cookie-settings">Stripe's cookie settings page</a>.
+				complete. You can review and manage these settings on{' '}
+				<Link href="https://stripe.com/cookie-settings" target="_blank" className="underline">
+					Stripe's cookie settings page
+				</Link>
+				.
 			</p>
 
 			<p>
 				In addition to these essential cookies, Stripe may use optional cookies to improve performance, analyze user interactions, and deliver relevant
 				ads. You can disable these optional cookies if preferred. For more details, please refer to Stripe’s{' '}
-				<a href="https://stripe.com/privacy">privacy policy</a>.
+				<Link href="https://stripe.com/privacy" target="_blank" className="underline">
+					privacy policy
+				</Link>
+				.
 			</p>
 
 			<h3 className="text-2xl">Authentication (required)</h3>

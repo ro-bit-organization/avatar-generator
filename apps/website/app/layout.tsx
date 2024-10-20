@@ -2,9 +2,10 @@ import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 import { getLocale, getMessages, getTranslations } from 'next-intl/server';
 import localFont from 'next/font/local';
-import Providers from '~/app/providers';
 import Footer from '~/components/navigation/footer';
 import Header from '~/components/navigation/header';
+import ClientProviders from '~/components/shared/client-providers';
+import FacebookPixel from '~/components/shared/facebook-pixel';
 import { Toaster } from '~/components/ui/toaster';
 import { cn } from '~/lib/utils';
 
@@ -88,15 +89,17 @@ export default async function RootLayout({ children }: Props) {
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body className={cn('flex min-h-screen flex-col bg-gray-50 antialiased dark:bg-gray-900', geistSans.variable, geistMono.variable)}>
-				<Providers locale={locale} messages={messages}>
+				<ClientProviders locale={locale} messages={messages}>
 					<Header />
 					{children}
 					<Toaster />
 					<Footer />
-				</Providers>
+				</ClientProviders>
 			</body>
 			{process.env.NEXT_PUBLIC_GTM_ID && <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />}
 			{process.env.NEXT_PUBLIC_G_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_G_ID} />}
+			{process.env.NEXT_PUBLIC_G_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_G_ID} />}
+			{process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID && <FacebookPixel pixelId={'1223'} />}
 		</html>
 	);
 }

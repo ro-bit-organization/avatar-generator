@@ -117,7 +117,11 @@ export default async function PrivacyPolicyPage() {
 					<strong>Usage Data:</strong> Data collected automatically when using our service.
 				</li>
 				<li>
-					<strong>Website:</strong> PixPersona, accessible at <Link href="https://pixpersona.xyz">https://pixpersona.xyz</Link>.
+					<strong>Website:</strong> PixPersona, accessible at{' '}
+					<Link href="https://pixpersona.xyz" target="_blank" className="underline">
+						https://pixpersona.xyz
+					</Link>
+					.
 				</li>
 				<li>
 					<strong>You:</strong> The user of the service.
