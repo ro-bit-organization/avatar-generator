@@ -1,3 +1,4 @@
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 import { getLocale, getMessages, getTranslations } from 'next-intl/server';
 import localFont from 'next/font/local';
@@ -94,6 +95,8 @@ export default async function RootLayout({ children }: Props) {
 					<Footer />
 				</Providers>
 			</body>
+			{process.env.NEXT_PUBLIC_GTM_ID && <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />}
+			{process.env.NEXT_PUBLIC_G_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_G_ID} />}
 		</html>
 	);
 }

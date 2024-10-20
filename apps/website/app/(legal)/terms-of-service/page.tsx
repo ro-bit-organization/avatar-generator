@@ -61,225 +61,164 @@ export default async function TermsOfServicePage() {
 	return (
 		<main className="mx-auto mb-24 flex max-w-screen-lg flex-1 flex-col gap-4 px-4 pt-12">
 			<h1 className="text-4xl">Terms and Conditions</h1>
-			<p className="text-muted-foreground">
-				Last updated:{' '}
-				{format.dateTime(new Date('2024-10-11'), {
+			<p>
+				<strong>Last updated:</strong>{' '}
+				{format.dateTime(new Date('2024-10-20'), {
 					year: 'numeric',
 					month: 'short',
 					day: 'numeric'
 				})}
 			</p>
-			<p>Please read these terms and conditions carefully before using Our Service.</p>
+			<p>Please read these terms and conditions thoroughly before using our service.</p>
+
 			<h2>Interpretation and Definitions</h2>
-			<h2>Interpretation</h2>
+			<h3>Interpretation</h3>
 			<p>
-				The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have
-				the same meaning regardless of whether they appear in singular or in plural.
+				Words with capitalized letters carry specific meanings as defined below. The same meanings apply whether they appear in singular or plural form.
 			</p>
-			<h2>Definitions</h2>
-			<p>For the purposes of these Terms and Conditions:</p>
-			<ul>
+
+			<h3>Definitions</h3>
+			<ul className="list-inside list-disc">
 				<li>
-					<p>
-						<strong>Affiliate</strong> means an entity that controls, is controlled by or is under common control with a party, where
-						&quot;control&quot; means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of
-						directors or other managing authority.
-					</p>
+					<strong>Affiliate</strong>: Any entity that controls, is controlled by, or is under common control with a party. “Control” means ownership
+					of 50% or more of the shares, equity, or other securities with voting power for election of directors or other managing authority.
 				</li>
 				<li>
-					<p>
-						<strong>Country</strong> refers to: Romania
-					</p>
+					<strong>Country</strong>: Refers to Romania.
 				</li>
 				<li>
-					<p>
-						<strong>Company</strong> (referred to as either &quot;the Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in this
-						Agreement) refers to RO-BIT Software Solutions SRL.
-					</p>
+					<strong>Company</strong> (also referred to as "we," "us," or "our"): RO-BIT Software Solutions SRL.
 				</li>
 				<li>
-					<p>
-						<strong>Device</strong> means any device that can access the Service such as a computer, a cellphone or a digital tablet.
-					</p>
+					<strong>Device</strong>: Any device that can access the service, including computers, cellphones, or tablets.
 				</li>
 				<li>
-					<p>
-						<strong>Service</strong> refers to the Website.
-					</p>
+					<strong>Service:</strong> The website, PixPersona.
 				</li>
 				<li>
-					<p>
-						<strong>Terms and Conditions</strong> (also referred as &quot;Terms&quot;) mean these Terms and Conditions that form the entire
-						agreement between You and the Company regarding the use of the Service.
-					</p>
+					<strong>Terms and Conditions</strong> (also referred to as "Terms"): This agreement between you and the company regarding the use of the
+					service.
 				</li>
 				<li>
-					<p>
-						<strong>Third-party Social Media Service</strong> means any services or content (including data, information, products or services)
-						provided by a third-party that may be displayed, included or made available by the Service.
-					</p>
+					<strong>Third-party Social Media Service</strong>: Any content, data, products, or services provided by third parties that may be displayed
+					or made available through the service.
 				</li>
 				<li>
-					<p>
-						<strong>Website</strong> refers to PixPersona, accessible from{' '}
-						<Link target="_blank" href="/" className="underline">
-							https://pixpersona.ro-bit.ro
-						</Link>
-						.
-					</p>
+					<strong>Website:</strong> PixPersona, accessible at <Link href="https://pixpersona.xyz">https://pixpersona.xyz</Link>.
 				</li>
 				<li>
-					<p>
-						<strong>You</strong> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such
-						individual is accessing or using the Service, as applicable.
-					</p>
+					<strong>You:</strong> The user of the service.
 				</li>
 			</ul>
-			<h2>Acknowledgment</h2>
+
+			<h2>Acceptance of Terms</h2>
 			<p>
-				These are the Terms and Conditions governing the use of this Service and the agreement that operates between You and the Company. These Terms
-				and Conditions set out the rights and obligations of all users regarding the use of the Service.
+				These terms govern the use of our service and form the agreement between you and us. They set out the rights and responsibilities of all users.
 			</p>
 			<p>
-				Your access to and use of the Service is conditioned on Your acceptance of and compliance with these Terms and Conditions. These Terms and
-				Conditions apply to all visitors, users and others who access or use the Service.
+				By using or accessing our service, you agree to abide by these terms. If you disagree with any part, please refrain from accessing the service.
 			</p>
 			<p>
-				By accessing or using the Service You agree to be bound by these Terms and Conditions. If You disagree with any part of these Terms and
-				Conditions then You may not access the Service.
+				Your use of the service is also subject to our Privacy Policy, which outlines how we collect, use, and protect your personal information. Please
+				review it carefully before proceeding.
 			</p>
-			<p>
-				Your access to and use of the Service is also conditioned on Your acceptance of and compliance with the Privacy Policy of the Company. Our
-				Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your personal information when You use the
-				Application or the Website and tells You about Your privacy rights and how the law protects You. Please read Our Privacy Policy carefully before
-				using Our Service.
-			</p>
+
 			<h2>Refund Policy</h2>
 			<p>
-				By using this site and buying credits, you agree to our refund policy and will not seek to ask for refunds if you are unhappy with the results
-				of your AI generated icons. You understand the limitations of AI art. Some of these limitations include an inability to generate letters and
-				characters, often misintreprts prompts, often might have deformed results, etc. When buying credits, you accept the risk that some AI generated
-				icons may not be perfect.
+				By purchasing credits on this site, you acknowledge and agree to our refund policy. You accept that AI-generated avatars may have limitations,
+				such as inaccuracies with letters, deformed results, or misinterpretation of prompts. By purchasing, you understand and accept that not all
+				avatars will be perfect.
 			</p>
+
 			<h2>Links to Other Websites</h2>
-			<p>Our Service may contain links to third-party web sites or services that are not owned or controlled by the Company.</p>
 			<p>
-				The Company has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third party web sites or
-				services. You further acknowledge and agree that the Company shall not be responsible or liable, directly or indirectly, for any damage or loss
-				caused or alleged to be caused by or in connection with the use of or reliance on any such content, goods or services available on or through
-				any such web sites or services.
+				Our service may contain links to third-party websites or services we do not own or control. We are not responsible for the content, privacy
+				policies, or practices of any third-party sites. You agree that we are not liable for any damages or losses incurred by using such third-party
+				content, products, or services.
 			</p>
-			<p>We strongly advise You to read the terms and conditions and privacy policies of any third-party web sites or services that You visit.</p>
-			<h2>Icon Generation</h2>
-			<p>
-				We can use your icons to promote our service. This includes, but is not limited to: online ads, physical ads, social media posts, and anywhere
-				inside this application.
-			</p>
+			<p>We recommend reviewing the terms and privacy policies of any third-party websites you visit.</p>
+
+			<h2>Avatar Generation</h2>
+			<p>We may use avatars generated by you to promote our service across various channels, including online ads, physical ads, and social media.</p>
+
 			<h2>Termination</h2>
 			<p>
-				We may terminate or suspend Your access immediately, without prior notice or liability, for any reason whatsoever, including without limitation
-				if You breach these Terms and Conditions.
+				We reserve the right to suspend or terminate your access immediately, without prior notice, for any reason, including if you breach these terms.
 			</p>
-			<p>Upon termination, Your right to use the Service will cease immediately.</p>
+			<p>Upon termination, your right to use the service will cease immediately.</p>
+
 			<h2>Limitation of Liability</h2>
 			<p>
-				Our service uses AI provided by OpenAI to generate icons. Please review copyright laws for your country and state in regards to AI generated art
-				or images. By using our services, you agree that our company and service assumes no responsibility for the images generated. Nor do we assume
-				responsibility for damages or loss caused by these images.
+				Our service uses AI technology provided by OpenAI to generate avatars. It is your responsibility to review copyright laws relevant to
+				AI-generated art in your jurisdiction. We are not liable for the images generated or any damages or losses resulting from them.
+			</p>
+			<p>If you experience damages, our total liability is limited to the amount you paid for the service or $100 if no payment was made.</p>
+			<p>
+				To the fullest extent permitted by law, we and our suppliers are not responsible for any special, incidental, indirect, or consequential damages
+				(including loss of profits, data, or privacy) related to the use or inability to use the service, even if advised of such damages.
 			</p>
 			<p>
-				Notwithstanding any damages that You might incur, the entire liability of the Company and any of its suppliers under any provision of this Terms
-				and Your exclusive remedy for all of the foregoing shall be limited to the amount actually paid by You through the Service or 100 USD if You
-				haven&apos;t purchased anything through the Service.
+				Some jurisdictions may not permit the exclusion of certain warranties or limitations on liability. In these cases, our liability will be limited
+				to the maximum extent allowed by law.
+			</p>
+
+			<h2>"AS IS" and "AS AVAILABLE" Disclaimer</h2>
+			<p>
+				Our service is provided "as is" and "as available" without warranties of any kind. To the fullest extent permitted by law, we disclaim all
+				warranties, including those of merchantability, fitness for a particular purpose, and non-infringement. We do not guarantee the service will
+				meet your needs, be error-free, or be compatible with other systems.
 			</p>
 			<p>
-				To the maximum extent permitted by applicable law, in no event shall the Company or its suppliers be liable for any special, incidental,
-				indirect, or consequential damages whatsoever (including, but not limited to, damages for loss of profits, loss of data or other information,
-				for business interruption, for personal injury, loss of privacy arising out of or in any way related to the use of or inability to use the
-				Service, third-party software and/or third-party hardware used with the Service, or otherwise in connection with any provision of this Terms),
-				even if the Company or any supplier has been advised of the possibility of such damages and even if the remedy fails of its essential purpose.
+				We also do not guarantee the accuracy, reliability, or availability of the service, nor that it will be free from harmful components like
+				viruses or malware.
 			</p>
-			<p>
-				Some states do not allow the exclusion of implied warranties or limitation of liability for incidental or consequential damages, which means
-				that some of the above limitations may not apply. In these states, each party&apos;s liability will be limited to the greatest extent permitted
-				by law.
-			</p>
-			<h2>&quot;AS IS&quot; and &quot;AS AVAILABLE&quot; Disclaimer</h2>
-			<p>
-				The Service is provided to You &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; and with all faults and defects without warranty of any kind. To
-				the maximum extent permitted under applicable law, the Company, on its own behalf and on behalf of its Affiliates and its and their respective
-				licensors and service providers, expressly disclaims all warranties, whether express, implied, statutory or otherwise, with respect to the
-				Service, including all implied warranties of merchantability, fitness for a particular purpose, title and non-infringement, and warranties that
-				may arise out of course of dealing, course of performance, usage or trade practice. Without limitation to the foregoing, the Company provides no
-				warranty or undertaking, and makes no representation of any kind that the Service will meet Your requirements, achieve any intended results, be
-				compatible or work with any other software, applications, systems or services, operate without interruption, meet any performance or reliability
-				standards or be error free or that any errors or defects can or will be corrected.
-			</p>
-			<p>
-				Without limiting the foregoing, neither the Company nor any of the company&apos;s provider makes any representation or warranty of any kind,
-				express or implied: (i) as to the operation or availability of the Service, or the information, content, and materials or products included
-				thereon; (ii) that the Service will be uninterrupted or error-free; (iii) as to the accuracy, reliability, or currency of any information or
-				content provided through the Service; or (iv) that the Service, its servers, the content, or e-mails sent from or on behalf of the Company are
-				free of viruses, scripts, trojan horses, worms, malware, timebombs or other harmful components.
-			</p>
-			<p>
-				Some jurisdictions do not allow the exclusion of certain types of warranties or limitations on applicable statutory rights of a consumer, so
-				some or all of the above exclusions and limitations may not apply to You. But in such a case the exclusions and limitations set forth in this
-				section shall be applied to the greatest extent enforceable under applicable law.
-			</p>
+			<p>Some jurisdictions may not allow these exclusions, so some of the above limitations may not apply to you.</p>
+
 			<h2>Governing Law</h2>
 			<p>
-				The laws of the Country, excluding its conflicts of law rules, shall govern this Terms and Your use of the Service. Your use of the Application
-				may also be subject to other local, state, national, or international laws.
+				These terms are governed by the laws of Romania, excluding its conflict of law rules. You may also be subject to other local, state, national,
+				or international laws based on your location.
 			</p>
-			<h2>Disputes Resolution</h2>
-			<p>If You have any concern or dispute about the Service, You agree to first try to resolve the dispute informally by contacting the Company.</p>
-			<h2>For European Union (EU) Users</h2>
-			<p>If You are a European Union consumer, you will benefit from any mandatory provisions of the law of the country in which you are resident in.</p>
-			<h2>United States Legal Compliance</h2>
+
+			<h2>Dispute Resolution</h2>
+			<p>If you have concerns or disputes, you agree to try resolving them informally by contacting us first.</p>
+
+			<h2>EU Users</h2>
+			<p>If you are an EU resident, you will benefit from any mandatory provisions of your local laws.</p>
+
+			<h2>Compliance with U.S. Laws</h2>
 			<p>
-				You represent and warrant that (i) You are not located in a country that is subject to the United States government embargo, or that has been
-				designated by the United States government as a &quot;terrorist supporting&quot; country, and (ii) You are not listed on any United States
-				government list of prohibited or restricted parties.
+				You confirm that you are not located in a country subject to a U.S. government embargo or listed as a "terrorist-supporting" country. You also
+				affirm that you are not on any U.S. government list of prohibited or restricted parties.
 			</p>
+
 			<h2>Severability and Waiver</h2>
-			<h2>Severability</h2>
+			<h3>Severability</h3>
 			<p>
-				If any provision of these Terms is held to be unenforceable or invalid, such provision will be changed and interpreted to accomplish the
-				objectives of such provision to the greatest extent possible under applicable law and the remaining provisions will continue in full force and
-				effect.
+				If any part of these terms is found to be unenforceable, the remaining sections will remain in effect. The unenforceable provision will be
+				modified to achieve its intent as closely as possible.
 			</p>
-			<h2>Waiver</h2>
+
+			<h3>Waiver</h3>
+			<p>Failure to enforce any right or obligation does not waive the right to enforce it in the future.</p>
+
+			<h2>Translation</h2>
+			<p>If these terms are translated into other languages, the English version will prevail in the event of a dispute.</p>
+
+			<h2>Changes to These Terms</h2>
 			<p>
-				Except as provided herein, the failure to exercise a right or to require performance of an obligation under these Terms shall not effect a
-				party&apos;s ability to exercise such right or require such performance at any time thereafter nor shall the waiver of a breach constitute a
-				waiver of any subsequent breach.
+				We may update these terms at our discretion. If the changes are significant, we will provide at least 30 days' notice before they take effect.
+				By continuing to use the service after revisions, you agree to the new terms. If you do not agree, please stop using the service.
 			</p>
-			<h2>Translation Interpretation</h2>
-			<p>
-				These Terms and Conditions may have been translated if We have made them available to You on our Service. You agree that the original English
-				text shall prevail in the case of a dispute.
-			</p>
-			<h2>Changes to These Terms and Conditions</h2>
-			<p>
-				We reserve the right, at Our sole discretion, to modify or replace these Terms at any time. If a revision is material We will make reasonable
-				efforts to provide at least 30 days&apos; notice prior to any new terms taking effect. What constitutes a material change will be determined at
-				Our sole discretion.
-			</p>
-			<p>
-				By continuing to access or use Our Service after those revisions become effective, You agree to be bound by the revised terms. If You do not
-				agree to the new terms, in whole or in part, please stop using the website and the Service.
-			</p>
+
 			<h2>Contact Us</h2>
-			<p>If you have any questions about these Terms and Conditions, You can contact us:</p>
-			<ul>
-				<li>
-					By email:{' '}
-					<Link href="email:contact@ro-bit.ro" target="_blank" className="underline">
-						contact@ro-bit.ro
-					</Link>
-				</li>
-			</ul>
+			<p>
+				If you have any questions about Terms of Service, you can reach us at: <br />
+				<strong>Email</strong>:{' '}
+				<Link href="email:contact@ro-bit.ro" target="_blank" className="underline">
+					contact@ro-bit.ro
+				</Link>
+			</p>
 		</main>
 	);
 }

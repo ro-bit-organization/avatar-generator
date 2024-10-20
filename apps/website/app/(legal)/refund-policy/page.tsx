@@ -59,32 +59,32 @@ export default async function RefundPage() {
 	return (
 		<main className="mx-auto mb-24 flex max-w-screen-lg flex-1 flex-col gap-4 px-4 pt-12">
 			<h1 className="text-4xl">Refund Policy</h1>
-			<p className="text-muted-foreground">
-				Last updated:{' '}
-				{format.dateTime(new Date('2024-10-11'), {
+			<p>
+				<strong>Last updated:</strong>{' '}
+				{format.dateTime(new Date('2024-10-20'), {
 					year: 'numeric',
 					month: 'short',
 					day: 'numeric'
 				})}
 			</p>
 			<p>
-				At Pixpersona, we are committed to providing a unique and innovative experience through our AI-generated icons. We understand that AI, while
-				powerful and revolutionary, isn&apos;t perfect and may not always produce the results you expect. We want you to be fully aware of this inherent
-				risk before making any purchases.
+				At Pixpersona, we’re dedicated to offering a one-of-a-kind experience with our AI-generated avatars. While AI technology is impressive and
+				groundbreaking, it may not always deliver the results you anticipate. We want to ensure you're fully aware of these potential outcomes before
+				making a purchase.
 			</p>
 			<p>
-				Due to the high costs involved in powering the advanced GPUs for our AI art generation, we unfortunately cannot offer refunds once credits have
-				been used. We realize this may not be the ideal scenario for everyone, but this policy helps us to maintain a fair and sustainable service for
-				all of our valued users.
+				Because of the significant costs associated with running the advanced GPUs necessary for our AI art generation, we are unable to provide refunds
+				once credits have been used. We understand this may not be ideal for everyone, but this policy allows us to keep the service fair and
+				sustainable for all our valued users.
 			</p>
 			<p>
-				We strongly recommend exploring our community page before any purchase. You can see daily generated icons from other users which could help you
-				understand the possibilities and limitations of AI art, and will hopefully guide your expectations. We believe in transparency and want you to
-				make an informed decision about our unique service.
+				We highly recommend visiting our community page before purchasing credits. There, you can browse avatars created by other users daily, giving
+				you a better sense of the AI’s capabilities and limitations, and helping set realistic expectations. Our goal is to be transparent and provide
+				you with the information needed to make an informed decision about using our service.
 			</p>
 			<p>
-				Your understanding and support mean a lot to us. As we continue to improve and enhance our AI, we hope you will join us in this fascinating
-				journey of digital creativity.
+				We truly appreciate your support and understanding. As we continue to refine and enhance our AI technology, we invite you to join us on this
+				exciting journey of digital creativity.
 			</p>
 		</main>
 	);

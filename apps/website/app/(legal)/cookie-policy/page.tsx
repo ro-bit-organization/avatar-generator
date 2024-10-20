@@ -60,57 +60,57 @@ export default async function TermsOfServicePage() {
 	return (
 		<main className="mx-auto mb-24 flex max-w-screen-lg flex-1 flex-col gap-4 px-4 pt-12">
 			<h1 className="text-4xl">Manage Cookies</h1>
-			<p className="text-muted-foreground">
-				Last updated:{' '}
-				{format.dateTime(new Date('2024-10-11'), {
+			<p>
+				<strong>Last updated:</strong>{' '}
+				{format.dateTime(new Date('2024-10-20'), {
 					year: 'numeric',
 					month: 'short',
 					day: 'numeric'
 				})}
 			</p>
+
 			<p>
-				Cookies are small text files that are stored on your device when you visit a website. We use cookies to provide a better user experience,
-				analyze how users interact with our website, and to personalize content and ads.
+				Cookies are small text files stored on your device when you visit a website. We use cookies to enhance your browsing experience, analyze website
+				interactions, and personalize content and ads. You can manage your cookie preferences below. Please note that disabling certain cookies may
+				affect the functionality and features available on our site.
 			</p>
-			<p>
-				Below you can manage your cookie preferences. Please note that by disabling certain cookies, you may limit your ability to use certain features
-				of our website.
-			</p>
+
 			<h2 className="text-3xl">Cookies we use</h2>
 			<p>
-				We use cookies to provide a better experience on our website and to understand how visitors interact with our content. Here are the cookies we
-				use:
+				We use different types of cookies to provide a better experience on our website and to understand how visitors interact with our content. Below
+				are the cookies we use:
 			</p>
+
 			<h3 className="text-2xl">Google Analytics</h3>
 			<p>
-				We use Google Analytics to collect information about how visitors use our website. This information is used to create reports and help us
-				improve the website. Google Analytics cookies collect information in an anonymous form, including the number of visitors to the website and
-				blog, where visitors have come to the website from and the pages they visited.
+				We use Google Analytics to collect information about how visitors use our website. This data helps us generate reports and improve the site. The
+				cookies collect information anonymously, including the number of visitors, their source, and the pages they view.
 			</p>
+
+			<h3 className="text-2xl">Facebook Pixel</h3>
+			<p>
+				We use Facebook Pixel to track how users interact with our site and to deliver personalized advertising on Facebook. This tracking is optional
+				and not required for using our services. You can choose to disable Facebook Pixel if you prefer not to be tracked.
+			</p>
+
 			<h3 className="text-2xl">Stripe (required)</h3>
 			<p>
-				We use stripe as our payment gatewa which allows websites to process online payments securely and easily. When a user makes a payment on your
-				website using Stripe, their payment information (such as their credit card details) needs to be stored temporarily while the payment is being
-				processed. Please review the{' '}
-				<Link href="https://stripe.com/cookie-settings" target="_blank" className="underline">
-					https://stripe.com/cookie-settings
-				</Link>{' '}
-				settings to configure your stripe cookies.
+				Stripe is our payment gateway that securely processes payments on our website. When a user makes a payment, Stripe temporarily stores their
+				payment information (e.g., credit card details) while processing. Stripe cookies store session information, like session IDs and payment
+				statuses, and are necessary for payments to function correctly. These cookies remain on the user's browser until the payment process is
+				complete. You can review and manage these settings on <a href="https://stripe.com/cookie-settings">Stripe's cookie settings page</a>.
 			</p>
+
 			<p>
-				To enable this, Stripe uses cookies to store information about the user&apos;s session, such as their session ID and the status of their
-				payment. These cookies are necessary for the payment process to work properly, and they are stored on the user&apos;s browser until the payment
-				process is complete.
+				In addition to these essential cookies, Stripe may use optional cookies to improve performance, analyze user interactions, and deliver relevant
+				ads. You can disable these optional cookies if preferred. For more details, please refer to Stripe’s{' '}
+				<a href="https://stripe.com/privacy">privacy policy</a>.
 			</p>
-			<p>
-				In addition to payment-related cookies, Stripe may also use other cookies on your website to improve performance, analyze how users interact
-				with the website, and provide relevant advertising. However, these additional cookies are optional and you can choose to disable them if you
-				prefer. Stripe&apos;s use of cookies is subject to their own privacy policy, which you should review if you have any specific concerns.
-			</p>
+
 			<h3 className="text-2xl">Authentication (required)</h3>
 			<p>
-				We use next-auth to authenticate users on our application. Next-auth is a library which allows users to authenticate using various third party
-				services, such as google, which makes it easy to sign up and start using our application.
+				We use NextAuth to authenticate users on our platform. NextAuth allows users to sign in using various third-party services, such as Google,
+				making it easy to create an account and start using our application. These authentication cookies are necessary for login functionality.
 			</p>
 		</main>
 	);
