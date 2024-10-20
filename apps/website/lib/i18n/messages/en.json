@@ -105,7 +105,8 @@
 	"generate": {
 		"common": {
 			"download": "Download",
-			"new_generation": "Generate another avatar"
+			"new_generation": "Generate another avatar",
+			"skip_message": "Click anywhere to skip"
 		},
 		"ongoing_generation": {
 			"or_you_can": "... or you can ...",

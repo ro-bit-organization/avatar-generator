@@ -1,6 +1,7 @@
 'use client';
 
 import { LoaderIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { ReactNode, useEffect, useRef } from 'react';
 import Typewriter, { TypewriterClass } from 'typewriter-effect';
@@ -15,8 +16,10 @@ type Props = {
 };
 
 export default function ChatMessage({ text, loading, children, classNames, onComplete }: Props) {
+	const t = useTranslations();
 	const typewriter = useRef<TypewriterClass | null>(null);
 	const skipped = useRef<boolean>(false);
+	const completed = useRef<boolean>(false);
 
 	const stopTyping = () => {
 		if (!typewriter?.current) {
@@ -28,7 +31,9 @@ export default function ChatMessage({ text, loading, children, classNames, onCom
 
 		cursor.setAttribute('hidden', 'hidden');
 		typewriter.current.stop();
+
 		skipped.current = true;
+		completed.current = true;
 
 		if (onComplete) {
 			onComplete();
@@ -56,7 +61,7 @@ export default function ChatMessage({ text, loading, children, classNames, onCom
 			<div className="flex items-center gap-2">
 				<Typewriter
 					options={{
-						delay: 5,
+						delay: 15,
 						wrapperClassName: cn('Typewriter__wrapper', classNames?.text),
 						stringSplitter
 					}}
@@ -66,6 +71,8 @@ export default function ChatMessage({ text, loading, children, classNames, onCom
 						_typewriter
 							.typeString(text)
 							.callFunction(() => {
+								completed.current = true;
+
 								if (skipped.current) {
 									return;
 								}
@@ -82,6 +89,7 @@ export default function ChatMessage({ text, loading, children, classNames, onCom
 
 				{loading && <LoaderIcon className="h-4 w-4 animate-spin" />}
 			</div>
+			{!completed.current && <span className="text-muted-foreground text-end text-sm">{t('generate.common.skip_message')}</span>}
 		</>
 	);
 }
