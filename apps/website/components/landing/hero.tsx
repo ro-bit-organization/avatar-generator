@@ -2,6 +2,7 @@
 
 import { signIn, useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Button, buttonVariants } from '~/components/ui/button';
 import { cn } from '~/lib/utils';
@@ -30,41 +31,54 @@ export default function Hero() {
 					}}
 				></div>
 			</div>
-			<div className="container relative z-[2] mx-auto px-4 pt-8">
-				<h1 className="mb-8 text-6xl font-semibold tracking-tighter">
-					{t('homepage.hero.greeting')}{' '}
-					<span className="inline-block bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">{t('app.name')}</span>
-				</h1>
-				<h2 className="mx-auto mb-12 max-w-3xl text-xl text-gray-600 dark:text-gray-300">
-					<p>{t('homepage.hero.subtitles.subtitle_1', { name: t('app.name') })}</p>
-					<p>{t('homepage.hero.subtitles.subtitle_2')}</p>
-					<p>{t('homepage.hero.subtitles.subtitle_3')}</p>
-				</h2>
+			<div className="container relative z-[2] mx-auto flex items-center justify-center gap-36 px-4 pt-8">
+				<div>
+					<h1 className="mb-8 text-6xl font-semibold tracking-tighter">
+						{t('homepage.hero.greeting')}{' '}
+						<span className="inline-block bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">{t('app.name')}</span>
+					</h1>
+					<h2 className="mx-auto mb-12 max-w-3xl text-xl text-gray-600 dark:text-gray-300">
+						<p>{t('homepage.hero.subtitles.subtitle_1', { name: t('app.name') })}</p>
+						<p>{t('homepage.hero.subtitles.subtitle_2')}</p>
+						<p>{t('homepage.hero.subtitles.subtitle_3')}</p>
+					</h2>
 
-				{status === 'authenticated' ? (
-					<Link
-						href="/generate"
-						className={cn(
-							buttonVariants({
-								className:
-									'h-14 bg-gradient-to-tl from-blue-500 via-purple-600 via-40% to-blue-500 bg-[length:200%_200%] bg-left-top px-8 py-3 text-lg font-semibold !text-white transition-all duration-500 hover:bg-right-bottom'
-							})
-						)}
-					>
-						{t('common.generate')}
-					</Link>
-				) : (
-					<Button
-						className="h-14 bg-gradient-to-tl from-blue-500 via-purple-600 via-40% to-blue-500 bg-[length:200%_200%] bg-left-top px-8 py-3 text-lg font-semibold !text-white transition-all duration-500 hover:bg-right-bottom"
-						onClick={() =>
-							signIn('google', {
-								redirectTo: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/generate`
-							})
-						}
-					>
-						{t('common.generate')}
-					</Button>
-				)}
+					{status === 'authenticated' ? (
+						<Link
+							href="/generate"
+							className={cn(
+								buttonVariants({
+									className:
+										'h-14 bg-gradient-to-tl from-blue-500 via-purple-600 via-40% to-blue-500 bg-[length:200%_200%] bg-left-top px-8 py-3 text-lg font-semibold !text-white transition-all duration-500 hover:bg-right-bottom xl:w-64'
+								})
+							)}
+						>
+							{t('common.generate')}
+						</Link>
+					) : (
+						<Button
+							className="h-14 bg-gradient-to-tl from-blue-500 via-purple-600 via-40% to-blue-500 bg-[length:200%_200%] bg-left-top px-8 py-3 text-lg font-semibold !text-white transition-all duration-500 hover:bg-right-bottom xl:w-64"
+							onClick={() =>
+								signIn('google', {
+									redirectTo: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/generate`
+								})
+							}
+						>
+							{t('common.generate')}
+						</Button>
+					)}
+				</div>
+				<div className="relative hidden h-[320px] w-[485px] grid-cols-3 grid-rows-2 gap-2 xl:grid 2xl:h-[384px] 2xl:w-[582px]">
+					<div className="relative col-span-2 row-span-2">
+						<Image src="/images/landing/avatar-1.webp" fill alt="Presentation avatar 1" className="rounded-md" />
+					</div>
+					<div className="relative">
+						<Image src="/images/landing/avatar-2.webp" fill alt="Presentation avatar 2" className="rounded-md" />
+					</div>
+					<div className="relative">
+						<Image src="/images/landing/avatar-3.webp" fill alt="Presentation avatar 3" className="rounded-md" />
+					</div>
+				</div>
 			</div>
 		</section>
 	);
