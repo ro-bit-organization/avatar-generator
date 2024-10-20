@@ -11,7 +11,7 @@ export default async function Footer() {
 				<div className="grid grid-cols-1 gap-8 md:grid-cols-4">
 					<div>
 						<div className="mb-4 flex items-center">
-							<Image src="/images/logo.webp" width="36" height="36" alt="logo" className="rounded-md" />
+							<Image unoptimized src="/images/logo.webp" width="36" height="36" alt="Logo" className="rounded-md" />
 							<h4 className="ml-2 text-lg font-semibold tracking-tighter text-gray-900 dark:text-white">{t('app.name')}</h4>
 						</div>
 
@@ -71,7 +71,7 @@ export default async function Footer() {
 									target="_blank"
 									className="rounded-sm bg-white p-[2px] transition-transform hover:brightness-[1.1] dark:hover:brightness-[0.9]"
 								>
-									<Image src="/images/icons/tiktok.svg" alt="TikTok" width="20" height="20" className="h-5 w-5" />
+									<Image unoptimized src="/images/icons/tiktok.svg" alt="TikTok" width="20" height="20" className="h-5 w-5" />
 								</Link>
 							)}
 							{process.env.NEXT_PUBLIC_FACEBOOK_URL && (
@@ -80,7 +80,7 @@ export default async function Footer() {
 									target="_blank"
 									className="transition-transform hover:brightness-[1.1] dark:hover:brightness-[0.9]"
 								>
-									<Image src="/images/icons/facebook.svg" alt="Facebook" width="24" height="24" className="h-6 w-6" />
+									<Image unoptimized src="/images/icons/facebook.svg" alt="Facebook" width="24" height="24" className="h-6 w-6" />
 								</Link>
 							)}
 							{process.env.NEXT_PUBLIC_INSTAGRAM_URL && (
@@ -89,7 +89,7 @@ export default async function Footer() {
 									target="_blank"
 									className="transition-transform hover:brightness-[1.1] dark:hover:brightness-[0.9]"
 								>
-									<Image src="/images/icons/instagram.svg" alt="Instagram" width="24" height="24" className="h-6 w-6" />
+									<Image unoptimized src="/images/icons/instagram.svg" alt="Instagram" width="24" height="24" className="h-6 w-6" />
 								</Link>
 							)}
 							{process.env.NEXT_PUBLIC_TWITTER_URL && (
@@ -98,7 +98,7 @@ export default async function Footer() {
 									target="_blank"
 									className="transition-transform hover:brightness-[1.1] dark:hover:brightness-[0.9]"
 								>
-									<Image src="/images/icons/twitter.svg" alt="Twitter" width="24" height="24" className="h-6 w-6" />
+									<Image unoptimized src="/images/icons/twitter.svg" alt="Twitter" width="24" height="24" className="h-6 w-6" />
 								</Link>
 							)}
 						</div>

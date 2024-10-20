@@ -295,6 +295,7 @@ export default function FreshGeneration({ generation }: Props) {
 															{field.value && (
 																<AspectRatio ratio={1 / 1}>
 																	<Image
+																		unoptimized
 																		src={URL.createObjectURL(field.value)}
 																		alt="Original image"
 																		fill

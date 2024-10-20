@@ -41,7 +41,7 @@ export default function LastGenerations({ page, count, generations }: Props) {
 				<h1 className="mb-2 text-2xl font-bold">{t('latest-generations.title')}</h1>
 				<div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
 					{generations.map((generation) => (
-						<Image key={generation.id} src={generation.imageUrl} alt={`Image ${generation.id}`} width="256" height="256" className="rounded-md" />
+						<Image key={generation.id} src={generation.imageUrl} alt="Avatar" width="256" height="256" className="rounded-md" />
 					))}
 				</div>
 				{count > PAGE_SIZE && (

@@ -13,7 +13,7 @@ export default async function NotFound() {
 
 	return (
 		<div className="bg-background text-foreground flex flex-col items-center justify-center p-4 py-16">
-			<Image src="/images/logo.webp" alt="logo" width="96" height="96" className="h-24 w-24 animate-bounce rounded-md"></Image>
+			<Image unoptimized src="/images/logo.webp" alt="Logo" width="96" height="96" className="h-24 w-24 animate-bounce rounded-md"></Image>
 			<h1 className="mb-8 text-center text-4xl font-bold">{t('404.title')}</h1>
 			<p className="mb-12 max-w-lg text-center text-lg">{t('404.description')}</p>
 			<div className="flex flex-col gap-4 sm:flex-row">

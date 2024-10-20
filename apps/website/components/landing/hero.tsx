@@ -70,13 +70,58 @@ export default function Hero() {
 				</div>
 				<div className="relative hidden h-[320px] w-[485px] grid-cols-3 grid-rows-2 gap-2 xl:grid 2xl:h-[384px] 2xl:w-[582px]">
 					<div className="relative col-span-2 row-span-2">
-						<Image src="/images/landing/avatar-1.webp" fill alt="Presentation avatar 1" className="rounded-md" />
+						<Image
+							unoptimized
+							src="/images/landing/avatar-1.webp"
+							width="320"
+							height="320"
+							alt="1st presentation avatar"
+							className="rounded-md 2xl:hidden"
+						/>
+						<Image
+							unoptimized
+							src="/images/landing/avatar-1.webp"
+							width="384"
+							height="384"
+							alt="1st presentation avatar"
+							className="hidden rounded-md 2xl:block"
+						/>
 					</div>
 					<div className="relative">
-						<Image src="/images/landing/avatar-2.webp" fill alt="Presentation avatar 2" className="rounded-md" />
+						<Image
+							unoptimized
+							src="/images/landing/avatar-2.webp"
+							width="156"
+							height="156"
+							alt="2nd presentation avatar"
+							className="rounded-md 2xl:hidden"
+						/>
+						<Image
+							unoptimized
+							src="/images/landing/avatar-2.webp"
+							width="188"
+							height="188"
+							alt="2nd presentation avatar"
+							className="hidden rounded-md 2xl:block"
+						/>
 					</div>
 					<div className="relative">
-						<Image src="/images/landing/avatar-3.webp" fill alt="Presentation avatar 3" className="rounded-md" />
+						<Image
+							unoptimized
+							src="/images/landing/avatar-3.webp"
+							width="156"
+							height="156"
+							alt="3rd presentation avatar"
+							className="rounded-md 2xl:hidden"
+						/>
+						<Image
+							unoptimized
+							src="/images/landing/avatar-3.webp"
+							width="188"
+							height="188"
+							alt="3rd presentation avatar"
+							className="hidden rounded-md 2xl:block"
+						/>
 					</div>
 				</div>
 			</div>

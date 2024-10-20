@@ -78,7 +78,7 @@ export default function Generations({ page, count, generations }: Props) {
 												src={entry.imageUrl}
 												width="80"
 												height="80"
-												alt={t('generations.generation_image', { index: index + 1 })}
+												alt={t('generations.generation_ordinal_avatar', { index: index + 1 })}
 												className="h-20 w-20 rounded-md object-cover shadow-sm"
 											/>
 										))}

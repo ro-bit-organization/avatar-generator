@@ -8,7 +8,8 @@ const nextConfig = {
 		}
 	},
 	images: {
-		unoptimized: true,
+		loader: 'custom',
+		loaderFile: './lib/image/loader.js',
 		remotePatterns: [
 			{
 				hostname: 'pixpersona-staging-3541781497047889658470530.s3.eu-central-1.amazonaws.com'

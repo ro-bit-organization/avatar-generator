@@ -55,8 +55,15 @@ export default function FinalizedGeneration({ generation }: Props) {
 						'h-auto translate-y-0 overflow-visible opacity-100': showImages
 					})}
 				>
-					{generation.entries.map((entry) => (
-						<Image key={entry.id} src={entry.imageUrl} width="256" height="256" alt="avatar" className="mx-auto rounded-md" />
+					{generation.entries.map((entry, index) => (
+						<Image
+						key={entry.id}
+						src={entry.imageUrl}
+						width="256"
+						height="256"
+						alt={t('generations.generation_ordinal_avatar', { index: index + 1 })}
+						className="mx-auto rounded-md"
+					/>
 					))}
 				</div>
 			</Card>

@@ -28,6 +28,7 @@
 		"clsx": "^2.1.1",
 		"file-saver": "^2.0.5",
 		"grapheme-splitter": "^1.0.4",
+		"js-base64": "^3.7.7",
 		"lucide-react": "^0.447.0",
 		"nanoid": "^5.0.7",
 		"next": "14.2.14",

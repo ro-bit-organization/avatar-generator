@@ -104,20 +104,25 @@ app.post('/', async (c) => {
 			throw new Error('An error occured during image generation!');
 		}
 
-		const response = await fetch(generate.data[0].url);
+		const id = nanoid(10);
+		const url = generate.data[0].url;
+
+		console.log(url);
+
+		const response = await fetch(url);
 
 		const upload = new Upload({
 			client: s3,
 			params: {
 				Bucket: process.env.S3_BUCKET_NAME,
-				Key: `${nanoid(10)}.png`,
+				Key: `${id}.png`,
 				Body: response.body!
 			}
 		});
 
-		const { Location } = await upload.done();
+		const { Location: imageUrl } = await upload.done();
 
-		if (!Location) {
+		if (!imageUrl) {
 			throw new Error('An error occured during file upload!');
 		}
 
@@ -132,7 +137,7 @@ app.post('/', async (c) => {
 						create: [
 							{
 								prompt: null,
-								imageUrl: Location
+								imageUrl
 							}
 						]
 					}
