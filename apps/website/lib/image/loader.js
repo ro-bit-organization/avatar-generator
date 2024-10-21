@@ -10,7 +10,7 @@ export default function loader({ src, width, quality }) {
 	try {
 		new URL(src);
 
-		return `${process.env.NEXT_PUBLIC_CDN_URL}/format:webp/resize:fill:${width}/quality:${quality || 75}/${Base64.encode(src)}.webp`;
+		return `${process.env.NEXT_PUBLIC_CDN_URL}/format:webp/resize:fill:${width}/quality:${quality || 75}/${Base64.encode(src, true)}.webp`;
 	} catch {
 		return src;
 	}

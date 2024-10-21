@@ -127,7 +127,7 @@ app.post('/', async (c) => {
 		}
 
 		const url = process.env.PUBLIC_CDN_URL
-			? `${process.env.PUBLIC_CDN_URL}/format:png/quality:90/${Base64.encode(generate.data[0].url)}.png`
+			? `${process.env.PUBLIC_CDN_URL}/format:png/quality:90/${Base64.encode(generate.data[0].url, true)}.png`
 			: generate.data[0].url;
 
 		console.log(generate.data[0].url, url);
