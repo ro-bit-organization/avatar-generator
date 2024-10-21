@@ -127,10 +127,8 @@ app.post('/', async (c) => {
 		}
 
 		const url = process.env.PUBLIC_CDN_URL
-			? `${process.env.PUBLIC_CDN_URL}/format:png/quality:90/${Base64.encode(generate.data[0].url, true)}.png`
+			? `${process.env.PUBLIC_CDN_URL}/format:webp/quality:90/${Base64.encode(generate.data[0].url, true)}.webp`
 			: generate.data[0].url;
-
-		console.log(generate.data[0].url, url);
 
 		const response = await fetch(url);
 
@@ -138,7 +136,7 @@ app.post('/', async (c) => {
 			client: s3,
 			params: {
 				Bucket: process.env.S3_BUCKET_NAME,
-				Key: `${nanoid(10)}.png`,
+				Key: `${nanoid(10)}.webp`,
 				Body: response.body!
 			}
 		});

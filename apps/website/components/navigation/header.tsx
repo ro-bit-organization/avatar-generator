@@ -34,9 +34,9 @@ export default function Header() {
 		<>
 			<div className="relative isolate flex items-center justify-center gap-x-6 overflow-hidden border-b bg-gray-50 px-6 py-2.5 sm:px-3.5 dark:bg-gray-900">
 				<div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-center">
-					<p className="flex flex-col items-center text-sm leading-6 text-gray-900 md:flex-row dark:text-white">
+					<p className="flex flex-col items-center text-sm leading-6 text-gray-900 lg:flex-row dark:text-white">
 						<strong className="font-semibold">{t('navigation.beta_banner.title')}</strong>
-						<svg viewBox="0 0 2 2" className="mx-2 hidden h-0.5 w-0.5 fill-current md:inline">
+						<svg viewBox="0 0 2 2" className="mx-2 hidden h-0.5 w-0.5 fill-current lg:inline">
 							<circle cx="1" cy="1" r="1" />
 						</svg>
 						{t('navigation.beta_banner.description')}
@@ -45,10 +45,10 @@ export default function Header() {
 			</div>
 			<header className="flex h-14 items-center justify-between border-b border-gray-200 px-4 lg:px-6 dark:border-gray-800">
 				<nav className="flex w-full items-center justify-between gap-2">
-					<Link href="/" className="md:hidden">
+					<Link href="/" className="lg:hidden">
 						<Image unoptimized src="/images/logo.webp" width="36" height="36" alt="Logo" className="rounded-md" />
 					</Link>
-					<div className="hidden gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-7 md:text-sm lg:gap-8">
+					<div className="hidden gap-6 text-lg font-medium lg:flex lg:flex-row lg:items-center lg:gap-7 lg:gap-8 lg:text-sm">
 						<Link href="/" className="flex items-center justify-center">
 							<Image unoptimized src="/images/logo.webp" width="36" height="36" alt="Logo" className="rounded-md" />
 							<span className="ml-2 inline-block text-xl font-semibold tracking-tighter text-gray-900 dark:text-white">{t('app.name')}</span>
@@ -66,7 +66,7 @@ export default function Header() {
 						</Link>
 					</div>
 					<div className="flex items-center gap-2">
-						<div className="hidden items-center gap-2 md:flex">
+						<div className="hidden items-center gap-2 lg:flex">
 							{status === 'authenticated' ? (
 								<>
 									<span className="mr-2">{t('common.credits_left', { value: session?.user?.credits })}</span>
@@ -106,7 +106,7 @@ export default function Header() {
 							</Button>
 						)}
 						<MenuIcon
-							className="h-5 w-5 cursor-pointer hover:text-blue-600 md:hidden dark:hover:text-blue-400"
+							className="h-5 w-5 cursor-pointer hover:text-blue-600 lg:hidden dark:hover:text-blue-400"
 							onClick={() => setMenuOpen(!menuOpen)}
 						/>
 					</div>
