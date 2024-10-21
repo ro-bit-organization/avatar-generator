@@ -109,7 +109,7 @@ app.post('/', async (c) => {
 			? `${process.env.PUBLIC_CDN_URL}/format:png/quality:90/${Base64.encode(generate.data[0].url)}.png`
 			: generate.data[0].url;
 
-		console.log(generate.data[0].url, url);
+		console.log(generate.data[0].url, Base64.encode(generate.data[0].url), url);
 
 		const response = await fetch(url);
 
