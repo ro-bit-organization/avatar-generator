@@ -48,7 +48,7 @@ export default function Header() {
 					<Link href="/" className="lg:hidden">
 						<Image unoptimized src="/images/logo.webp" width="36" height="36" alt="Logo" className="rounded-md" />
 					</Link>
-					<div className="hidden gap-6 text-lg font-medium lg:flex lg:flex-row lg:items-center lg:gap-7 lg:gap-8 lg:text-sm">
+					<div className="hidden gap-6 text-lg font-medium lg:flex lg:flex-row lg:items-center lg:gap-8 lg:text-sm">
 						<Link href="/" className="flex items-center justify-center">
 							<Image unoptimized src="/images/logo.webp" width="36" height="36" alt="Logo" className="rounded-md" />
 							<span className="ml-2 inline-block text-xl font-semibold tracking-tighter text-gray-900 dark:text-white">{t('app.name')}</span>
@@ -67,7 +67,7 @@ export default function Header() {
 								className="text-muted-foreground hover:text-foreground p-0 font-bold !no-underline transition-colors"
 								onClick={() =>
 									signIn('google', {
-										redirectTo: process.env.NEXT_PUBLIC_WEBSITE_URL
+										redirectTo: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/generate`
 									})
 								}
 							>
@@ -175,7 +175,7 @@ export default function Header() {
 							className="text-md h-[24px] items-center justify-start p-0 !no-underline"
 							onClick={() =>
 								signIn('google', {
-									redirectTo: process.env.NEXT_PUBLIC_WEBSITE_URL
+									redirectTo: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/generate`
 								})
 							}
 						>
