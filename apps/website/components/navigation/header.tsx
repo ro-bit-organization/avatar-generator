@@ -57,7 +57,7 @@ export default function Header() {
 							{t('navigation.menu.home')}
 						</Link>
 
-						{status !== 'authenticated' ? (
+						{status === 'authenticated' ? (
 							<Link href="/generate" className="text-muted-foreground hover:text-foreground font-bold transition-colors">
 								{t('navigation.menu.generate')}
 							</Link>
@@ -165,7 +165,7 @@ export default function Header() {
 						{t('navigation.menu.home')}
 					</Link>
 
-					{status !== 'authenticated' ? (
+					{status === 'authenticated' ? (
 						<Link href="/generate" onClick={() => setMenuOpen(false)}>
 							{t('navigation.menu.generate')}
 						</Link>
