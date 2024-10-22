@@ -74,7 +74,7 @@ export default async function PrivacyPolicyPage() {
 					<strong>Country:</strong> Refers to Romania.
 				</li>
 				<li>
-					<strong>Company</strong> (also referred to as "we," "us," or "our"): RO-BIT Software Solutions SRL.
+					<strong>Company</strong> (also referred to as "we," "us," or "our"): PixPersona.
 				</li>
 				<li>
 					<strong>Cookies:</strong> Small files placed on your device to store your browsing history and other information.
@@ -202,8 +202,8 @@ export default async function PrivacyPolicyPage() {
 			<p>
 				If you have any questions about the Privacy Policy, you can reach us at: <br />
 				<strong>Email</strong>:{' '}
-				<Link href="email:contact@ro-bit.ro" target="_blank" className="underline">
-					contact@ro-bit.ro
+				<Link href={`email:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}`} target="_blank" className="underline">
+					{process.env.NEXT_PUBLIC_CONTACT_EMAIL}
 				</Link>
 			</p>
 		</main>

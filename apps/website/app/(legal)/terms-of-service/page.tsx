@@ -67,7 +67,7 @@ export default async function TermsOfServicePage() {
 					<strong>Country</strong>: Refers to Romania.
 				</li>
 				<li>
-					<strong>Company</strong> (also referred to as "we," "us," or "our"): RO-BIT Software Solutions SRL.
+					<strong>Company</strong> (also referred to as "we," "us," or "our"): PixPersona.
 				</li>
 				<li>
 					<strong>Device</strong>: Any device that can access the service, including computers, cellphones, or tablets.
@@ -199,8 +199,8 @@ export default async function TermsOfServicePage() {
 			<p>
 				If you have any questions about Terms of Service, you can reach us at: <br />
 				<strong>Email</strong>:{' '}
-				<Link href="email:contact@ro-bit.ro" target="_blank" className="underline">
-					contact@ro-bit.ro
+				<Link href={`email:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}`} target="_blank" className="underline">
+					{process.env.NEXT_PUBLIC_CONTACT_EMAIL}
 				</Link>
 			</p>
 		</main>
