@@ -4,13 +4,39 @@ import { getServerSession } from 'next-auth/next';
 import { redirect } from 'next/navigation';
 import { authOptions } from '~/lib/auth';
 import GenerateClient from './client.page';
+import { getTranslations } from 'next-intl/server';
 
 export async function generateMetadata({ params: { id } }: { params: { id: string } }): Promise<Metadata> {
+	const t = await getTranslations();
+
+	const title = `Generation #${id} - ${t('app.name')}`;
+	const description = `Create your own cartoon avatar with just a few clicks. Upload a photo and instantly generate a personalized, high-quality avatar — perfect for social media, gaming, and more!"`;
+	const url = `${process.env.NEXT_PUBLIC_WEBSITE_URL}/generate/${id}`;
+
 	return {
-		title: `Generation #${id}`,
+		title,
+		description,
+		alternates: {
+			canonical: url
+		},
 		robots: {
 			index: false,
 			follow: false
+		},
+		openGraph: {
+			title,
+			description,
+			url,
+			siteName: title,
+			images: [
+				{
+					url: `/images/logo.png`,
+					width: 512,
+					height: 512
+				}
+			],
+			locale: 'en_US',
+			type: 'website'
 		}
 	};
 }

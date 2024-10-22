@@ -1,9 +1,11 @@
 import { Metadata } from 'next';
-import { getFormatter } from 'next-intl/server';
+import { getFormatter, getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 
 export async function generateMetadata(): Promise<Metadata> {
-	const title = 'Terms of Service';
+	const t = await getTranslations();
+
+	const title = `Cookie Policy - ${t('app.name')}`;
 	const description = 'Learn how we use cookies to enhance your experience, track site usage, and improve our services in our Cookies Policy.';
 	const url = `${process.env.NEXT_PUBLIC_WEBSITE_URL}/cookie-policy`;
 
@@ -13,29 +15,6 @@ export async function generateMetadata(): Promise<Metadata> {
 		alternates: {
 			canonical: url
 		},
-		keywords: [
-			'ai avatars',
-			'cartoon avatars',
-			'avatar creator',
-			'cartoonify photos',
-			'ai avatar generator',
-			'personalized avatars',
-			'avatar design online',
-			'cartoon profile pictures',
-			'toon avatar maker',
-			'photo to cartoon avatar',
-			'custom avatar creation',
-			'cartoon yourself',
-			'ai photo editor',
-			'avatar app online',
-			'avatar for social media',
-			'animated avatar creator',
-			'avatar ai platform',
-			'create cartoon characters',
-			'avatar customization',
-			'digital avatars online'
-		],
-		metadataBase: new URL(process.env.NEXT_PUBLIC_WEBSITE_URL as string),
 		openGraph: {
 			title,
 			description,

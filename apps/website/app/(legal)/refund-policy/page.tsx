@@ -1,8 +1,10 @@
 import { Metadata } from 'next';
-import { getFormatter } from 'next-intl/server';
+import { getFormatter, getTranslations } from 'next-intl/server';
 
 export async function generateMetadata(): Promise<Metadata> {
-	const title = 'Refund Policy';
+	const t = await getTranslations();
+
+	const title = `Refund Policy - ${t('app.name')}`;
 	const description = 'Learn about our refund policy, including eligibility, timelines, and how to request a return or exchange.';
 	const url = `${process.env.NEXT_PUBLIC_WEBSITE_URL}/refund-policy`;
 
@@ -12,29 +14,6 @@ export async function generateMetadata(): Promise<Metadata> {
 		alternates: {
 			canonical: url
 		},
-		keywords: [
-			'ai avatars',
-			'cartoon avatars',
-			'avatar creator',
-			'cartoonify photos',
-			'ai avatar generator',
-			'personalized avatars',
-			'avatar design online',
-			'cartoon profile pictures',
-			'toon avatar maker',
-			'photo to cartoon avatar',
-			'custom avatar creation',
-			'cartoon yourself',
-			'ai photo editor',
-			'avatar app online',
-			'avatar for social media',
-			'animated avatar creator',
-			'avatar ai platform',
-			'create cartoon characters',
-			'avatar customization',
-			'digital avatars online'
-		],
-		metadataBase: new URL(process.env.NEXT_PUBLIC_WEBSITE_URL as string),
 		openGraph: {
 			title,
 			description,
@@ -54,6 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function RefundPage() {
+	const t = await getTranslations();
 	const format = await getFormatter();
 
 	return (
@@ -68,7 +48,7 @@ export default async function RefundPage() {
 				})}
 			</p>
 			<p>
-				At Pixpersona, we’re dedicated to offering a one-of-a-kind experience with our AI-generated avatars. While AI technology is impressive and
+				At {t('app.name')}, we’re dedicated to offering a one-of-a-kind experience with our AI-generated avatars. While AI technology is impressive and
 				groundbreaking, it may not always deliver the results you anticipate. We want to ensure you're fully aware of these potential outcomes before
 				making a purchase.
 			</p>

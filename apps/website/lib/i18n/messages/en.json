@@ -71,7 +71,7 @@
 			}
 		},
 		"features": {
-			"title": "Why Choose PixPersona?",
+			"title": "Why Choose {appName}?",
 			"feature_1": {
 				"title": "Lightning Fast",
 				"description": "Generate avatars in seconds with our powerful AI"
@@ -124,7 +124,7 @@
 			"style_select": "Please choose a style for your avatar creation! Select from options like (strong)Cartoonish(/strong), (strong)Pixelated(/strong), (strong)Realistic(/strong) or (strong)Retro(/strong). This style will guide the design and vibe of your character.",
 			"image_select": "To create your personalized avatar, please upload a photo of yourself. This image will serve as a reference for designing your avatar with realistic details or in a stylized way. Make sure the photo is clear and shows your face for the best results.",
 			"ongoing_generation": "✨ Hang tight, your avatar is coming to life!",
-			"ongoing_images": "🪄 Your PixPersona is all set. Enjoy your creation!",
+			"ongoing_images": "🪄 Your avatar is all set. Enjoy your creation!",
 			"final_images": "🖼️ Here are the three generations of avatars you've created! Each version is displayed below with its corresponding image.",
 			"error": "🚨 Oops, something went wrong with the avatar generation. Would you like to retry?"
 		},
@@ -153,12 +153,14 @@
 	},
 	"generations": {
 		"title": "Generations",
+		"description": "See all the cartoon avatars you've created on {appName} in one place.",
 		"generation_id": "Generation #{id}",
 		"no_entries": "No images generated yet.",
 		"generation_ordinal_avatar": "{index, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} avatar"
 	},
 	"latest-generations": {
 		"title": "Latest Generations",
+		"description": "Explore the latest cartoon avatars created by users on {appName}. This page features a gallery of unique and trending avatars, perfect for inspiration or finding the next design for your social media or gaming profile!",
 		"no_entries": "No images generated yet."
 	},
 	"thank_you": {

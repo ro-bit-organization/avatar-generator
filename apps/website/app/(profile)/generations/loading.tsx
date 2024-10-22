@@ -8,7 +8,10 @@ export default async function Loading() {
 	return (
 		<main className="mx-auto w-screen max-w-screen-md p-4">
 			<div className="flex flex-col">
-				<h1 className="mb-4 text-2xl font-bold">{t('generations.title')}</h1>
+				<div className="mb-4 flex flex-col gap-2 border-b pb-4">
+					<h1 className="text-3xl font-bold">{t('generations.title')}</h1>
+					<h2 className="text-muted-foreground">{t('generations.description', { appName: t('app.name') })}</h2>
+				</div>
 				<div className="space-y-4">
 					{[1, 2, 3].map((_, i) => (
 						<Card key={`entry-${i}`} className="overflow-hidden rounded-md">

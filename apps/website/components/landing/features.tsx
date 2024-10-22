@@ -14,7 +14,9 @@ export default async function Features() {
 	return (
 		<section id="features" className="bg-gray-100 py-20 transition-colors duration-300 dark:bg-gray-900">
 			<div className="container mx-auto px-4">
-				<h2 className="mb-12 text-center text-3xl font-bold tracking-tighter text-gray-900 dark:text-white">{t('homepage.features.title')}</h2>
+				<h2 className="mb-12 text-center text-3xl font-bold tracking-tighter text-gray-900 dark:text-white">
+					{t('homepage.features.title', { appName: t('app.name') })}
+				</h2>
 				<div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
 					{features.map((feature, index) => (
 						<div key={index} className="rounded-lg bg-white p-6 text-center shadow-md dark:bg-gray-700 dark:shadow-gray-900">

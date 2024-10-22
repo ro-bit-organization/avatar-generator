@@ -27,8 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
 	const t = await getTranslations();
 
 	const title = `${t('app.name')} - Transform your photos into personalized avatars`;
-	const description =
-		'Turn your photos into cartoonish avatars with our AI platform. Quickly create personalized, high-quality avatars—ideal for social media and gaming!';
+	const description = `Turn your photos into cartoonish avatars with ${t('app.name')}. Quickly create personalized, high-quality avatars — ideal for social media and gaming!`;
 	const url = process.env.NEXT_PUBLIC_WEBSITE_URL;
 
 	return {
@@ -59,6 +58,10 @@ export async function generateMetadata(): Promise<Metadata> {
 			'avatar customization',
 			'digital avatars online'
 		],
+		robots: {
+			index: true,
+			follow: true
+		},
 		metadataBase: new URL(process.env.NEXT_PUBLIC_WEBSITE_URL as string),
 		openGraph: {
 			title,

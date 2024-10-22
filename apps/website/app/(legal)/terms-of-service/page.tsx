@@ -1,9 +1,11 @@
 import { Metadata } from 'next';
-import { getFormatter } from 'next-intl/server';
+import { getFormatter, getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 
 export async function generateMetadata(): Promise<Metadata> {
-	const title = 'Terms of Service';
+	const t = await getTranslations();
+
+	const title = `Terms of Service - ${t('app.name')}`;
 	const description =
 		'Review our Terms and Conditions to understand the rules and guidelines for using our services, including your rights, responsibilities, and our policies.';
 	const url = `${process.env.NEXT_PUBLIC_WEBSITE_URL}/terms-of-service`;
@@ -14,29 +16,6 @@ export async function generateMetadata(): Promise<Metadata> {
 		alternates: {
 			canonical: url
 		},
-		keywords: [
-			'ai avatars',
-			'cartoon avatars',
-			'avatar creator',
-			'cartoonify photos',
-			'ai avatar generator',
-			'personalized avatars',
-			'avatar design online',
-			'cartoon profile pictures',
-			'toon avatar maker',
-			'photo to cartoon avatar',
-			'custom avatar creation',
-			'cartoon yourself',
-			'ai photo editor',
-			'avatar app online',
-			'avatar for social media',
-			'animated avatar creator',
-			'avatar ai platform',
-			'create cartoon characters',
-			'avatar customization',
-			'digital avatars online'
-		],
-		metadataBase: new URL(process.env.NEXT_PUBLIC_WEBSITE_URL as string),
 		openGraph: {
 			title,
 			description,
@@ -56,6 +35,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function TermsOfServicePage() {
+	const t = await getTranslations();
 	const format = await getFormatter();
 
 	return (
@@ -93,7 +73,7 @@ export default async function TermsOfServicePage() {
 					<strong>Device</strong>: Any device that can access the service, including computers, cellphones, or tablets.
 				</li>
 				<li>
-					<strong>Service:</strong> The website, PixPersona.
+					<strong>Service:</strong> The website, {t('app.name')}.
 				</li>
 				<li>
 					<strong>Terms and Conditions</strong> (also referred to as "Terms"): This agreement between you and the company regarding the use of the
@@ -104,9 +84,9 @@ export default async function TermsOfServicePage() {
 					or made available through the service.
 				</li>
 				<li>
-					<strong>Website:</strong> PixPersona, accessible at{' '}
-					<Link href="https://pixpersona.xyz" target="_blank" className="underline">
-						https://pixpersona.xyz
+					<strong>Website:</strong> {t('app.name')}, accessible at{' '}
+					<Link href={process.env.NEXT_PUBLIC_WEBSITE_URL!} target="_blank" className="underline">
+						{process.env.NEXT_PUBLIC_WEBSITE_URL}
 					</Link>
 					.
 				</li>

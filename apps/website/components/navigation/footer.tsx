@@ -9,13 +9,16 @@ export default async function Footer() {
 		<footer className="border-t border-gray-200 bg-white pt-8 text-gray-600 transition-colors duration-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400">
 			<div className="container mx-auto px-4">
 				<div className="grid grid-cols-1 gap-8 md:grid-cols-4">
-					<div>
-						<div className="mb-4 flex items-center">
+					<div className="flex flex-col gap-4">
+						<div className="flex items-center">
 							<Image unoptimized src="/images/logo.webp" width="36" height="36" alt="Logo" className="rounded-md" />
 							<h4 className="ml-2 text-lg font-semibold tracking-tighter text-gray-900 dark:text-white">{t('app.name')}</h4>
 						</div>
 
 						<p>{t('app.description')}</p>
+						<a href={process.env.NEXT_PUBLIC_WEBSITE_URL} className="hover:text-foreground">
+							{process.env.NEXT_PUBLIC_WEBSITE_URL}
+						</a>
 					</div>
 					<div>
 						<h4 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">{t('footer.quick_links.title')}</h4>

@@ -1,9 +1,11 @@
 import { Metadata } from 'next';
-import { getFormatter } from 'next-intl/server';
+import { getFormatter, getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 
 export async function generateMetadata(): Promise<Metadata> {
-	const title = 'Privacy Policy';
+	const t = await getTranslations();
+
+	const title = `Privacy Policy - ${t('app.name')}`;
 	const description =
 		'Find out how we collect, use, and protect your personal information in our Privacy Policy. Your privacy and security are important to us.';
 	const url = `${process.env.NEXT_PUBLIC_WEBSITE_URL}/privacy-policy`;
@@ -14,29 +16,6 @@ export async function generateMetadata(): Promise<Metadata> {
 		alternates: {
 			canonical: url
 		},
-		keywords: [
-			'ai avatars',
-			'cartoon avatars',
-			'avatar creator',
-			'cartoonify photos',
-			'ai avatar generator',
-			'personalized avatars',
-			'avatar design online',
-			'cartoon profile pictures',
-			'toon avatar maker',
-			'photo to cartoon avatar',
-			'custom avatar creation',
-			'cartoon yourself',
-			'ai photo editor',
-			'avatar app online',
-			'avatar for social media',
-			'animated avatar creator',
-			'avatar ai platform',
-			'create cartoon characters',
-			'avatar customization',
-			'digital avatars online'
-		],
-		metadataBase: new URL(process.env.NEXT_PUBLIC_WEBSITE_URL as string),
 		openGraph: {
 			title,
 			description,
@@ -56,6 +35,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function PrivacyPolicyPage() {
+	const t = await getTranslations();
 	const format = await getFormatter();
 
 	return (
@@ -71,13 +51,14 @@ export default async function PrivacyPolicyPage() {
 			</p>
 
 			<p>
-				This Privacy Policy explains how we collect, use, and share your information when you use PixPersona. It also details your privacy rights and
-				how we protect your information.
+				This Privacy Policy explains how we collect, use, and share your information when you use {t('app.name')}. It also details your privacy rights
+				and how we protect your information.
 			</p>
 
 			<h2>How We Use Your Data</h2>
 			<p>
-				We use your data to improve our services. By using PixPersona, you agree to our data collection practices as described in this Privacy Policy.
+				We use your data to improve our services. By using {t('app.name')}, you agree to our data collection practices as described in this Privacy
+				Policy.
 			</p>
 
 			<h2>Definitions</h2>
@@ -105,21 +86,21 @@ export default async function PrivacyPolicyPage() {
 					<strong>Personal Data:</strong> Information related to an identified or identifiable person.
 				</li>
 				<li>
-					<strong>Service:</strong> The website, PixPersona.
+					<strong>Service:</strong> The website, {t('app.name')}.
 				</li>
 				<li>
 					<strong>Service Provider:</strong> A third party that processes data on behalf of the company.
 				</li>
 				<li>
-					<strong>Third-Party Social Media Service:</strong> A social network that allows you to log in to PixPersona.
+					<strong>Third-Party Social Media Service:</strong> A social network that allows you to log in to {t('app.name')}.
 				</li>
 				<li>
 					<strong>Usage Data:</strong> Data collected automatically when using our service.
 				</li>
 				<li>
-					<strong>Website:</strong> PixPersona, accessible at{' '}
-					<Link href="https://pixpersona.xyz" target="_blank" className="underline">
-						https://pixpersona.xyz
+					<strong>Website:</strong> {t('app.name')}, accessible at{' '}
+					<Link href={process.env.NEXT_PUBLIC_WEBSITE_URL!} target="_blank" className="underline">
+						{process.env.NEXT_PUBLIC_WEBSITE_URL}
 					</Link>
 					.
 				</li>

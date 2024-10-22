@@ -11,12 +11,40 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { authOptions } from '~/lib/auth';
 import { cn } from '~/lib/utils';
 
-export const metadata: Metadata = {
-	robots: {
-		index: false,
-		follow: false
-	}
-};
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+	const t = await getTranslations();
+
+	const title = `Payment #${searchParams?.['payment-id']} - ${t('app.name')}`;
+	const description = `Thank you for your purchase! View details of your credit package, ready to use for generating personalized cartoon avatars on ${t('app.name')}. Start creating your avatars now!`;
+	const url = `${process.env.NEXT_PUBLIC_WEBSITE_URL}/thank-you?payment-id=${searchParams?.['payment-id']}`;
+
+	return {
+		title,
+		description,
+		alternates: {
+			canonical: url
+		},
+		robots: {
+			index: false,
+			follow: false
+		},
+		openGraph: {
+			title,
+			description,
+			url,
+			siteName: title,
+			images: [
+				{
+					url: `/images/logo.png`,
+					width: 512,
+					height: 512
+				}
+			],
+			locale: 'en_US',
+			type: 'website'
+		}
+	};
+}
 
 type Props = {
 	searchParams?: { 'payment-id'?: string };

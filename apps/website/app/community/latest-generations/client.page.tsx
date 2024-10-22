@@ -24,7 +24,7 @@ export default function LastGenerations({ page, count, generations }: Props) {
 	const t = useTranslations();
 
 	function getPageUrl(page: number): string {
-		const url = new URL(`${process.env.NEXT_PUBLIC_WEBSITE_URL}/community/last-generations`);
+		const url = new URL(`${process.env.NEXT_PUBLIC_WEBSITE_URL}/community/latest-generations`);
 
 		if (page === 1) {
 			url.searchParams.delete('page');
@@ -38,7 +38,10 @@ export default function LastGenerations({ page, count, generations }: Props) {
 	return (
 		<main className="mx-auto w-screen max-w-screen-md p-4">
 			<div className="flex flex-col">
-				<h1 className="mb-2 text-2xl font-bold">{t('latest-generations.title')}</h1>
+				<div className="mb-4 flex flex-col gap-2 border-b pb-4">
+					<h1 className="text-3xl font-bold">{t('latest-generations.title')}</h1>
+					<h2 className="text-muted-foreground">{t('latest-generations.description', { appName: t('app.name') })}</h2>
+				</div>
 				<div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
 					{generations.map((generation) => (
 						<Image key={generation.id} src={generation.imageUrl} alt="Avatar" width="256" height="256" className="rounded-md" />
