@@ -56,10 +56,31 @@ export default function Header() {
 						<Link href="/" className="text-muted-foreground hover:text-foreground font-bold transition-colors">
 							{t('navigation.menu.home')}
 						</Link>
-						{status === 'authenticated' && (
-							<Link href="/generations" className="text-muted-foreground hover:text-foreground font-bold transition-colors">
-								{t('navigation.menu.my_generations')}
+
+						{status !== 'authenticated' ? (
+							<Link href="/generate" className="text-muted-foreground hover:text-foreground font-bold transition-colors">
+								{t('navigation.menu.generate')}
 							</Link>
+						) : (
+							<Button
+								variant="link"
+								className="text-muted-foreground hover:text-foreground p-0 font-bold !no-underline transition-colors"
+								onClick={() =>
+									signIn('google', {
+										redirectTo: process.env.NEXT_PUBLIC_WEBSITE_URL
+									})
+								}
+							>
+								{t('navigation.menu.generate')}
+							</Button>
+						)}
+
+						{status === 'authenticated' && (
+							<>
+								<Link href="/generations" className="text-muted-foreground hover:text-foreground font-bold transition-colors">
+									{t('navigation.menu.my_generations')}
+								</Link>
+							</>
 						)}
 						<Link href="/community/latest-generations" className="text-muted-foreground hover:text-foreground font-bold transition-colors">
 							{t('navigation.menu.latest_generations')}
@@ -143,6 +164,24 @@ export default function Header() {
 					<Link href="/" onClick={() => setMenuOpen(false)}>
 						{t('navigation.menu.home')}
 					</Link>
+
+					{status !== 'authenticated' ? (
+						<Link href="/generate" onClick={() => setMenuOpen(false)}>
+							{t('navigation.menu.generate')}
+						</Link>
+					) : (
+						<Button
+							variant="link"
+							className="text-md h-[24px] items-center justify-start p-0 !no-underline"
+							onClick={() =>
+								signIn('google', {
+									redirectTo: process.env.NEXT_PUBLIC_WEBSITE_URL
+								})
+							}
+						>
+							{t('navigation.menu.generate')}
+						</Button>
+					)}
 
 					{status === 'authenticated' && (
 						<Link href="/generations" onClick={() => setMenuOpen(false)}>
