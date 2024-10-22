@@ -6,6 +6,15 @@ export default function Sitemap(): MetadataRoute.Sitemap {
 			url: process.env.NEXT_PUBLIC_WEBSITE_URL!
 		},
 		{
+			url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/generate`
+		},
+		{
+			url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/generations`
+		},
+		{
+			url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/community/latest-generations`
+		},
+		{
 			url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/terms-of-service`,
 			lastModified: new Date('2024-10-20')
 		},
