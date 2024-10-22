@@ -1,9 +1,14 @@
-import { getTranslations } from 'next-intl/server';
+'use client';
+
+import { signIn, useSession } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Button } from '~/components/ui/button';
 
-export default async function Footer() {
-	const t = await getTranslations();
+export default function Footer() {
+	const t = useTranslations();
+	const { status } = useSession();
 
 	return (
 		<footer className="border-t border-gray-200 bg-white pt-8 text-gray-600 transition-colors duration-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400">
@@ -16,7 +21,7 @@ export default async function Footer() {
 						</div>
 
 						<p>{t('app.description')}</p>
-						<a href={process.env.NEXT_PUBLIC_WEBSITE_URL} className="hover:text-foreground">
+						<a href={process.env.NEXT_PUBLIC_WEBSITE_URL} className="hover:text-foreground transition-colors">
 							{process.env.NEXT_PUBLIC_WEBSITE_URL}
 						</a>
 					</div>
@@ -24,18 +29,46 @@ export default async function Footer() {
 						<h4 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">{t('footer.quick_links.title')}</h4>
 						<ul className="space-y-2">
 							<li>
-								<Link href="/#features" className="hover:text-blue-600 dark:hover:text-blue-400">
+								<Link href="/#features" className="hover:text-foreground transition-colors">
 									{t('footer.quick_links.features')}
 								</Link>
 							</li>
 							<li>
-								<Link href="/#how-it-works" className="hover:text-blue-600 dark:hover:text-blue-400">
+								<Link href="/#how-it-works" className="hover:text-foreground transition-colors">
 									{t('footer.quick_links.how_it_works')}
 								</Link>
 							</li>
+
 							<li>
-								<Link href="/generate" className="hover:text-blue-600 dark:hover:text-blue-400">
-									{t('footer.quick_links.generate')}
+								{status === 'authenticated' ? (
+									<Link href="/generate" className="hover:text-foreground transition-colors">
+										{t('footer.quick_links.generate')}
+									</Link>
+								) : (
+									<Button
+										variant="link"
+										className="hover:text-foreground text-md h-[24px] p-0 text-inherit !no-underline transition-colors"
+										onClick={() =>
+											signIn('google', {
+												callbackUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/generate`
+											})
+										}
+									>
+										{t('footer.quick_links.generate')}
+									</Button>
+								)}
+							</li>
+
+							{status === 'authenticated' && (
+								<li>
+									<Link href="/generate" className="hover:text-foreground transition-colors">
+										{t('footer.quick_links.my_generations')}
+									</Link>
+								</li>
+							)}
+							<li>
+								<Link href="/community/latest-generations" className="hover:text-foreground transition-colors">
+									{t('footer.quick_links.latest_generations')}
 								</Link>
 							</li>
 						</ul>
@@ -44,22 +77,22 @@ export default async function Footer() {
 						<h4 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">{t('footer.legal.title')}</h4>
 						<ul className="space-y-2">
 							<li>
-								<Link href="/terms-of-service" className="hover:text-blue-600 dark:hover:text-blue-400">
+								<Link href="/terms-of-service" className="hover:text-foreground transition-colors">
 									{t('footer.legal.terms_of_service')}
 								</Link>
 							</li>
 							<li>
-								<Link href="/privacy-policy" className="hover:text-blue-600 dark:hover:text-blue-400">
+								<Link href="/privacy-policy" className="hover:text-foreground transition-colors">
 									{t('footer.legal.privacy_policy')}
 								</Link>
 							</li>
 							<li>
-								<Link href="/refund-policy" className="hover:text-blue-600 dark:hover:text-blue-400">
+								<Link href="/refund-policy" className="hover:text-foreground transition-colors">
 									{t('footer.legal.refund_policy')}
 								</Link>
 							</li>
 							<li>
-								<Link href="/cookie-policy" className="hover:text-blue-600 dark:hover:text-blue-400">
+								<Link href="/cookie-policy" className="hover:text-foreground transition-colors">
 									{t('footer.legal.cookie_policy')}
 								</Link>
 							</li>

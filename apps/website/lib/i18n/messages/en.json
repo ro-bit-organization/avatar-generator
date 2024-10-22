@@ -32,9 +32,12 @@
 	"footer": {
 		"quick_links": {
 			"title": "Quick Links",
+			"home": "Home",
 			"features": "Features",
 			"how_it_works": "How It Works",
-			"generate": "Generate"
+			"generate": "Generate",
+			"my_generations": "My Generations",
+			"latest_generations": "Latest Generations"
 		},
 		"legal": {
 			"title": "Legal",
