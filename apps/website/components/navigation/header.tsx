@@ -67,7 +67,7 @@ export default function Header() {
 								className="text-muted-foreground hover:text-foreground p-0 font-bold !no-underline transition-colors"
 								onClick={() =>
 									signIn('google', {
-										redirectTo: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/generate`
+										callbackUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/generate`
 									})
 								}
 							>
@@ -104,14 +104,7 @@ export default function Header() {
 									</Button>
 								</>
 							) : (
-								<Button
-									size="sm"
-									onClick={() =>
-										signIn('google', {
-											redirectTo: process.env.NEXT_PUBLIC_WEBSITE_URL
-										})
-									}
-								>
+								<Button size="sm" onClick={() => signIn('google')}>
 									{t('common.sign_in')}
 								</Button>
 							)}
@@ -175,7 +168,7 @@ export default function Header() {
 							className="text-md h-[24px] items-center justify-start p-0 !no-underline"
 							onClick={() =>
 								signIn('google', {
-									redirectTo: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/generate`
+									callbackUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/generate`
 								})
 							}
 						>
@@ -199,15 +192,7 @@ export default function Header() {
 						{t('common.sign_out')}
 					</Button>
 				) : (
-					<Button
-						onClick={() =>
-							signIn('google', {
-								redirectTo: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/generate`
-							})
-						}
-					>
-						{t('common.sign_in')}
-					</Button>
+					<Button onClick={() => signIn('google')}>{t('common.sign_in')}</Button>
 				)}
 			</Menu>
 

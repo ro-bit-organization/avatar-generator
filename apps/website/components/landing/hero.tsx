@@ -60,7 +60,7 @@ export default function Hero() {
 							className="h-14 bg-gradient-to-tl from-blue-500 via-purple-600 via-40% to-blue-500 bg-[length:200%_200%] bg-left-top px-8 py-3 text-lg font-semibold !text-white transition-all duration-500 hover:bg-right-bottom xl:w-64"
 							onClick={() =>
 								signIn('google', {
-									redirectTo: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/generate`
+									callbackUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/generate`
 								})
 							}
 						>
