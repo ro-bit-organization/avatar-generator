@@ -2,6 +2,7 @@ import { GenerationStyle } from '@repo/db';
 
 export const MAX_GENERATIONS = 3;
 export const GENERATION_CREDITS_COST = 10;
+export const TRACKING_CONSENT_COOKIE_NAME = 'allow-tracking-constent';
 
 export const STYLE_DESCRIPTION: Record<GenerationStyle, string> = {
 	[GenerationStyle.CARTOONISH]: 'illustrated in a fun, cartoonish style with exaggerated features and bright colors',

@@ -1,6 +1,9 @@
 import { Metadata } from 'next';
 import { getFormatter, getTranslations } from 'next-intl/server';
+import { cookies } from 'next/headers';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import CookiePreferenceReset from './cookie-preference-reset';
 
 export async function generateMetadata(): Promise<Metadata> {
 	const t = await getTranslations();
@@ -33,7 +36,7 @@ export async function generateMetadata(): Promise<Metadata> {
 	};
 }
 
-export default async function TermsOfServicePage() {
+export default async function CookiePolicy() {
 	const format = await getFormatter();
 
 	return (
@@ -98,6 +101,8 @@ export default async function TermsOfServicePage() {
 				We use NextAuth to authenticate users on our platform. NextAuth allows users to sign in using various third-party services, such as Google,
 				making it easy to create an account and start using our application. These authentication cookies are necessary for login functionality.
 			</p>
+
+			<CookiePreferenceReset />
 		</main>
 	);
 }

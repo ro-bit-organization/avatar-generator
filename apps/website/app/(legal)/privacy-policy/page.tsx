@@ -34,7 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
 	};
 }
 
-export default async function PrivacyPolicyPage() {
+export default async function PrivacyPolicy() {
 	const t = await getTranslations();
 	const format = await getFormatter();
 

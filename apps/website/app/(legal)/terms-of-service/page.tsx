@@ -34,7 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
 	};
 }
 
-export default async function TermsOfServicePage() {
+export default async function TermsOfService() {
 	const t = await getTranslations();
 	const format = await getFormatter();
 

@@ -32,7 +32,7 @@ export async function generateMetadata(): Promise<Metadata> {
 	};
 }
 
-export default async function RefundPage() {
+export default async function RefundPolicy() {
 	const t = await getTranslations();
 	const format = await getFormatter();
 
