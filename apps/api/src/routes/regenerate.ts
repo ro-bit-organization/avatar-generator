@@ -77,9 +77,9 @@ app.post('/', async (c) => {
 		});
 	}
 
-	if (generation.status !== GenerationStatus.IN_GENERATION) {
+	if (generation.status === GenerationStatus.IN_PROGRESS) {
 		return c.json({
-			error: `A generation is already in progress!`
+			error: `The generation is already in progress!`
 		});
 	}
 
@@ -91,7 +91,7 @@ app.post('/', async (c) => {
 		take: 3
 	});
 
-	if (inProgressGenerations?.length === MAX_CONCURENT_GENERATIONS) {
+	if (inProgressGenerations?.length >= MAX_CONCURENT_GENERATIONS) {
 		return c.json({
 			error: `You reached the maximum number of concurent generations!`
 		});
@@ -103,7 +103,7 @@ app.post('/', async (c) => {
 				id
 			},
 			data: {
-				status: GenerationStatus.IN_GENERATION
+				status: GenerationStatus.IN_PROGRESS
 			}
 		});
 
