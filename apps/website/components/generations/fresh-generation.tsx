@@ -32,7 +32,7 @@ type Props = {
 	generation: Prisma.GenerationGetPayload<typeof Generation>;
 };
 
-enum Step {
+enum StepId {
 	INTRO_TYPEIN = 'intro_typein',
 	STYLE_TYPEIN = 'style_typein',
 	STYLE_SELECT = 'style_select',
@@ -49,36 +49,39 @@ enum Status {
 	IDLE = 'idle'
 }
 
-const initialState: {
-	id: Step;
+interface Step {
+	id: StepId;
 	status: Status;
-}[] = [
+	message?: string;
+}
+
+const initialState: Step[] = [
 	{
-		id: Step.INTRO_TYPEIN,
+		id: StepId.INTRO_TYPEIN,
 		status: Status.WRITING
 	},
 	{
-		id: Step.STYLE_TYPEIN,
+		id: StepId.STYLE_TYPEIN,
 		status: Status.HIDDEN
 	},
 	{
-		id: Step.STYLE_SELECT,
+		id: StepId.STYLE_SELECT,
 		status: Status.HIDDEN
 	},
 	{
-		id: Step.IMAGE_TYPEIN,
+		id: StepId.IMAGE_TYPEIN,
 		status: Status.HIDDEN
 	},
 	{
-		id: Step.IMAGE_SELECT,
+		id: StepId.IMAGE_SELECT,
 		status: Status.HIDDEN
 	},
 	{
-		id: Step.GENERATION_PENDING,
+		id: StepId.GENERATION_PENDING,
 		status: Status.HIDDEN
 	},
 	{
-		id: Step.ERROR,
+		id: StepId.ERROR,
 		status: Status.HIDDEN
 	}
 ];
@@ -93,12 +96,7 @@ export default function FreshGeneration({ generation }: Props) {
 	const formRef = useRef<HTMLFormElement>(null);
 
 	const [modalOpen, setModalOpen] = useState<boolean>(false);
-	const [steps, setSteps] = useState<
-		{
-			id: Step;
-			status: Status;
-		}[]
-	>(initialState);
+	const [steps, setSteps] = useState<Step[]>(initialState);
 
 	const form = useForm<GenerationSchema>({
 		resolver: zodResolver(generationSchema),
@@ -111,23 +109,22 @@ export default function FreshGeneration({ generation }: Props) {
 	const style = form.watch('style');
 	const image = form.watch('image');
 
-	function getStepStatus(id: Step): Status {
-		return steps.find((step) => step.id === id)!.status;
+	function getStep(id: StepId): Step {
+		return steps.find((step) => step.id === id)!;
 	}
 
-	function updateSteps(
-		_steps: {
-			id: Step;
-			status: Status;
-		}[]
-	): void {
-		setSteps(steps.map((step) => _steps.find(({ id }) => step.id === id) || step));
+	function getStepStatus(id: StepId): Status {
+		return getStep(id).status;
+	}
+
+	function updateSteps(_steps: Step[]): void {
+		setSteps((steps) => steps.map((step) => _steps.find(({ id }) => step.id === id) || step));
 	}
 
 	async function onSubmit({ image, style }: GenerationSchema) {
 		updateSteps([
-			{ id: Step.GENERATION_PENDING, status: Status.WRITING },
-			{ id: Step.ERROR, status: Status.HIDDEN }
+			{ id: StepId.GENERATION_PENDING, status: Status.LOADING },
+			{ id: StepId.ERROR, status: Status.HIDDEN }
 		]);
 
 		const formData = new FormData();
@@ -153,15 +150,19 @@ export default function FreshGeneration({ generation }: Props) {
 				return;
 			}
 
-			const { error } = await response.json();
+			const { error }: { error: string } = await response.json();
 
 			if (error) {
 				throw new Error(error);
 			}
 		} catch (e) {
 			updateSteps([
-				{ id: Step.GENERATION_PENDING, status: Status.HIDDEN },
-				{ id: Step.ERROR, status: Status.WRITING }
+				{ id: StepId.GENERATION_PENDING, status: Status.HIDDEN },
+				{
+					id: StepId.ERROR,
+					status: Status.WRITING,
+					message: e instanceof Error ? t('generate.messages.error', { error: e.message.toLowerCase() }) : t('generate.messages.default_error')
+				}
 			]);
 		}
 	}
@@ -171,7 +172,7 @@ export default function FreshGeneration({ generation }: Props) {
 			<div className="flex h-full w-full flex-col gap-4">
 				<Form {...form}>
 					<form ref={formRef} onSubmit={form.handleSubmit(onSubmit)} className="flex flex-1 flex-col gap-8">
-						{getStepStatus(Step.INTRO_TYPEIN) !== Status.HIDDEN && (
+						{getStepStatus(StepId.INTRO_TYPEIN) !== Status.HIDDEN && (
 							<Card className="flex flex-col gap-4 rounded-md p-4">
 								<ChatMessage
 									text={t('generate.messages.intro_typein', {
@@ -179,20 +180,20 @@ export default function FreshGeneration({ generation }: Props) {
 									})
 										.replaceAll('(strong)', '<strong>')
 										.replaceAll('(/strong)', '</strong>')}
-									onComplete={() => updateSteps([{ id: Step.STYLE_TYPEIN, status: Status.WRITING }])}
+									onComplete={() => updateSteps([{ id: StepId.STYLE_TYPEIN, status: Status.WRITING }])}
 								/>
 							</Card>
 						)}
 
-						{getStepStatus(Step.STYLE_TYPEIN) !== Status.HIDDEN && (
+						{getStepStatus(StepId.STYLE_TYPEIN) !== Status.HIDDEN && (
 							<Card className="flex flex-col gap-4 rounded-md p-4">
 								<ChatMessage
 									text={t('generate.messages.style_select').replaceAll('(strong)', '<strong>').replaceAll('(/strong)', '</strong>')}
 									onComplete={() =>
 										updateSteps([
-											{ id: Step.STYLE_TYPEIN, status: Status.IDLE },
-											{ id: Step.STYLE_SELECT, status: Status.IDLE },
-											{ id: Step.IMAGE_TYPEIN, status: style ? Status.WRITING : Status.HIDDEN }
+											{ id: StepId.STYLE_TYPEIN, status: Status.IDLE },
+											{ id: StepId.STYLE_SELECT, status: Status.IDLE },
+											{ id: StepId.IMAGE_TYPEIN, status: style ? Status.WRITING : Status.HIDDEN }
 										])
 									}
 								/>
@@ -201,8 +202,8 @@ export default function FreshGeneration({ generation }: Props) {
 
 						<div
 							className={cn('grid h-0 translate-y-4 grid-cols-1 gap-4 opacity-0 transition-all sm:grid-cols-2 md:grid-cols-3', {
-								'h-auto translate-y-0 opacity-100': getStepStatus(Step.STYLE_SELECT) !== Status.HIDDEN,
-								'pointer-events-none': getStepStatus(Step.STYLE_SELECT) === Status.HIDDEN
+								'h-auto translate-y-0 opacity-100': getStepStatus(StepId.STYLE_SELECT) !== Status.HIDDEN,
+								'pointer-events-none': getStepStatus(StepId.STYLE_SELECT) === Status.HIDDEN
 							})}
 						>
 							{Object.values(GenerationStyle).map((_style) => (
@@ -215,7 +216,7 @@ export default function FreshGeneration({ generation }: Props) {
 									})}
 									onClick={() => {
 										form.setValue('style', _style);
-										updateSteps([{ id: Step.IMAGE_TYPEIN, status: Status.WRITING }]);
+										updateSteps([{ id: StepId.IMAGE_TYPEIN, status: Status.WRITING }]);
 									}}
 								>
 									{t(`generate.styles.${_style}`)}
@@ -223,14 +224,14 @@ export default function FreshGeneration({ generation }: Props) {
 							))}
 						</div>
 
-						{getStepStatus(Step.IMAGE_TYPEIN) !== Status.HIDDEN && (
+						{getStepStatus(StepId.IMAGE_TYPEIN) !== Status.HIDDEN && (
 							<Card className="flex flex-col gap-4 rounded-md p-4">
 								<ChatMessage
 									text={t('generate.messages.image_select')}
 									onComplete={() =>
 										updateSteps([
-											{ id: Step.IMAGE_TYPEIN, status: Status.IDLE },
-											{ id: Step.IMAGE_SELECT, status: Status.IDLE }
+											{ id: StepId.IMAGE_TYPEIN, status: Status.IDLE },
+											{ id: StepId.IMAGE_SELECT, status: Status.IDLE }
 										])
 									}
 								/>
@@ -243,8 +244,8 @@ export default function FreshGeneration({ generation }: Props) {
 							render={({ field }) => (
 								<FormItem
 									className={cn('h-0 w-full flex-1 translate-y-4 overflow-hidden opacity-0 transition-all', {
-										'h-auto translate-y-0 overflow-visible opacity-100': getStepStatus(Step.IMAGE_SELECT) !== Status.HIDDEN,
-										'pointer-events-none': getStepStatus(Step.IMAGE_SELECT) === Status.HIDDEN
+										'h-auto translate-y-0 overflow-visible opacity-100': getStepStatus(StepId.IMAGE_SELECT) !== Status.HIDDEN,
+										'pointer-events-none': getStepStatus(StepId.IMAGE_SELECT) === Status.HIDDEN
 									})}
 								>
 									<FormControl>
@@ -288,7 +289,7 @@ export default function FreshGeneration({ generation }: Props) {
 													<div
 														className={cn('mb-4 flex gap-4', {
 															hidden: !field.value,
-															'pointer-events-none': getStepStatus(Step.GENERATION_PENDING) === Status.LOADING
+															'pointer-events-none': getStepStatus(StepId.GENERATION_PENDING) === Status.LOADING
 														})}
 													>
 														<div className="w-[340px]">
@@ -333,19 +334,18 @@ export default function FreshGeneration({ generation }: Props) {
 							)}
 						/>
 
-						{getStepStatus(Step.GENERATION_PENDING) !== Status.HIDDEN && (
+						{getStepStatus(StepId.GENERATION_PENDING) !== Status.HIDDEN && (
 							<Card className="flex flex-col gap-4 rounded-md p-4">
 								<ChatMessage
 									text={t('generate.messages.ongoing_generation')}
-									loading={getStepStatus(Step.GENERATION_PENDING) === Status.LOADING}
-									onComplete={() => updateSteps([{ id: Step.GENERATION_PENDING, status: Status.LOADING }])}
+									loading={getStepStatus(StepId.GENERATION_PENDING) === Status.LOADING}
 								/>
 							</Card>
 						)}
 
-						{getStepStatus(Step.ERROR) !== Status.HIDDEN && (
+						{getStepStatus(StepId.ERROR) !== Status.HIDDEN && (
 							<Card className="bg-destructive flex flex-col gap-4 rounded-md p-4">
-								<ChatMessage text={t('generate.messages.error')} onComplete={() => updateSteps([{ id: Step.ERROR, status: Status.IDLE }])}>
+								<ChatMessage text={getStep(StepId.ERROR).message!} onComplete={() => updateSteps([{ id: StepId.ERROR, status: Status.IDLE }])}>
 									<Button
 										type="button"
 										size="sm"

@@ -129,7 +129,8 @@
 			"ongoing_generation": "✨ Hang tight, your avatar is coming to life!",
 			"ongoing_images": "🪄 Your avatar is all set. Enjoy your creation!",
 			"final_images": "🖼️ Here are the three generations of avatars you've created! Each version is displayed below with its corresponding image.",
-			"error": "🚨 Oops, something went wrong with the avatar generation. Would you like to retry?"
+			"default_error": "🚨 Oops, something went wrong with the avatar generation. Would you like to retry?",
+			"error": "🚨 Oops, {error} Would you like to retry?"
 		},
 		"styles": {
 			"CARTOONISH": "Cartoonish",

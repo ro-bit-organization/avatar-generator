@@ -59,6 +59,7 @@ export default function ChatMessage({ text, loading, children, classNames, onCom
 				{children}
 			</div>
 			<div className="flex items-center gap-2">
+				{loading && <LoaderIcon className="h-4 w-4 animate-spin" />}
 				<Typewriter
 					options={{
 						delay: 15,
@@ -86,8 +87,6 @@ export default function ChatMessage({ text, loading, children, classNames, onCom
 							.start();
 					}}
 				/>
-
-				{loading && <LoaderIcon className="h-4 w-4 animate-spin" />}
 			</div>
 			{!completed.current && <span className="text-muted-foreground text-end text-sm">{t('generate.common.skip_message')}</span>}
 		</>

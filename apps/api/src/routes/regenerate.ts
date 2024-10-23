@@ -7,6 +7,7 @@ import { nanoid } from 'nanoid';
 import { s3 } from '../lib/clients/aws';
 import openai from '../lib/clients/openai';
 import { GENERATION_CREDITS_COST, MAX_CONCURENT_GENERATIONS, STYLE_DESCRIPTION } from '../lib/const';
+import GenerationError from '../lib/types/generation-error';
 import { regenerationSchema } from '../lib/validation/regeneration';
 
 const app = new Hono();
@@ -62,42 +63,36 @@ app.post('/', async (c) => {
 
 	const session = c.get('authUser');
 
-	const generation = await prisma.generation.findFirst({
-		where: {
-			id
-		},
-		include: {
-			entries: true
-		}
-	});
-
-	if (!generation || generation.userId !== session.user!.id) {
-		return c.json({
-			error: 'Generation does not exist!'
-		});
-	}
-
-	if (generation.status === GenerationStatus.IN_PROGRESS) {
-		return c.json({
-			error: `The generation is already in progress!`
-		});
-	}
-
-	const inProgressGenerations = await prisma.generation.findMany({
-		where: {
-			userId: session.user.id,
-			status: GenerationStatus.IN_PROGRESS
-		},
-		take: 3
-	});
-
-	if (inProgressGenerations?.length >= MAX_CONCURENT_GENERATIONS) {
-		return c.json({
-			error: `You reached the maximum number of concurent generations!`
-		});
-	}
-
 	try {
+		const generation = await prisma.generation.findFirst({
+			where: {
+				id
+			},
+			include: {
+				entries: true
+			}
+		});
+
+		if (!generation || generation.userId !== session.user!.id) {
+			throw new GenerationError('The Generation does not exist!', 400);
+		}
+
+		if (generation.status === GenerationStatus.IN_PROGRESS) {
+			throw new GenerationError('The generation is already in progress!', 400);
+		}
+
+		const inProgressGenerations = await prisma.generation.findMany({
+			where: {
+				userId: session.user.id,
+				status: GenerationStatus.IN_PROGRESS
+			},
+			take: 3
+		});
+
+		if (inProgressGenerations?.length >= MAX_CONCURENT_GENERATIONS) {
+			throw new GenerationError('You reached the maximum number of concurent generations!', 400);
+		}
+
 		await prisma.generation.update({
 			where: {
 				id
@@ -205,7 +200,10 @@ app.post('/', async (c) => {
 
 		return c.body(null, 204);
 	} catch (e) {
-		return c.json({ error: e instanceof Error ? e.message : 'An error occured during regeneration!' }, 500);
+		return c.json(
+			{ error: e instanceof GenerationError ? e.message : 'An error occured during generation!' },
+			e instanceof GenerationError ? e.status : 500
+		);
 	} finally {
 		await prisma.generation.update({
 			where: {

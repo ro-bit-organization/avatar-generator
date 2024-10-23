@@ -14,7 +14,6 @@ import { Button, buttonVariants } from '~/components/ui/button';
 import { Card } from '~/components/ui/card';
 import { Form, FormControl, FormField, FormItem } from '~/components/ui/form';
 import { Textarea } from '~/components/ui/textarea';
-import { useToast } from '~/hooks/use-toast';
 import { revalidate } from '~/lib/actions/generate';
 import { RegenerationSchema, regenerationSchema } from '~/lib/forms/generation';
 import { cn } from '~/lib/utils';
@@ -30,7 +29,7 @@ type Props = {
 	generation: Prisma.GenerationGetPayload<typeof Generation>;
 };
 
-enum Step {
+enum StepId {
 	GENERATION_TYPEIN = 'generation_typein',
 	PROMPT = 'prompt',
 	GENERATION_PENDING = 'generation_pending',
@@ -44,24 +43,27 @@ enum Status {
 	IDLE = 'idle'
 }
 
-const initialState: {
-	id: Step;
+interface Step {
+	id: StepId;
 	status: Status;
-}[] = [
+	message?: string;
+}
+
+const initialState: Step[] = [
 	{
-		id: Step.GENERATION_TYPEIN,
+		id: StepId.GENERATION_TYPEIN,
 		status: Status.IDLE
 	},
 	{
-		id: Step.PROMPT,
+		id: StepId.PROMPT,
 		status: Status.HIDDEN
 	},
 	{
-		id: Step.GENERATION_PENDING,
+		id: StepId.GENERATION_PENDING,
 		status: Status.HIDDEN
 	},
 	{
-		id: Step.ERROR,
+		id: StepId.ERROR,
 		status: Status.HIDDEN
 	}
 ];
@@ -73,12 +75,7 @@ export default function OngoingGeneration({ generation }: Props) {
 	const formRef = useRef<HTMLFormElement>(null);
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-	const [steps, setSteps] = useState<
-		{
-			id: Step;
-			status: Status;
-		}[]
-	>(initialState);
+	const [steps, setSteps] = useState<Step[]>(initialState);
 
 	const form = useForm<RegenerationSchema>({
 		resolver: zodResolver(regenerationSchema),
@@ -89,23 +86,22 @@ export default function OngoingGeneration({ generation }: Props) {
 
 	const prompt = form.watch('prompt');
 
-	function getStepStatus(id: Step): Status {
-		return steps.find((step) => step.id === id)!.status;
+	function getStep(id: StepId): Step {
+		return steps.find((step) => step.id === id)!;
 	}
 
-	function updateSteps(
-		_steps: {
-			id: Step;
-			status: Status;
-		}[]
-	): void {
-		setSteps(steps.map((step) => _steps.find(({ id }) => step.id === id) || step));
+	function getStepStatus(id: StepId): Status {
+		return getStep(id).status;
+	}
+
+	function updateSteps(_steps: Step[]): void {
+		setSteps((steps) => steps.map((step) => _steps.find(({ id }) => step.id === id) || step));
 	}
 
 	async function onSubmit({ prompt }: RegenerationSchema) {
 		updateSteps([
-			{ id: Step.GENERATION_PENDING, status: Status.WRITING },
-			{ id: Step.ERROR, status: Status.HIDDEN }
+			{ id: StepId.GENERATION_PENDING, status: Status.LOADING },
+			{ id: StepId.ERROR, status: Status.HIDDEN }
 		]);
 
 		const formData = new FormData();
@@ -145,15 +141,19 @@ export default function OngoingGeneration({ generation }: Props) {
 				return;
 			}
 
-			const { error } = await response.json();
+			const { error }: { error: string } = await response.json();
 
 			if (error) {
 				throw new Error(error);
 			}
 		} catch (e) {
 			updateSteps([
-				{ id: Step.GENERATION_PENDING, status: Status.HIDDEN },
-				{ id: Step.ERROR, status: Status.WRITING }
+				{ id: StepId.GENERATION_PENDING, status: Status.HIDDEN },
+				{
+					id: StepId.ERROR,
+					status: Status.WRITING,
+					message: e instanceof Error ? t('generate.messages.error', { error: e.message.toLowerCase() }) : t('generate.messages.default_error')
+				}
 			]);
 		}
 	}
@@ -164,14 +164,14 @@ export default function OngoingGeneration({ generation }: Props) {
 
 	return (
 		<div className="flex h-full w-full flex-col gap-4">
-			{getStepStatus(Step.GENERATION_TYPEIN) !== Status.HIDDEN && (
+			{getStepStatus(StepId.GENERATION_TYPEIN) !== Status.HIDDEN && (
 				<Card className="flex flex-col gap-4 rounded-md p-4">
 					<ChatMessage
 						text={t('generate.messages.ongoing_images')}
 						onComplete={() => {
 							updateSteps([
-								{ id: Step.GENERATION_TYPEIN, status: Status.IDLE },
-								{ id: Step.PROMPT, status: Status.IDLE }
+								{ id: StepId.GENERATION_TYPEIN, status: Status.IDLE },
+								{ id: StepId.PROMPT, status: Status.IDLE }
 							]);
 							textareaRef.current?.focus();
 						}}
@@ -180,8 +180,8 @@ export default function OngoingGeneration({ generation }: Props) {
 							type="button"
 							size="sm"
 							className={cn('translate-y-4 overflow-hidden opacity-0 transition-all', {
-								'translate-y-0 overflow-visible opacity-100': getStepStatus(Step.PROMPT) !== Status.HIDDEN,
-								'pointer-events-none': getStepStatus(Step.PROMPT) === Status.HIDDEN
+								'translate-y-0 overflow-visible opacity-100': getStepStatus(StepId.PROMPT) !== Status.HIDDEN,
+								'pointer-events-none': getStepStatus(StepId.PROMPT) === Status.HIDDEN
 							})}
 							onClick={() => download()}
 						>
@@ -192,7 +192,7 @@ export default function OngoingGeneration({ generation }: Props) {
 
 					<div
 						className={cn('grid h-0 translate-y-4 grid-cols-3 gap-2 overflow-hidden opacity-0 transition-all', {
-							'h-auto translate-y-0 overflow-visible opacity-100': getStepStatus(Step.PROMPT) !== Status.HIDDEN
+							'h-auto translate-y-0 overflow-visible opacity-100': getStepStatus(StepId.PROMPT) !== Status.HIDDEN
 						})}
 					>
 						{generation.entries.map((entry, index) => (
@@ -209,19 +209,15 @@ export default function OngoingGeneration({ generation }: Props) {
 				</Card>
 			)}
 
-			{getStepStatus(Step.GENERATION_PENDING) !== Status.HIDDEN && (
+			{getStepStatus(StepId.GENERATION_PENDING) !== Status.HIDDEN && (
 				<Card className="flex flex-col gap-4 rounded-md p-4">
-					<ChatMessage
-						text={t('generate.messages.ongoing_generation')}
-						loading={getStepStatus(Step.GENERATION_PENDING) === Status.LOADING}
-						onComplete={() => updateSteps([{ id: Step.GENERATION_PENDING, status: Status.LOADING }])}
-					/>
+					<ChatMessage text={t('generate.messages.ongoing_generation')} loading={getStepStatus(StepId.GENERATION_PENDING) === Status.LOADING} />
 				</Card>
 			)}
 
-			{getStepStatus(Step.ERROR) !== Status.HIDDEN && (
+			{getStepStatus(StepId.ERROR) !== Status.HIDDEN && (
 				<Card className="bg-destructive flex flex-col gap-4 rounded-md p-4">
-					<ChatMessage text={t('generate.messages.error')} onComplete={() => updateSteps([{ id: Step.ERROR, status: Status.IDLE }])}>
+					<ChatMessage text={getStep(StepId.ERROR).message!} onComplete={() => updateSteps([{ id: StepId.ERROR, status: Status.IDLE }])}>
 						<Button
 							type="button"
 							size="sm"
@@ -241,7 +237,7 @@ export default function OngoingGeneration({ generation }: Props) {
 					ref={formRef}
 					onSubmit={form.handleSubmit(onSubmit)}
 					className={cn('h-0 translate-y-4 opacity-0 transition-all', {
-						'h-auto translate-y-0 opacity-100': getStepStatus(Step.PROMPT) !== Status.HIDDEN
+						'h-auto translate-y-0 opacity-100': getStepStatus(StepId.PROMPT) !== Status.HIDDEN
 					})}
 				>
 					<div className="_PromptContainer_1c9j5_1 shadow-xs border-bolt-elements-borderColor bg-bolt-elements-prompt-background rounded-lg border backdrop-blur">
@@ -283,7 +279,7 @@ export default function OngoingGeneration({ generation }: Props) {
 													{...field}
 													autoFocus
 													placeholder={t('generate.ongoing_generation.fields.regeneration.placeholder')}
-													disabled={[Status.WRITING, Status.LOADING].includes(getStepStatus(Step.GENERATION_PENDING))}
+													disabled={[Status.WRITING, Status.LOADING].includes(getStepStatus(StepId.GENERATION_PENDING))}
 													className="bg-card max-h-[250px] min-h-[135px] w-full resize-y overflow-y-auto border-0 py-4 pl-4 pr-16 text-sm outline-0 focus-visible:ring-purple-600"
 												/>
 
@@ -294,7 +290,7 @@ export default function OngoingGeneration({ generation }: Props) {
 															'translate-y-0 opacity-100': !!prompt
 														}
 													)}
-													disabled={getStepStatus(Step.GENERATION_PENDING) === Status.LOADING}
+													disabled={getStepStatus(StepId.GENERATION_PENDING) === Status.LOADING}
 												>
 													<div className="text-lg">
 														<ArrowRight className="h-6 w-6" />
@@ -311,7 +307,7 @@ export default function OngoingGeneration({ generation }: Props) {
 			</Form>
 			<div
 				className={cn('mx-auto flex translate-y-4 flex-col gap-4 opacity-0 transition-all', {
-					'translate-y-0 overflow-visible opacity-100': getStepStatus(Step.PROMPT) !== Status.HIDDEN
+					'translate-y-0 overflow-visible opacity-100': getStepStatus(StepId.PROMPT) !== Status.HIDDEN
 				})}
 			>
 				<span className="flex items-center justify-center py-4 text-center text-white">{t('generate.ongoing_generation.or_you_can')}</span>
