@@ -1,12 +1,12 @@
 import { Upload } from '@aws-sdk/lib-storage';
 import { verifyAuth } from '@repo/auth-js';
-import { GenerationStyle, prisma } from '@repo/db';
+import { GenerationStatus, GenerationStyle, prisma } from '@repo/db';
 import { Hono } from 'hono';
 import { Base64 } from 'js-base64';
 import { nanoid } from 'nanoid';
 import { s3 } from '../lib/clients/aws';
 import openai from '../lib/clients/openai';
-import { GENERATION_CREDITS_COST, STYLE_DESCRIPTION } from '../lib/const';
+import { GENERATION_CREDITS_COST, MAX_CONCURENT_GENERATIONS, STYLE_DESCRIPTION } from '../lib/const';
 import { fileToBase64 } from '../lib/utils';
 import { generationSchema } from '../lib/validation/generation';
 
@@ -59,7 +59,48 @@ app.post('/', async (c) => {
 		});
 	}
 
+	const generation = await prisma.generation.findFirst({
+		where: {
+			id
+		}
+	});
+
+	if (!generation) {
+		return c.json({
+			error: `Generation does not exist!`
+		});
+	}
+
+	if (generation.status !== GenerationStatus.IN_PROGRESS) {
+		return c.json({
+			error: `A generation is already in progress!`
+		});
+	}
+
+	const inProgressGenerations = await prisma.generation.findMany({
+		where: {
+			userId: session.user.id,
+			status: GenerationStatus.IN_PROGRESS
+		},
+		take: 3
+	});
+
+	if (inProgressGenerations?.length === MAX_CONCURENT_GENERATIONS) {
+		return c.json({
+			error: `You reached the maximum number of concurent generations!`
+		});
+	}
+
 	try {
+		await prisma.generation.update({
+			where: {
+				id
+			},
+			data: {
+				status: GenerationStatus.IN_GENERATION
+			}
+		});
+
 		const imageBase64 = await fileToBase64(image!);
 
 		const completion = await openai.chat.completions.create({
@@ -156,9 +197,16 @@ app.post('/', async (c) => {
 
 		return c.body(null, 204);
 	} catch (e) {
-		console.log(e);
-
 		return c.json({ error: e instanceof Error ? e.message : 'An error occured during generation!' }, 500);
+	} finally {
+		await prisma.generation.update({
+			where: {
+				id
+			},
+			data: {
+				status: GenerationStatus.IDLE
+			}
+		});
 	}
 });
 

@@ -135,10 +135,16 @@ model GenerationEntry {
     @@map("generation_entry")
 }
 
+enum GenerationStatus {
+    IDLE
+    IN_PROGRESS
+}
+
 model Generation {
     id      String            @id @default(cuid())
     style   GenerationStyle?
     entries GenerationEntry[]
+    status  GenerationStatus  @default(IDLE)
 
     userId String
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
