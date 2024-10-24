@@ -26,7 +26,8 @@
 			"cache": false
 		},
 		"db:migrate-deploy": {
-			"cache": false
+			"cache": false,
+			"env": ["DIRECT_URL", "DATABASE_URL"]
 		}
 	}
 }
