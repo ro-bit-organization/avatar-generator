@@ -179,7 +179,7 @@ app.post('/', async (c) => {
 				entries: {
 					create: [
 						{
-							prompt: null,
+							prompt,
 							imageUrl: Location
 						}
 					]
