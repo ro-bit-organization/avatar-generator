@@ -5,7 +5,7 @@ export default async function Loading() {
 	const t = await getTranslations();
 
 	return (
-		<main className="mx-auto w-screen max-w-screen-md p-4">
+		<main className="mx-auto w-screen max-w-screen-md flex-1 p-4">
 			<div className="flex flex-col">
 				<div className="mb-12 flex flex-col gap-2">
 					<h1 className="text-3xl font-bold">{t('latest-generations.title')}</h1>
