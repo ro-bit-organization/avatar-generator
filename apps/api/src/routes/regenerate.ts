@@ -6,7 +6,7 @@ import { Base64 } from 'js-base64';
 import { nanoid } from 'nanoid';
 import { s3 } from '../lib/clients/aws';
 import openai from '../lib/clients/openai';
-import { GENERATION_CREDITS_COST, MAX_CONCURENT_GENERATIONS, STYLE_DESCRIPTION } from '../lib/const';
+import { MAX_CONCURENT_GENERATIONS, STYLE_DESCRIPTION } from '../lib/const';
 import GenerationError from '../lib/types/generation-error';
 import { regenerationSchema } from '../lib/validation/regeneration';
 
@@ -171,32 +171,21 @@ app.post('/', async (c) => {
 			throw new Error('An error occured during file upload!');
 		}
 
-		await Promise.all([
-			prisma.generation.update({
-				where: {
-					id
-				},
-				data: {
-					entries: {
-						create: [
-							{
-								prompt: null,
-								imageUrl: Location
-							}
-						]
-					}
+		await prisma.generation.update({
+			where: {
+				id
+			},
+			data: {
+				entries: {
+					create: [
+						{
+							prompt: null,
+							imageUrl: Location
+						}
+					]
 				}
-			}),
-
-			prisma.user.update({
-				where: {
-					id: session.user!.id
-				},
-				data: {
-					credits: session.user!.credits - GENERATION_CREDITS_COST
-				}
-			})
-		]);
+			}
+		});
 
 		return c.body(null, 204);
 	} catch (e) {
