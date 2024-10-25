@@ -55,7 +55,7 @@ export default function CookieConsent({ variant = 'default', demo = false, onAcc
 			<div className="dark:bg-card bg-background border-border m-3 rounded-md border shadow-lg">
 				<div className="grid gap-2">
 					<div className="border-border flex h-14 items-center justify-between border-b p-4">
-						<h1 className="text-lg font-medium">We use cookies</h1>
+						<h3 className="text-lg font-medium">We use cookies</h3>
 						<CookieIcon className="h-[1.2rem] w-[1.2rem]" />
 					</div>
 					<div className="p-4">
@@ -96,7 +96,7 @@ export default function CookieConsent({ variant = 'default', demo = false, onAcc
 		>
 			<div className="dark:bg-card bg-background border-border m-3 rounded-lg border">
 				<div className="flex items-center justify-between p-3">
-					<h1 className="text-lg font-medium">We use cookies</h1>
+					<h3 className="text-lg font-medium">We use cookies</h3>
 					<CookieIcon className="h-[1.2rem] w-[1.2rem]" />
 				</div>
 				<div className="-mt-2 p-3">
