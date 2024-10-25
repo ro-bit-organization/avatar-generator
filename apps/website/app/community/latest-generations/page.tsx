@@ -1,8 +1,8 @@
-import { prisma } from '@repo/db';
+import { GenerationVisibility, prisma } from '@repo/db';
 import { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 import { redirect } from 'next/navigation';
 import LastGenerationsClient from './client.page';
-import { getTranslations } from 'next-intl/server';
 
 function getPageUrl(page: number): string {
 	const url = new URL(`${process.env.NEXT_PUBLIC_WEBSITE_URL}/community/latest-generations`);
@@ -67,6 +67,11 @@ export default async function LastGenerations({ searchParams }: Props) {
 	}
 
 	const generations = await prisma.generationEntry.findMany({
+		where: {
+			generation: {
+				visibility: GenerationVisibility.PUBLIC
+			}
+		},
 		omit: {
 			generationId: true,
 			prompt: true

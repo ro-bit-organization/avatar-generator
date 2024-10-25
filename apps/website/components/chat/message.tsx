@@ -5,17 +5,17 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { ReactNode, useEffect, useRef } from 'react';
 import Typewriter, { TypewriterClass } from 'typewriter-effect';
-import { cn, stringSplitter } from '~/lib/utils';
+import { stringSplitter } from '~/lib/utils';
 
 type Props = {
 	text: string;
 	loading?: boolean;
+	skippable?: boolean;
 	children?: ReactNode;
-	classNames?: { text?: string };
 	onComplete?: () => void;
 };
 
-export default function ChatMessage({ text, loading, children, classNames, onComplete }: Props) {
+export default function ChatMessage({ text, loading, children, skippable = true, onComplete }: Props) {
 	const t = useTranslations();
 	const typewriter = useRef<TypewriterClass | null>(null);
 	const skipped = useRef<boolean>(false);
@@ -47,6 +47,10 @@ export default function ChatMessage({ text, loading, children, classNames, onCom
 	}
 
 	useEffect(() => {
+		if (!skippable) {
+			return;
+		}
+
 		document.addEventListener('click', stopTyping);
 
 		return clearEvent;
@@ -63,7 +67,6 @@ export default function ChatMessage({ text, loading, children, classNames, onCom
 				<Typewriter
 					options={{
 						delay: 15,
-						wrapperClassName: cn('Typewriter__wrapper', classNames?.text),
 						stringSplitter
 					}}
 					onInit={(_typewriter) => {
@@ -88,7 +91,7 @@ export default function ChatMessage({ text, loading, children, classNames, onCom
 					}}
 				/>
 			</div>
-			{!completed.current && <span className="text-muted-foreground text-end text-sm">{t('generate.common.skip_message')}</span>}
+			{skippable && !completed.current && <span className="text-muted-foreground text-end text-sm">{t('generate.common.skip_message')}</span>}
 		</>
 	);
 }

@@ -1,6 +1,6 @@
 import { Upload } from '@aws-sdk/lib-storage';
 import { verifyAuth } from '@repo/auth-js';
-import { GenerationStatus, GenerationStyle, prisma } from '@repo/db';
+import { GenerationStatus, GenerationStyle, GenerationVisibility, prisma } from '@repo/db';
 import { Hono } from 'hono';
 import { Base64 } from 'js-base64';
 import { nanoid } from 'nanoid';
@@ -37,13 +37,15 @@ app.post('/', async (c) => {
 	const formData = await c.req.formData();
 
 	const id = formData.get('id') as string;
-	const image = formData.get('image') as File;
+	const visibility = formData.get('visibility') as GenerationVisibility;
 	const style = formData.get('style') as GenerationStyle;
+	const image = formData.get('image') as File;
 
 	const validation = generationSchema.safeParse({
 		id,
-		image,
-		style
+		visibility,
+		style,
+		image
 	});
 
 	if (!validation.success) {
@@ -168,6 +170,7 @@ app.post('/', async (c) => {
 					id
 				},
 				data: {
+					visibility,
 					style,
 					entries: {
 						create: [
@@ -192,6 +195,8 @@ app.post('/', async (c) => {
 
 		return c.body(null, 204);
 	} catch (e) {
+		console.log(e);
+
 		return c.json(
 			{ error: e instanceof GenerationError ? e.message : 'An error occured during generation!' },
 			e instanceof GenerationError ? e.status : 500

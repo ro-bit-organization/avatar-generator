@@ -10,6 +10,7 @@
 		"sign_out": "Sign out",
 		"generate": "Generate",
 		"download": "Download",
+		"error_during_download": "An error occured while downloading avatars!",
 		"retry": "Retry"
 	},
 	"errors": {
@@ -57,7 +58,7 @@
 		},
 		"buy_credits_modal": {
 			"title": "Purchase Credits",
-			"description": "Choose a credit package to start generating stunning images and bring your creativity to life.",
+			"description": "Select a credit package to start creating stunning avatars — each avatar costs (strong){cost}&nbsp;credits(/strong), with (strong)2&nbsp;free&nbsp;retries(/strong) to perfect your look!",
 			"no_credit_packages": "There are no credit packages available for the moment.",
 			"credits_value": "for {value} credits",
 			"bonus": "+{value} bonus",
@@ -123,9 +124,12 @@
 			}
 		},
 		"messages": {
-			"intro_typein": "Great choice! Now, let's bring your character to life. Each avatar generation costs (strong){cost} credits(/strong), and you have the opportunity to create up to (strong)3 avatars(/strong), with (strong)2 free retries(/strong) to make sure you get the perfect look!",
-			"style_select": "Please choose a style for your avatar creation! Select from options like (strong)Cartoonish(/strong), (strong)Pixelated(/strong), (strong)Realistic(/strong) or (strong)Retro(/strong). This style will guide the design and vibe of your character.",
-			"image_select": "To create your personalized avatar, please upload a photo of yourself. This image will serve as a reference for designing your avatar with realistic details or in a stylized way. Make sure the photo is clear and shows your face for the best results.",
+			"intro_typein": "🚀 Great choice! Now, let's bring your character to life.",
+			"generation_details_typein": "Each avatar generation costs (strong){cost} credits(/strong), and you have the opportunity to create up to (strong)3 avatars(/strong), with (strong)2 free retries(/strong) to make sure you get the perfect look!",
+			"regeneration_details_typein": "You have (strong)2 free retries(/strong) to fine-tune your avatar! Use them to make adjustments and get the perfect look — no extra credits needed!",
+			"style_typein": "Please choose a style for your avatar creation! Select from options like (strong)Cartoonish(/strong), (strong)Pixelated(/strong), (strong)Realistic(/strong) or (strong)Retro(/strong). This style will guide the design and vibe of your character.",
+			"image_typein": "To create your personalized avatar, please upload a photo of yourself. This image will serve as a reference for designing your avatar with realistic details or in a stylized way. Make sure the photo is clear and shows your face for the best results.",
+			"privacy_typein": "Please choose the visibility for your avatar! Select (strong)Public(/strong) to share it with the user community, or (strong)Private(/strong) to keep it available only to you. This will determine who can view your creation.",
 			"ongoing_generation": "✨ Hang tight, your avatar is coming to life!",
 			"ongoing_images": "🪄 Your avatar is all set. Enjoy your creation!",
 			"final_images": "🖼️ Here are the three generations of avatars you've created! Each version is displayed below with its corresponding image.",
@@ -133,20 +137,66 @@
 			"error": "🚨 Oops, {error} Would you like to retry?"
 		},
 		"styles": {
-			"CARTOONISH": "Cartoonish",
-			"CLAY": "Clay",
-			"DISNEY": "Disney",
-			"FLAT": "Flat",
-			"HAND_DRAWN": "Hand-drawn",
-			"ILLUSTRATED": "Illustrated",
-			"NEON": "Neon",
-			"PIXELATED": "Pixelated",
-			"POLYGON": "Polygon",
-			"POP_ART": "Pop art",
-			"REALISTIC": "Realistic",
-			"RETRO": "Retro",
-			"STICKER": "Sticker",
-			"THREE_DIMENSIONAL": "3D"
+			"CARTOONISH": {
+				"title": "Cartoonish",
+				"description": "Embrace a fun and exaggerated look!"
+			},
+			"CLAY": {
+				"title": "Clay",
+				"description": "Sculpt your avatar with a tactile, 3D feel."
+			},
+			"DISNEY": {
+				"title": "Disney",
+				"description": "Bring the magic of animation to life!"
+			},
+			"FLAT": {
+				"title": "Flat",
+				"description": "Keep it simple with clean, 2D designs."
+			},
+			"HAND_DRAWN": {
+				"title": "Hand-drawn",
+				"description": "Add a personal touch with a sketch-like appearance."
+			},
+			"ILLUSTRATED": {
+				"title": "Illustrated",
+				"description": "Create a detailed, artistic representation."
+			},
+			"NEON": {
+				"title": "Neon",
+				"description": "Light up your avatar with vibrant, glowing effects."
+			},
+			"PIXELATED": {
+				"title": "Pixelated",
+				"description": "Go retro with a classic 8-bit inspired look."
+			},
+			"POLYGON": {
+				"title": "Polygon",
+				"description": "Construct your avatar with geometric precision."
+			},
+			"POP_ART": {
+				"title": "Pop art",
+				"description": "Make a bold statement with vivid colors and patterns."
+			},
+			"REALISTIC": {
+				"title": "Realistic",
+				"description": "Aim for lifelike detail and accuracy."
+			},
+			"RETRO": {
+				"title": "Retro",
+				"description": "Throwback to vintage styles and nostalgic designs."
+			},
+			"STICKER": {
+				"title": "Sticker",
+				"description": "Perfect for messaging apps and social media!"
+			},
+			"THREE_DIMENSIONAL": {
+				"title": "3D",
+				"description": "Bring depth and dimension to your avatar."
+			}
+		},
+		"visibility": {
+			"PUBLIC": "Public",
+			"PRIVATE": "Private"
 		}
 	},
 	"404": {

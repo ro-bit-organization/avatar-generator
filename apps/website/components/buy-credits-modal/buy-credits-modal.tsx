@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Label } from '~/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '~/components/ui/radio-group';
 import { useToast } from '~/hooks/use-toast';
+import { GENERATION_CREDITS_COST } from '~/lib/const';
 import { cn } from '~/lib/utils';
 
 type Props = {
@@ -31,7 +32,7 @@ export default function BuyCreditsModal({ open, onOpenChange }: Props) {
 
 	async function getPackages(): Promise<void> {
 		try {
-			const { data: packages, error } = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/credit-packages`, {
+			const { data: packages, error } = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/credit-packages`, {
 				credentials: 'include'
 			}).then((response) => response.json());
 
@@ -69,7 +70,7 @@ export default function BuyCreditsModal({ open, onOpenChange }: Props) {
 			const {
 				data: { paymentUrl },
 				error
-			} = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/payments`, {
+			} = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments`, {
 				method: 'POST',
 				credentials: 'include',
 				body: JSON.stringify({
@@ -98,7 +99,15 @@ export default function BuyCreditsModal({ open, onOpenChange }: Props) {
 		const DialogHeaderComponent = (
 			<DialogHeader>
 				<DialogTitle>{t('components.buy_credits_modal.title')}</DialogTitle>
-				<DialogDescription>{t('components.buy_credits_modal.description')}</DialogDescription>
+				<DialogDescription
+					dangerouslySetInnerHTML={{
+						__html: `${t('components.buy_credits_modal.description', {
+							cost: GENERATION_CREDITS_COST
+						})
+							.replaceAll('(strong)', '<strong class="text-white">')
+							.replaceAll('(/strong)', '</strong>')}`
+					}}
+				></DialogDescription>
 			</DialogHeader>
 		);
 

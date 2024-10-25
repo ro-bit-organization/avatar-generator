@@ -10,6 +10,7 @@ import { useState } from 'react';
 import ChatMessage from '~/components/chat/message';
 import { Button, buttonVariants } from '~/components/ui/button';
 import { Card } from '~/components/ui/card';
+import { useToast } from '~/hooks/use-toast';
 import { cn } from '~/lib/utils';
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -25,11 +26,26 @@ type Props = {
 
 export default function FinalizedGeneration({ generation }: Props) {
 	const t = useTranslations();
+	const { toast } = useToast();
 
 	const [showImages, setShowImages] = useState<boolean>(false);
+	const [downloading, setDownloading] = useState<boolean>(false);
 
 	function download(): void {
-		generation.entries.forEach((entry) => saveAs(entry.imageUrl));
+		setDownloading(true);
+
+		fetch(`${process.env.NEXT_PUBLIC_API_URL}/generations/${generation.id}/download`, {
+			credentials: 'include'
+		})
+			.then((response) => response.blob())
+			.then((blob) => saveAs(blob, `${generation.id}.zip`))
+			.catch(() => {
+				toast({
+					title: t('common.error_during_download'),
+					variant: 'destructive'
+				});
+			})
+			.finally(() => setDownloading(false));
 	}
 
 	return (
@@ -39,6 +55,7 @@ export default function FinalizedGeneration({ generation }: Props) {
 					<Button
 						type="button"
 						size="sm"
+						loading={downloading}
 						className={cn('translate-y-4 overflow-hidden opacity-0 transition-all', {
 							'translate-y-0 overflow-visible opacity-100': showImages,
 							'pointer-events-none': !showImages
@@ -57,13 +74,13 @@ export default function FinalizedGeneration({ generation }: Props) {
 				>
 					{generation.entries.map((entry, index) => (
 						<Image
-						key={entry.id}
-						src={entry.imageUrl}
-						width="256"
-						height="256"
-						alt={t('generations.generation_ordinal_avatar', { index: index + 1 })}
-						className="mx-auto rounded-md"
-					/>
+							key={entry.id}
+							src={entry.imageUrl}
+							width="256"
+							height="256"
+							alt={t('generations.generation_ordinal_avatar', { index: index + 1 })}
+							className="mx-auto rounded-md"
+						/>
 					))}
 				</div>
 			</Card>

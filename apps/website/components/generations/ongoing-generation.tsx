@@ -14,6 +14,7 @@ import { Button, buttonVariants } from '~/components/ui/button';
 import { Card } from '~/components/ui/card';
 import { Form, FormControl, FormField, FormItem } from '~/components/ui/form';
 import { Textarea } from '~/components/ui/textarea';
+import { useToast } from '~/hooks/use-toast';
 import { revalidate } from '~/lib/actions/generate';
 import { RegenerationSchema, regenerationSchema } from '~/lib/forms/generation';
 import { cn } from '~/lib/utils';
@@ -31,6 +32,7 @@ type Props = {
 
 enum StepId {
 	GENERATION_TYPEIN = 'generation_typein',
+	DETAILS_TYPEIN = 'details_typein',
 	PROMPT = 'prompt',
 	GENERATION_PENDING = 'generation_pending',
 	ERROR = 'error'
@@ -55,6 +57,10 @@ const initialState: Step[] = [
 		status: Status.IDLE
 	},
 	{
+		id: StepId.DETAILS_TYPEIN,
+		status: Status.HIDDEN
+	},
+	{
 		id: StepId.PROMPT,
 		status: Status.HIDDEN
 	},
@@ -71,11 +77,13 @@ const initialState: Step[] = [
 export default function OngoingGeneration({ generation }: Props) {
 	const t = useTranslations();
 	const [, startTransition] = useTransition();
+	const { toast } = useToast();
 
 	const formRef = useRef<HTMLFormElement>(null);
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 
 	const [steps, setSteps] = useState<Step[]>(initialState);
+	const [downloading, setDownloading] = useState<boolean>(false);
 
 	const form = useForm<RegenerationSchema>({
 		resolver: zodResolver(regenerationSchema),
@@ -110,7 +118,7 @@ export default function OngoingGeneration({ generation }: Props) {
 		formData.append('prompt', prompt);
 
 		try {
-			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/regenerate`, {
+			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/regenerate`, {
 				method: 'POST',
 				body: formData,
 				credentials: 'include'
@@ -159,7 +167,20 @@ export default function OngoingGeneration({ generation }: Props) {
 	}
 
 	function download(): void {
-		generation.entries.forEach((entry) => saveAs(entry.imageUrl));
+		setDownloading(true);
+
+		fetch(`${process.env.NEXT_PUBLIC_API_URL}/generations/${generation.id}/download`, {
+			credentials: 'include'
+		})
+			.then((response) => response.blob())
+			.then((blob) => saveAs(blob, `${generation.id}.zip`))
+			.catch(() => {
+				toast({
+					title: t('common.error_during_download'),
+					variant: 'destructive'
+				});
+			})
+			.finally(() => setDownloading(false));
 	}
 
 	return (
@@ -171,17 +192,17 @@ export default function OngoingGeneration({ generation }: Props) {
 						onComplete={() => {
 							updateSteps([
 								{ id: StepId.GENERATION_TYPEIN, status: Status.IDLE },
-								{ id: StepId.PROMPT, status: Status.IDLE }
+								{ id: StepId.DETAILS_TYPEIN, status: Status.WRITING }
 							]);
-							textareaRef.current?.focus();
 						}}
 					>
 						<Button
 							type="button"
 							size="sm"
+							loading={downloading}
 							className={cn('translate-y-4 overflow-hidden opacity-0 transition-all', {
-								'translate-y-0 overflow-visible opacity-100': getStepStatus(StepId.PROMPT) !== Status.HIDDEN,
-								'pointer-events-none': getStepStatus(StepId.PROMPT) === Status.HIDDEN
+								'translate-y-0 overflow-visible opacity-100': getStepStatus(StepId.DETAILS_TYPEIN) !== Status.HIDDEN,
+								'pointer-events-none': getStepStatus(StepId.DETAILS_TYPEIN) === Status.HIDDEN
 							})}
 							onClick={() => download()}
 						>
@@ -192,7 +213,7 @@ export default function OngoingGeneration({ generation }: Props) {
 
 					<div
 						className={cn('grid h-0 translate-y-4 grid-cols-3 gap-2 overflow-hidden opacity-0 transition-all', {
-							'h-auto translate-y-0 overflow-visible opacity-100': getStepStatus(StepId.PROMPT) !== Status.HIDDEN
+							'h-auto translate-y-0 overflow-visible opacity-100': getStepStatus(StepId.DETAILS_TYPEIN) !== Status.HIDDEN
 						})}
 					>
 						{generation.entries.map((entry, index) => (
@@ -205,6 +226,25 @@ export default function OngoingGeneration({ generation }: Props) {
 								className="mx-auto rounded-md"
 							/>
 						))}
+					</div>
+				</Card>
+			)}
+
+			{getStepStatus(StepId.DETAILS_TYPEIN) !== Status.HIDDEN && (
+				<Card className="relative rounded-md border-purple-600 p-4">
+					<div className="absolute inset-0 z-0 bg-blue-600 opacity-80 dark:bg-blue-500"></div>
+					<div className="relative z-[1] flex flex-col gap-4 text-white">
+						<ChatMessage
+							skippable={false}
+							text={t('generate.messages.regeneration_details_typein').replaceAll('(strong)', '<strong>').replaceAll('(/strong)', '</strong>')}
+							onComplete={() => {
+								updateSteps([
+									{ id: StepId.GENERATION_TYPEIN, status: Status.IDLE },
+									{ id: StepId.PROMPT, status: Status.IDLE }
+								]);
+								textareaRef.current?.focus();
+							}}
+						/>
 					</div>
 				</Card>
 			)}
