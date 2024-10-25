@@ -202,8 +202,8 @@ export default function FreshGeneration({ generation }: Props) {
 						)}
 
 						{getStepStatus(StepId.DETAILS_TYPEIN) !== Status.HIDDEN && (
-							<Card className="relative rounded-md border-purple-600 p-4">
-								<div className="absolute inset-0 z-0 bg-blue-600 opacity-80 dark:bg-blue-500"></div>
+							<Card className="relative overflow-hidden rounded-md border-purple-600 p-4">
+								<div className="absolute inset-0 z-0 bg-blue-600 dark:bg-blue-500 dark:opacity-60"></div>
 								<div className="relative z-[1] flex flex-col gap-4 text-white">
 									<ChatMessage
 										skippable={false}
@@ -257,7 +257,8 @@ export default function FreshGeneration({ generation }: Props) {
 											})}
 										>
 											<Image
-												src="https://pixpersona-staging-3541781497047889658470530.s3.eu-central-1.amazonaws.com/bfoEGaSHmV.webp"
+												unoptimized
+												src="/images/generate/dummy-photo.webp"
 												width="64"
 												height="64"
 												alt={`${t(`generate.styles.${_style}.title`)} style example`}
