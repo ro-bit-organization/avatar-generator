@@ -1,7 +1,7 @@
 import { GenerationStyle } from '@repo/db';
 
 export const MAX_GENERATIONS = 3;
-export const GENERATION_CREDITS_COST = 10;
+export const GENERATION_CREDITS_COST = 5;
 export const TRACKING_CONSENT_COOKIE_NAME = 'allow-tracking-constent';
 
 export const STYLE_DESCRIPTION: Record<GenerationStyle, string> = {

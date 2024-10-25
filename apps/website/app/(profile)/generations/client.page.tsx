@@ -6,9 +6,11 @@ import { Download } from 'lucide-react';
 import { useFormatter, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from '~/components/ui/pagination';
+import { useToast } from '~/hooks/use-toast';
 
 const PAGE_SIZE = 10;
 
@@ -27,9 +29,24 @@ type Props = {
 export default function Generations({ page, count, generations }: Props) {
 	const format = useFormatter();
 	const t = useTranslations();
+	const { toast } = useToast();
+	const [downloading, setDownloading] = useState<boolean>(false);
 
-	function download(generation: (typeof generations)[0]): void {
-		generation.entries.forEach((entry) => saveAs(entry.imageUrl));
+	function download(generationId: string): void {
+		setDownloading(true);
+
+		fetch(`${process.env.NEXT_PUBLIC_API_URL}/generations/${generationId}/download`, {
+			credentials: 'include'
+		})
+			.then((response) => response.blob())
+			.then((blob) => saveAs(blob, `${generationId}.zip`))
+			.catch(() => {
+				toast({
+					title: t('common.error_during_download'),
+					variant: 'destructive'
+				});
+			})
+			.finally(() => setDownloading(false));
 	}
 
 	function getPageUrl(page: number): string {
@@ -88,7 +105,7 @@ export default function Generations({ page, count, generations }: Props) {
 									</div>
 								</div>
 								{generation.entries.length ? (
-									<Button size="sm" type="button" onClick={() => download(generation)}>
+									<Button size="sm" type="button" loading={downloading} onClick={() => download(generation.id)}>
 										<Download className="mr-2 h-4 w-4" />
 										{t('common.download')}
 									</Button>

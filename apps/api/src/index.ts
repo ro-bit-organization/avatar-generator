@@ -5,6 +5,7 @@ import { prisma } from '@repo/db';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import creditPackages from './routes/credit-packages';
+import download from './routes/download';
 import generate from './routes/generate';
 import payments from './routes/payments';
 import regenerate from './routes/regenerate';
@@ -28,6 +29,7 @@ app.route('/api/credit-packages', creditPackages);
 app.route('/api/payments', payments);
 app.route('/api/generate', generate);
 app.route('/api/regenerate', regenerate);
+app.route('/api/generations/:id/download', download);
 
 function getAuthConfig(): AuthConfig {
 	return {

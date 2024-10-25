@@ -140,11 +140,17 @@ enum GenerationStatus {
     IN_PROGRESS
 }
 
+enum GenerationVisibility {
+    PRIVATE
+    PUBLIC
+}
+
 model Generation {
-    id      String            @id @default(cuid())
-    style   GenerationStyle?
-    entries GenerationEntry[]
-    status  GenerationStatus  @default(IDLE)
+    id         String               @id @default(cuid())
+    style      GenerationStyle?
+    entries    GenerationEntry[]
+    status     GenerationStatus     @default(IDLE)
+    visibility GenerationVisibility @default(PUBLIC)
 
     userId String
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)

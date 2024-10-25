@@ -1,7 +1,8 @@
-import { GenerationStyle } from '@repo/db';
+import { GenerationStyle, GenerationVisibility } from '@repo/db';
 import { z } from 'zod';
 
 export const generationSchema = z.object({
+	visibility: z.nativeEnum(GenerationVisibility).nullable(),
 	style: z.nativeEnum(GenerationStyle).nullable(),
 	image: z
 		.instanceof(File)
