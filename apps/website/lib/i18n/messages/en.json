@@ -137,20 +137,62 @@
 			"error": "🚨 Oops, {error} Would you like to retry?"
 		},
 		"styles": {
-			"CARTOONISH": "Cartoonish",
-			"CLAY": "Clay",
-			"DISNEY": "Disney",
-			"FLAT": "Flat",
-			"HAND_DRAWN": "Hand-drawn",
-			"ILLUSTRATED": "Illustrated",
-			"NEON": "Neon",
-			"PIXELATED": "Pixelated",
-			"POLYGON": "Polygon",
-			"POP_ART": "Pop art",
-			"REALISTIC": "Realistic",
-			"RETRO": "Retro",
-			"STICKER": "Sticker",
-			"THREE_DIMENSIONAL": "3D"
+			"CARTOONISH": {
+				"title": "Cartoonish",
+				"description": "Embrace a fun and exaggerated look!"
+			},
+			"CLAY": {
+				"title": "Clay",
+				"description": "Sculpt your avatar with a tactile, 3D feel."
+			},
+			"DISNEY": {
+				"title": "Disney",
+				"description": "Bring the magic of animation to life!"
+			},
+			"FLAT": {
+				"title": "Flat",
+				"description": "Keep it simple with clean, 2D designs."
+			},
+			"HAND_DRAWN": {
+				"title": "Hand-drawn",
+				"description": "Add a personal touch with a sketch-like appearance."
+			},
+			"ILLUSTRATED": {
+				"title": "Illustrated",
+				"description": "Create a detailed, artistic representation."
+			},
+			"NEON": {
+				"title": "Neon",
+				"description": "Light up your avatar with vibrant, glowing effects."
+			},
+			"PIXELATED": {
+				"title": "Pixelated",
+				"description": "Go retro with a classic 8-bit inspired look."
+			},
+			"POLYGON": {
+				"title": "Polygon",
+				"description": "Construct your avatar with geometric precision."
+			},
+			"POP_ART": {
+				"title": "Pop art",
+				"description": "Make a bold statement with vivid colors and patterns."
+			},
+			"REALISTIC": {
+				"title": "Realistic",
+				"description": "Aim for lifelike detail and accuracy."
+			},
+			"RETRO": {
+				"title": "Retro",
+				"description": "Throwback to vintage styles and nostalgic designs."
+			},
+			"STICKER": {
+				"title": "Sticker",
+				"description": "Perfect for messaging apps and social media!"
+			},
+			"THREE_DIMENSIONAL": {
+				"title": "3D",
+				"description": "Bring depth and dimension to your avatar."
+			}
 		},
 		"visibility": {
 			"PUBLIC": "Public",

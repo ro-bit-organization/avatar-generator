@@ -13,7 +13,7 @@ import { useForm } from 'react-hook-form';
 import BuyCreditsModal from '~/components/buy-credits-modal/buy-credits-modal';
 import ChatMessage from '~/components/chat/message';
 import { Button } from '~/components/ui/button';
-import { Card } from '~/components/ui/card';
+import { Card, CardContent, CardDescription, CardTitle } from '~/components/ui/card';
 import { FileInput, FileUploader } from '~/components/ui/file-uploader';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '~/components/ui/form';
 import { revalidate } from '~/lib/actions/generate';
@@ -234,26 +234,44 @@ export default function FreshGeneration({ generation }: Props) {
 						)}
 
 						<div
-							className={cn('grid h-0 translate-y-4 grid-cols-1 gap-4 opacity-0 transition-all sm:grid-cols-2 md:grid-cols-3', {
+							className={cn('grid h-0 translate-y-4 grid-cols-2 gap-4 opacity-0 transition-all sm:grid-cols-3 md:grid-cols-4', {
 								'h-auto translate-y-0 opacity-100': getStepStatus(StepId.STYLE_SELECT) !== Status.HIDDEN,
 								'pointer-events-none': getStepStatus(StepId.STYLE_SELECT) === Status.HIDDEN
 							})}
 						>
 							{Object.values(GenerationStyle).map((_style) => (
-								<Button
-									key={_style}
-									type="button"
-									className={cn('capitalize', {
-										'pointer-events-none': !!style,
-										'bg-gradient-to-r from-blue-500 to-purple-600 font-semibold text-white': _style === style
-									})}
-									onClick={() => {
-										form.setValue('style', _style);
-										updateSteps([{ id: StepId.IMAGE_TYPEIN, status: Status.WRITING }]);
-									}}
-								>
-									{t(`generate.styles.${_style}`)}
-								</Button>
+								<>
+									<Card
+										key={_style}
+										className={cn('overflow-hidden rounded-md transition-all hover:border-purple-600', {
+											'pointer-events-none': !!style
+										})}
+										onClick={() => {
+											form.setValue('style', _style);
+											updateSteps([{ id: StepId.IMAGE_TYPEIN, status: Status.WRITING }]);
+										}}
+									>
+										<CardContent
+											className={cn('flex h-full w-full flex-col items-center justify-start gap-4 p-4 hover:border-purple-600', {
+												'bg-gradient-to-r from-blue-500 to-purple-600 font-semibold': _style === style
+											})}
+										>
+											<Image
+												src="https://pixpersona-staging-3541781497047889658470530.s3.eu-central-1.amazonaws.com/bfoEGaSHmV.webp"
+												width="64"
+												height="64"
+												alt={`${t(`generate.styles.${_style}.title`)} style example`}
+												className="mb-4 aspect-square rounded-lg object-cover"
+											/>
+											<div className="flex flex-col gap-2 text-center">
+												<CardTitle>{t(`generate.styles.${_style}.title`)}</CardTitle>
+												<CardDescription className={cn('text-xs', { 'text-white': _style === style })}>
+													{t(`generate.styles.${_style}.description`)}
+												</CardDescription>
+											</div>
+										</CardContent>
+									</Card>
+								</>
 							))}
 						</div>
 
