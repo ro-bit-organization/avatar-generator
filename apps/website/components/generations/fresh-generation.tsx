@@ -243,7 +243,7 @@ export default function FreshGeneration({ generation }: Props) {
 								<>
 									<Card
 										key={_style}
-										className={cn('overflow-hidden rounded-md transition-all hover:border-purple-600', {
+										className={cn('cursor-pointer overflow-hidden rounded-md transition-all hover:border-purple-600', {
 											'pointer-events-none': !!style
 										})}
 										onClick={() => {

@@ -4,7 +4,7 @@ export default getRequestConfig(async () => {
 	const locale = 'en';
 
 	return {
-		locale: 'en',
+		locale,
 		messages: (await import(`./messages/${locale}.json`)).default,
 		timeZone: 'Europe/Berlin',
 		defaultTranslationValues: { strong: (chunks) => <strong>{chunks}</strong> }

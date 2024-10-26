@@ -68,8 +68,9 @@ export default function Generations({ page, count, generations }: Props) {
 					<h1 className="text-3xl font-bold">{t('generations.title')}</h1>
 					<h2 className="text-muted-foreground">{t('generations.description', { appName: t('app.name') })}</h2>
 				</div>
+				{generations.length === 0 && <span>{t('generations.no_entries')}</span>}
 				<div className="space-y-4">
-					{generations?.map((generation) => (
+					{generations.map((generation) => (
 						<Card key={generation.id} className="overflow-hidden rounded-md">
 							<CardContent className="flex flex-col justify-between gap-8 p-4 md:flex-row md:gap-0">
 								<div className="flex flex-col gap-4">

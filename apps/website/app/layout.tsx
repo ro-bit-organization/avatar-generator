@@ -89,7 +89,7 @@ export default async function RootLayout({ children }: Props) {
 	const messages = await getMessages();
 
 	return (
-		<html lang="en" suppressHydrationWarning>
+		<html lang={locale} suppressHydrationWarning>
 			<body className={cn('flex min-h-screen flex-col bg-gray-50 antialiased dark:bg-gray-900', geistSans.variable, geistMono.variable)}>
 				<ClientProviders locale={locale} messages={messages}>
 					<Header />

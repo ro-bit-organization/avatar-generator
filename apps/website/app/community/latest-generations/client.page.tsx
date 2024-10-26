@@ -39,9 +39,10 @@ export default function LastGenerations({ page, count, generations }: Props) {
 		<main className="mx-auto w-screen max-w-screen-md flex-1 p-4">
 			<div className="flex flex-col">
 				<div className="mb-4 flex flex-col gap-2 border-b pb-4">
-					<h1 className="text-3xl font-bold">{t('latest-generations.title')}</h1>
-					<h2 className="text-muted-foreground">{t('latest-generations.description', { appName: t('app.name') })}</h2>
+					<h1 className="text-3xl font-bold">{t('latest_generations.title')}</h1>
+					<h2 className="text-muted-foreground">{t('latest_generations.description', { appName: t('app.name') })}</h2>
 				</div>
+				{generations.length === 0 && <span>{t('latest_generations.no_entries')}</span>}
 				<div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
 					{generations.map((generation) => (
 						<Image key={generation.id} src={generation.imageUrl} alt="Avatar" width="256" height="256" className="rounded-md" />

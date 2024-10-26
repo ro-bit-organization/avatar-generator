@@ -48,23 +48,23 @@ export default function Header() {
 					<Link href="/" className="lg:hidden">
 						<Image unoptimized src="/images/logo.webp" width="36" height="36" alt="Logo" className="rounded-md" />
 					</Link>
-					<div className="hidden gap-6 text-lg font-medium lg:flex lg:flex-row lg:items-center lg:gap-8 lg:text-sm">
-						<Link href="/" className="flex items-center justify-center">
+					<div className="hidden gap-4 text-lg font-medium lg:flex lg:flex-row lg:items-center lg:gap-6 lg:text-sm">
+						<Link href="/" className="mr-2 flex items-center justify-center">
 							<Image unoptimized src="/images/logo.webp" width="36" height="36" alt="Logo" className="rounded-md" />
 							<span className="ml-2 inline-block text-xl font-semibold tracking-tighter text-gray-900 dark:text-white">{t('app.name')}</span>
 						</Link>
-						<Link href="/" className="text-muted-foreground hover:text-foreground font-bold transition-colors">
+						<Link href="/" className="text-muted-foreground hover:text-foreground font-bold tracking-tight transition-colors">
 							{t('navigation.menu.home')}
 						</Link>
 
 						{status === 'authenticated' ? (
-							<Link href="/generate" className="text-muted-foreground hover:text-foreground font-bold transition-colors">
+							<Link href="/generate" className="text-muted-foreground hover:text-foreground font-bold tracking-tight transition-colors">
 								{t('navigation.menu.generate')}
 							</Link>
 						) : (
 							<Button
 								variant="link"
-								className="text-muted-foreground hover:text-foreground p-0 font-bold !no-underline transition-colors"
+								className="text-muted-foreground hover:text-foreground p-0 font-bold tracking-tight !no-underline transition-colors"
 								onClick={() =>
 									signIn('google', {
 										callbackUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/generate`
@@ -77,12 +77,15 @@ export default function Header() {
 
 						{status === 'authenticated' && (
 							<>
-								<Link href="/generations" className="text-muted-foreground hover:text-foreground font-bold transition-colors">
+								<Link href="/generations" className="text-muted-foreground hover:text-foreground font-bold tracking-tight transition-colors">
 									{t('navigation.menu.my_generations')}
 								</Link>
 							</>
 						)}
-						<Link href="/community/latest-generations" className="text-muted-foreground hover:text-foreground font-bold transition-colors">
+						<Link
+							href="/community/latest-generations"
+							className="text-muted-foreground hover:text-foreground font-bold tracking-tight transition-colors"
+						>
 							{t('navigation.menu.latest_generations')}
 						</Link>
 					</div>
@@ -90,7 +93,7 @@ export default function Header() {
 						<div className="hidden items-center gap-2 lg:flex">
 							{status === 'authenticated' ? (
 								<>
-									<span className="mr-2">{t('common.credits_left', { value: session?.user?.credits })}</span>
+									<span className="mr-2 text-sm">{t('common.credits_left', { value: session?.user?.credits })}</span>
 									<Button
 										variant="default"
 										size="sm"
