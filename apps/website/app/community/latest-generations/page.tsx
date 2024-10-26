@@ -56,7 +56,13 @@ const PAGE_SIZE = 25;
 export default async function LastGenerations({ searchParams }: Props) {
 	const page = searchParams.page ? searchParams.page : 1;
 
-	const count = await prisma.generationEntry.count();
+	const count = await prisma.generationEntry.count({
+		where: {
+			generation: {
+				visibility: GenerationVisibility.PUBLIC
+			}
+		}
+	});
 
 	if (searchParams.page === '1') {
 		redirect('/community/latest-generations');
