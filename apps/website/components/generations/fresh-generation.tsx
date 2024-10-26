@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useRef, useState, useTransition } from 'react';
+import { useFormState } from 'react-dom';
 import { useForm } from 'react-hook-form';
 import BuyCreditsModal from '~/components/buy-credits-modal/buy-credits-modal';
 import ChatMessage from '~/components/chat/message';
@@ -141,6 +142,10 @@ export default function FreshGeneration({ generation }: Props) {
 	}
 
 	async function onSubmit({ visibility, style, image }: GenerationSchema) {
+		if (getStepStatus(StepId.GENERATION_PENDING) === Status.LOADING) {
+			return;
+		}
+
 		updateSteps([
 			{ id: StepId.GENERATION_PENDING, status: Status.LOADING },
 			{ id: StepId.ERROR, status: Status.HIDDEN }
@@ -240,39 +245,37 @@ export default function FreshGeneration({ generation }: Props) {
 							})}
 						>
 							{Object.values(GenerationStyle).map((_style) => (
-								<>
-									<Card
-										key={_style}
-										className={cn('cursor-pointer overflow-hidden rounded-md transition-all hover:border-purple-600', {
-											'pointer-events-none': !!style
+								<Card
+									key={_style}
+									className={cn('cursor-pointer overflow-hidden rounded-md transition-all hover:border-purple-600', {
+										'pointer-events-none': !!style
+									})}
+									onClick={() => {
+										form.setValue('style', _style);
+										updateSteps([{ id: StepId.IMAGE_TYPEIN, status: Status.WRITING }]);
+									}}
+								>
+									<CardContent
+										className={cn('flex h-full w-full flex-col items-center justify-start gap-4 p-4 hover:border-purple-600', {
+											'bg-gradient-to-r from-blue-500 to-purple-600 font-semibold': _style === style
 										})}
-										onClick={() => {
-											form.setValue('style', _style);
-											updateSteps([{ id: StepId.IMAGE_TYPEIN, status: Status.WRITING }]);
-										}}
 									>
-										<CardContent
-											className={cn('flex h-full w-full flex-col items-center justify-start gap-4 p-4 hover:border-purple-600', {
-												'bg-gradient-to-r from-blue-500 to-purple-600 font-semibold': _style === style
-											})}
-										>
-											<Image
-												unoptimized
-												src="/images/generate/dummy-photo.webp"
-												width="64"
-												height="64"
-												alt={`${t(`generate.styles.${_style}.title`)} style example`}
-												className="mb-4 aspect-square rounded-lg object-cover"
-											/>
-											<div className="flex flex-col gap-2 text-center">
-												<CardTitle>{t(`generate.styles.${_style}.title`)}</CardTitle>
-												<CardDescription className={cn('text-xs', { 'text-white': _style === style })}>
-													{t(`generate.styles.${_style}.description`)}
-												</CardDescription>
-											</div>
-										</CardContent>
-									</Card>
-								</>
+										<Image
+											unoptimized
+											src="/images/generate/dummy-photo.webp"
+											width="64"
+											height="64"
+											alt={`${t(`generate.styles.${_style}.title`)} style example`}
+											className="mb-4 aspect-square rounded-lg object-cover"
+										/>
+										<div className="flex flex-col gap-2 text-center">
+											<CardTitle>{t(`generate.styles.${_style}.title`)}</CardTitle>
+											<CardDescription className={cn('text-xs', { 'text-white': _style === style })}>
+												{t(`generate.styles.${_style}.description`)}
+											</CardDescription>
+										</div>
+									</CardContent>
+								</Card>
 							))}
 						</div>
 
@@ -400,6 +403,7 @@ export default function FreshGeneration({ generation }: Props) {
 							</Card>
 						)}
 
+						{form.formState.isSubmitted ? 'Y' : 'N'}
 						<div
 							className={cn('grid h-0 translate-y-4 grid-cols-1 gap-4 opacity-0 transition-all sm:grid-cols-2', {
 								'h-auto translate-y-0 opacity-100': getStepStatus(StepId.PRIVACY_SELECT) !== Status.HIDDEN,
@@ -411,7 +415,7 @@ export default function FreshGeneration({ generation }: Props) {
 									key={_visibility}
 									type="button"
 									className={cn('capitalize', {
-										'pointer-events-none': form.getFieldState('visibility').isTouched,
+										'pointer-events-none': !!visibility,
 										'bg-gradient-to-r from-blue-500 to-purple-600 font-semibold text-white': _visibility === visibility
 									})}
 									onClick={() => {

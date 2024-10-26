@@ -251,7 +251,11 @@ export default function OngoingGeneration({ generation }: Props) {
 
 			{getStepStatus(StepId.GENERATION_PENDING) !== Status.HIDDEN && (
 				<Card className="flex flex-col gap-4 rounded-md p-4">
-					<ChatMessage text={t('generate.messages.ongoing_generation')} loading={getStepStatus(StepId.GENERATION_PENDING) === Status.LOADING} />
+					<ChatMessage
+						skippable={false}
+						text={t('generate.messages.ongoing_generation')}
+						loading={getStepStatus(StepId.GENERATION_PENDING) === Status.LOADING}
+					/>
 				</Card>
 			)}
 

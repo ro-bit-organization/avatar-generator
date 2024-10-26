@@ -30,10 +30,10 @@ export default function Generations({ page, count, generations }: Props) {
 	const format = useFormatter();
 	const t = useTranslations();
 	const { toast } = useToast();
-	const [downloading, setDownloading] = useState<boolean>(false);
+	const [downloadGenerationId, setDownloadGenerationId] = useState<string | null>();
 
 	function download(generationId: string): void {
-		setDownloading(true);
+		setDownloadGenerationId(generationId);
 
 		fetch(`${process.env.NEXT_PUBLIC_API_URL}/generations/${generationId}/download`, {
 			credentials: 'include'
@@ -46,7 +46,7 @@ export default function Generations({ page, count, generations }: Props) {
 					variant: 'destructive'
 				});
 			})
-			.finally(() => setDownloading(false));
+			.finally(() => setDownloadGenerationId(null));
 	}
 
 	function getPageUrl(page: number): string {
@@ -106,7 +106,13 @@ export default function Generations({ page, count, generations }: Props) {
 									</div>
 								</div>
 								{generation.entries.length ? (
-									<Button size="sm" type="button" loading={downloading} onClick={() => download(generation.id)}>
+									<Button
+										size="sm"
+										type="button"
+										loading={downloadGenerationId === generation.id}
+										disabled={!!downloadGenerationId}
+										onClick={() => download(generation.id)}
+									>
 										<Download className="mr-2 h-4 w-4" />
 										{t('common.download')}
 									</Button>

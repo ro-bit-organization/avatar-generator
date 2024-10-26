@@ -6,7 +6,7 @@ import { Base64 } from 'js-base64';
 import { nanoid } from 'nanoid';
 import { s3 } from '../lib/clients/aws';
 import openai from '../lib/clients/openai';
-import { MAX_CONCURENT_GENERATIONS, STYLE_DESCRIPTION } from '../lib/const';
+import { MAX_CONCURENT_GENERATIONS, MAX_GENERATIONS, STYLE_DESCRIPTION } from '../lib/const';
 import GenerationError from '../lib/types/generation-error';
 import { regenerationSchema } from '../lib/validation/regeneration';
 
@@ -79,6 +79,10 @@ app.post('/', async (c) => {
 
 		if (generation.status === GenerationStatus.IN_PROGRESS) {
 			throw new GenerationError('The generation is already in progress!', 400);
+		}
+
+		if (generation.entries.length >= MAX_GENERATIONS) {
+			throw new GenerationError(`The generation already contains the maximum avatars count!`, 400);
 		}
 
 		const inProgressGenerations = await prisma.generation.findMany({
