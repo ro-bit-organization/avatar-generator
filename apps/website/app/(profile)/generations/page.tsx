@@ -69,7 +69,12 @@ export default async function Generations({ searchParams }: Props) {
 	const page = searchParams.page ? searchParams.page : 1;
 
 	const count = await prisma.generation.count({
-		where: { userId: session.user.id }
+		where: {
+			userId: session.user.id,
+			entries: {
+				some: {}
+			}
+		}
 	});
 
 	if (searchParams.page === '1') {
@@ -81,7 +86,12 @@ export default async function Generations({ searchParams }: Props) {
 	}
 
 	const generations = await prisma.generation.findMany({
-		where: { userId: session.user.id },
+		where: {
+			userId: session.user.id,
+			entries: {
+				some: {}
+			}
+		},
 		include: {
 			entries: true
 		},
