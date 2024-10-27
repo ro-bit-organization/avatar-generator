@@ -66,6 +66,9 @@ app.post('/', async (c) => {
 		const generation = await prisma.generation.findFirst({
 			where: {
 				id
+			},
+			include: {
+				entries: true
 			}
 		});
 
@@ -75,6 +78,10 @@ app.post('/', async (c) => {
 
 		if (generation.status === GenerationStatus.IN_PROGRESS) {
 			throw new GenerationError('The generation is already in progress!', 400);
+		}
+
+		if (generation.entries.length > 0) {
+			throw new GenerationError('The generation already contains one avatar!', 400);
 		}
 
 		const inProgressGenerations = await prisma.generation.findMany({

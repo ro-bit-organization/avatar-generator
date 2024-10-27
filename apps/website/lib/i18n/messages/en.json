@@ -63,7 +63,22 @@
 			"credits_value": "for {value} credits",
 			"bonus": "+{value} bonus",
 			"action": "Purchase"
+		},
+		"share_modal": {
+			"title": "Share to Social Media",
+			"copy": "Copy",
+			"copied": "Copied",
+			"share": {
+				"title": "Check out this unique avatars generated on {appName}!",
+				"description": "Just brought my digital persona to life with {appName}! <br /> These avatars are perfect for adding personality to my LinkedIn profile, spicing up social media, or standing out in virtual meetings. Whether you're building a brand or simply want a creative twist on your online presence, {appName} avatars are designed to make an impact.<br />Generate yours at {websiteUrl}!"
+			}
 		}
+	},
+	"404": {
+		"title": "404 - Avatar Not Found",
+		"description": "We couldn’t find the page you were looking for. But don’t worry, there’s still plenty of creativity ahead!",
+		"home": "Return Home",
+		"new_generation": "Generate a new avatar"
 	},
 	"homepage": {
 		"hero": {
@@ -199,23 +214,17 @@
 			"PRIVATE": "Private"
 		}
 	},
-	"404": {
-		"title": "404 - Avatar Not Found",
-		"description": "We couldn’t find the page you were looking for. But don’t worry, there’s still plenty of creativity ahead!",
-		"home": "Return Home",
-		"new_generation": "Generate New Avatar"
-	},
 	"generations": {
 		"title": "Generations",
 		"description": "See all the cartoon avatars you've created on {appName} in one place.",
 		"generation_id": "Generation #{id}",
-		"no_entries": "No images generated yet.",
-		"generation_ordinal_avatar": "{index, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} avatar"
+		"generation_ordinal_avatar": "{index, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} avatar",
+		"no_entries": "No avatars generated yet."
 	},
-	"latest-generations": {
+	"latest_generations": {
 		"title": "Latest Generations",
 		"description": "Explore the latest cartoon avatars created by users on {appName}. This page features a gallery of unique and trending avatars, perfect for inspiration or finding the next design for your social media or gaming profile!",
-		"no_entries": "No images generated yet."
+		"no_entries": "No avatars generated yet."
 	},
 	"thank_you": {
 		"title": "Thank You for your purchase!",

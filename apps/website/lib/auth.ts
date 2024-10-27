@@ -3,7 +3,7 @@ import { prisma } from '@repo/db';
 import { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 
-const domain = new URL(process.env.NEXT_PUBLIC_WEBSITE_URL!).hostname.replace('www.', '');
+const domain = new URL(process.env.NEXT_PUBLIC_WEBSITE_URL!).hostname.replace('www.', '').replace('staging.', '');
 
 export const authOptions: NextAuthOptions = {
 	secret: process.env.NEXTAUTH_SECRET,

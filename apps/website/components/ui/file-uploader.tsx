@@ -238,7 +238,7 @@ export const FileUploaderItem = forwardRef<HTMLDivElement, { index: number } & R
 					onClick={() => removeFileFromSet(index)}
 				>
 					<span className="sr-only">remove item {index}</span>
-					<RemoveIcon className="h-4 w-4 duration-200 ease-in-out hover:stroke-destructive" />
+					<RemoveIcon className="hover:stroke-destructive h-4 w-4 duration-200 ease-in-out" />
 				</button>
 			</div>
 		);
@@ -265,6 +265,7 @@ export const FileInput = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
 			</div>
 			<Input
 				ref={dropzoneState.inputRef}
+				type="file"
 				disabled={isLOF || disabled}
 				{...dropzoneState.getInputProps()}
 				className={`${isLOF || disabled ? 'cursor-not-allowed' : ''}`}

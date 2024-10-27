@@ -72,22 +72,7 @@ export default function ChatMessage({ text, loading, children, skippable = true,
 					onInit={(_typewriter) => {
 						typewriter.current = _typewriter;
 
-						_typewriter
-							.typeString(text)
-							.callFunction(() => {
-								completed.current = true;
-
-								if (skipped.current) {
-									return;
-								}
-
-								if (onComplete) {
-									onComplete();
-								}
-
-								clearEvent();
-							})
-							.start();
+						_typewriter.typeString(text).callFunction(stopTyping).start();
 					}}
 				/>
 			</div>

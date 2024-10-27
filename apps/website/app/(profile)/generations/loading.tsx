@@ -23,7 +23,7 @@ export default async function Loading() {
 									</div>
 									<div className="flex space-x-4">
 										{[1, 2, 3].map((_, j) => (
-											<Skeleton key={`image-${j}`} className="h-20 w-20 rounded-md shadow-sm"></Skeleton>
+											<Skeleton key={`image-${j}`} className="h-24 w-24 rounded-md shadow-sm"></Skeleton>
 										))}
 									</div>
 								</div>

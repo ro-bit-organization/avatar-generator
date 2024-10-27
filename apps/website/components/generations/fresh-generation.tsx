@@ -141,6 +141,10 @@ export default function FreshGeneration({ generation }: Props) {
 	}
 
 	async function onSubmit({ visibility, style, image }: GenerationSchema) {
+		if (getStepStatus(StepId.GENERATION_PENDING) === Status.LOADING) {
+			return;
+		}
+
 		updateSteps([
 			{ id: StepId.GENERATION_PENDING, status: Status.LOADING },
 			{ id: StepId.ERROR, status: Status.HIDDEN }
@@ -240,39 +244,37 @@ export default function FreshGeneration({ generation }: Props) {
 							})}
 						>
 							{Object.values(GenerationStyle).map((_style) => (
-								<>
-									<Card
-										key={_style}
-										className={cn('overflow-hidden rounded-md transition-all hover:border-purple-600', {
-											'pointer-events-none': !!style
+								<Card
+									key={_style}
+									className={cn('cursor-pointer overflow-hidden rounded-md transition-all hover:border-purple-600', {
+										'pointer-events-none': !!style
+									})}
+									onClick={() => {
+										form.setValue('style', _style);
+										updateSteps([{ id: StepId.IMAGE_TYPEIN, status: Status.WRITING }]);
+									}}
+								>
+									<CardContent
+										className={cn('flex h-full w-full flex-col items-center justify-start gap-4 p-4 hover:border-purple-600', {
+											'bg-gradient-to-r from-blue-500 to-purple-600 font-semibold': _style === style
 										})}
-										onClick={() => {
-											form.setValue('style', _style);
-											updateSteps([{ id: StepId.IMAGE_TYPEIN, status: Status.WRITING }]);
-										}}
 									>
-										<CardContent
-											className={cn('flex h-full w-full flex-col items-center justify-start gap-4 p-4 hover:border-purple-600', {
-												'bg-gradient-to-r from-blue-500 to-purple-600 font-semibold': _style === style
-											})}
-										>
-											<Image
-												unoptimized
-												src="/images/generate/dummy-photo.webp"
-												width="64"
-												height="64"
-												alt={`${t(`generate.styles.${_style}.title`)} style example`}
-												className="mb-4 aspect-square rounded-lg object-cover"
-											/>
-											<div className="flex flex-col gap-2 text-center">
-												<CardTitle>{t(`generate.styles.${_style}.title`)}</CardTitle>
-												<CardDescription className={cn('text-xs', { 'text-white': _style === style })}>
-													{t(`generate.styles.${_style}.description`)}
-												</CardDescription>
-											</div>
-										</CardContent>
-									</Card>
-								</>
+										<Image
+											unoptimized
+											src="/images/generate/dummy-photo.webp"
+											width="64"
+											height="64"
+											alt={`${t(`generate.styles.${_style}.title`)} style example`}
+											className="mb-4 aspect-square rounded-lg object-cover"
+										/>
+										<div className="flex flex-col gap-2 text-center">
+											<CardTitle className={cn({ 'text-white': _style === style })}>{t(`generate.styles.${_style}.title`)}</CardTitle>
+											<CardDescription className={cn('text-xs', { 'text-white': _style === style })}>
+												{t(`generate.styles.${_style}.description`)}
+											</CardDescription>
+										</div>
+									</CardContent>
+								</Card>
 							))}
 						</div>
 
@@ -329,9 +331,10 @@ export default function FreshGeneration({ generation }: Props) {
 											disabled={!!image}
 											dropzoneOptions={{
 												accept: {
-													'image/*': ['.png', '.jpeg', '.jpg', '.webp']
+													'image/jpeg': [],
+													'image/png': []
 												},
-												maxSize: 1024 * 1024 * 4,
+												maxSize: 1024 * 1024 * 5,
 												multiple: false
 											}}
 											className="relative rounded-lg bg-gray-800 p-2 dark:bg-white"
@@ -376,7 +379,7 @@ export default function FreshGeneration({ generation }: Props) {
 													<p className="mb-1 text-sm text-white dark:text-gray-500">
 														<span className="font-semibold">{t('components.file_picker.placeholder')}</span>
 													</p>
-													<p className="text-xs text-white dark:text-gray-500">PNG, JPG or WEBP</p>
+													<p className="text-xs text-white dark:text-gray-500">JPEG, JPG or PNG</p>
 												</div>
 											</FileInput>
 										</FileUploader>
@@ -411,7 +414,7 @@ export default function FreshGeneration({ generation }: Props) {
 									key={_visibility}
 									type="button"
 									className={cn('capitalize', {
-										'pointer-events-none': form.getFieldState('visibility').isTouched,
+										'pointer-events-none': !!visibility,
 										'bg-gradient-to-r from-blue-500 to-purple-600 font-semibold text-white': _visibility === visibility
 									})}
 									onClick={() => {

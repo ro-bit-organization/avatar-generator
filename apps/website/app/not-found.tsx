@@ -1,4 +1,3 @@
-import { Home, RefreshCw } from 'lucide-react';
 import { getServerSession } from 'next-auth';
 import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
@@ -18,7 +17,6 @@ export default async function NotFound() {
 			<p className="mb-12 max-w-lg text-center text-lg">{t('404.description')}</p>
 			<div className="flex flex-col gap-4 sm:flex-row">
 				<Link className={cn(buttonVariants())} href="/">
-					<Home className="mr-2 h-4 w-4" />
 					{t('404.home')}
 				</Link>
 
@@ -32,7 +30,6 @@ export default async function NotFound() {
 							})
 						)}
 					>
-						<RefreshCw className="mr-2 h-4 w-4" />
 						{t('404.new_generation')}
 					</Link>
 				)}
