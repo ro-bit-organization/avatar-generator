@@ -6,7 +6,8 @@
 		"start": "turbo dev",
 		"dev": "turbo start",
 		"lint": "turbo lint",
-		"format": "prettier --write \"**/*.{ts,tsx,md}\""
+		"format": "prettier --write \"**/*.{ts,tsx,md}\"",
+		"postinstall": "patch-package"
 	},
 	"devDependencies": {
 		"prettier": "^3.3.3",
@@ -21,5 +22,9 @@
 	"workspaces": [
 		"apps/*",
 		"packages/*"
-	]
+	],
+	"dependencies": {
+		"patch-package": "^8.0.0",
+		"postinstall-postinstall": "^2.1.0"
+	}
 }

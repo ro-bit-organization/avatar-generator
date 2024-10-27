@@ -75,7 +75,14 @@ export default function ShareModal({ open, imageUrl, onOpenChange }: Props) {
 				<hr />
 
 				<div className="flex justify-center gap-3 py-4 min-[400px]:justify-between min-[400px]:gap-2">
-					<RedditShareButton title={t('components.share_modal.share.title', { appName: t('app.name') })} url={url!}>
+					<RedditShareButton
+						title={t('components.share_modal.share.title', { appName: t('app.name') })}
+						url={url!}
+						about={t('components.share_modal.share.description', {
+							appName: t('app.name'),
+							websiteUrl: process.env.NEXT_PUBLIC_WEBSITE_URL
+						})}
+					>
 						<Image
 							unoptimized
 							src="/images/icons/reddit.webp"

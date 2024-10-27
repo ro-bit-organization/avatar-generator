@@ -1,4 +1,4 @@
-import { verifyAuth } from '@repo/auth-js';
+import { verifyAuth } from '@hono/auth-js';
 import { prisma } from '@repo/db';
 import { Hono } from 'hono';
 import { Base64 } from 'js-base64';
