@@ -9,7 +9,6 @@ import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useRef, useState, useTransition } from 'react';
-import { useFormState } from 'react-dom';
 import { useForm } from 'react-hook-form';
 import BuyCreditsModal from '~/components/buy-credits-modal/buy-credits-modal';
 import ChatMessage from '~/components/chat/message';
@@ -269,7 +268,7 @@ export default function FreshGeneration({ generation }: Props) {
 											className="mb-4 aspect-square rounded-lg object-cover"
 										/>
 										<div className="flex flex-col gap-2 text-center">
-											<CardTitle>{t(`generate.styles.${_style}.title`)}</CardTitle>
+											<CardTitle className={cn({ 'text-white': _style === style })}>{t(`generate.styles.${_style}.title`)}</CardTitle>
 											<CardDescription className={cn('text-xs', { 'text-white': _style === style })}>
 												{t(`generate.styles.${_style}.description`)}
 											</CardDescription>
@@ -332,9 +331,10 @@ export default function FreshGeneration({ generation }: Props) {
 											disabled={!!image}
 											dropzoneOptions={{
 												accept: {
-													'image/*': ['.png', '.jpeg', '.jpg', '.webp']
+													'image/jpeg': [],
+													'image/png': []
 												},
-												maxSize: 1024 * 1024 * 4,
+												maxSize: 1024 * 1024 * 5,
 												multiple: false
 											}}
 											className="relative rounded-lg bg-gray-800 p-2 dark:bg-white"
@@ -379,7 +379,7 @@ export default function FreshGeneration({ generation }: Props) {
 													<p className="mb-1 text-sm text-white dark:text-gray-500">
 														<span className="font-semibold">{t('components.file_picker.placeholder')}</span>
 													</p>
-													<p className="text-xs text-white dark:text-gray-500">PNG, JPG or WEBP</p>
+													<p className="text-xs text-white dark:text-gray-500">JPEG, JPG or PNG</p>
 												</div>
 											</FileInput>
 										</FileUploader>
@@ -403,7 +403,6 @@ export default function FreshGeneration({ generation }: Props) {
 							</Card>
 						)}
 
-						{form.formState.isSubmitted ? 'Y' : 'N'}
 						<div
 							className={cn('grid h-0 translate-y-4 grid-cols-1 gap-4 opacity-0 transition-all sm:grid-cols-2', {
 								'h-auto translate-y-0 opacity-100': getStepStatus(StepId.PRIVACY_SELECT) !== Status.HIDDEN,

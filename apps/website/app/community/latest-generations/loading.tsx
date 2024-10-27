@@ -11,8 +11,8 @@ export default async function Loading() {
 					<h1 className="text-3xl font-bold">{t('latest_generations.title')}</h1>
 					<h2 className="text-muted-foreground">{t('latest_generations.description', { appName: t('app.name') })}</h2>
 				</div>
-				<div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
-					{[1, 2, 3, 4, 5, 6, 7].map((_, index) => (
+				<div className="grid grid-cols-2 gap-2 min-[480px]:grid-cols-3 sm:grid-cols-5">
+					{[1, 2, 3, 4, 5, 6, 7, 8].map((_, index) => (
 						<Skeleton key={index} className="aspect-square w-full"></Skeleton>
 					))}
 				</div>

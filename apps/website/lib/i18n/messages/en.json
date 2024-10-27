@@ -63,6 +63,15 @@
 			"credits_value": "for {value} credits",
 			"bonus": "+{value} bonus",
 			"action": "Purchase"
+		},
+		"share_modal": {
+			"title": "Share to Social Media",
+			"copy": "Copy",
+			"copied": "Copied",
+			"share": {
+				"title": "Check out this unique avatars generated on {appName}!",
+				"description": "Just brought my digital persona to life with {appName}! <br /> These avatars are perfect for adding personality to my LinkedIn profile, spicing up social media, or standing out in virtual meetings. Whether you're building a brand or simply want a creative twist on your online presence, {appName} avatars are designed to make an impact.<br />Generate yours at {websiteUrl}!"
+			}
 		}
 	},
 	"404": {

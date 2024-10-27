@@ -51,7 +51,7 @@ type Props = {
 	searchParams: { page?: string };
 };
 
-const PAGE_SIZE = 25;
+const PAGE_SIZE = 30;
 
 export default async function LastGenerations({ searchParams }: Props) {
 	const page = searchParams.page ? searchParams.page : 1;
