@@ -7,7 +7,8 @@ export default {
 	head() {
 		const { asPath, defaultLocale, locale } = useRouter();
 		const { frontMatter } = useConfig();
-		const url = `${process.env.NEXT_PUBLIC_BLOG_URL}` + (defaultLocale === locale ? asPath : `/${locale}${asPath}`);
+		const suffix = defaultLocale === locale ? asPath : `/${locale}${asPath}`;
+		const url = `${process.env.NEXT_PUBLIC_BLOG_URL}${suffix || ''}`;
 
 		return (
 			<>
