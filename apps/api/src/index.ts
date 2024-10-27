@@ -1,6 +1,6 @@
 import GoogleProvider from '@auth/core/providers/google';
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import { initAuthConfig, type AuthConfig } from '@repo/auth-js';
+import { initAuthConfig, type AuthConfig } from '@hono/auth-js';
 import { prisma } from '@repo/db';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';

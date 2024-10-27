@@ -1,5 +1,5 @@
 import { Upload } from '@aws-sdk/lib-storage';
-import { verifyAuth } from '@repo/auth-js';
+import { verifyAuth } from '@hono/auth-js';
 import { GenerationStatus, prisma } from '@repo/db';
 import { Hono } from 'hono';
 import { Base64 } from 'js-base64';
@@ -87,7 +87,7 @@ app.post('/', async (c) => {
 
 		const inProgressGenerations = await prisma.generation.findMany({
 			where: {
-				userId: session.user.id,
+				userId: session.user!.id,
 				status: GenerationStatus.IN_PROGRESS
 			},
 			take: 3

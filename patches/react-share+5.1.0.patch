@@ -1,0 +1,26 @@
+diff --git a/node_modules/react-share/dist/index.cjs b/node_modules/react-share/dist/index.cjs
+index cc8c6c0..0c7c0f2 100644
+--- a/node_modules/react-share/dist/index.cjs
++++ b/node_modules/react-share/dist/index.cjs
+@@ -663,7 +663,7 @@ const RedditIcon = createIcon({
+ const RedditIcon$1 = RedditIcon;
+ function redditLink(url, { title }) {
+   assert(url, "reddit.url");
+-  return "https://www.reddit.com/submit" + objectToGetParams({
++  return "https://www.reddit.com/web/submit" + objectToGetParams({
+     url,
+     title
+   });
+diff --git a/node_modules/react-share/dist/index.js b/node_modules/react-share/dist/index.js
+index c9f8647..ca6b6c0 100644
+--- a/node_modules/react-share/dist/index.js
++++ b/node_modules/react-share/dist/index.js
+@@ -661,7 +661,7 @@ const RedditIcon = createIcon({
+ const RedditIcon$1 = RedditIcon;
+ function redditLink(url, { title }) {
+   assert(url, "reddit.url");
+-  return "https://www.reddit.com/submit" + objectToGetParams({
++  return "https://www.reddit.com/web/submit" + objectToGetParams({
+     url,
+     title
+   });
