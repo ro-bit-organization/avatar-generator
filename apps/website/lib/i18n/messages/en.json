@@ -27,7 +27,8 @@
 			"home": "Home",
 			"generate": "Generate",
 			"my_generations": "My Generations",
-			"latest_generations": "Latest Generations"
+			"latest_generations": "Latest Generations",
+			"blog": "Blog"
 		}
 	},
 	"footer": {

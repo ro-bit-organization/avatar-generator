@@ -88,6 +88,14 @@ export default function Header() {
 						>
 							{t('navigation.menu.latest_generations')}
 						</Link>
+						{process.env.NEXT_PUBLIC_BLOG_URL && (
+							<Link
+								href={process.env.NEXT_PUBLIC_BLOG_URL}
+								className="text-muted-foreground hover:text-foreground font-bold tracking-tight transition-colors"
+							>
+								{t('navigation.menu.blog')}
+							</Link>
+						)}
 					</div>
 					<div className="flex items-center gap-2">
 						<div className="hidden items-center gap-2 lg:flex">
@@ -188,6 +196,11 @@ export default function Header() {
 					<Link href="/community/latest-generations" onClick={() => setMenuOpen(false)}>
 						{t('navigation.menu.latest_generations')}
 					</Link>
+					{process.env.NEXT_PUBLIC_BLOG_URL && (
+						<Link href={process.env.NEXT_PUBLIC_BLOG_URL!} target="_blank" onClick={() => setMenuOpen(false)}>
+							{t('navigation.menu.blog')}
+						</Link>
+					)}
 				</div>
 
 				{status === 'authenticated' ? (
