@@ -88,7 +88,7 @@ async function handleCheckoutSessionExpired(event: Stripe.CheckoutSessionExpired
 	}
 
 	await prisma.payment.update({
-		where: { id: payment.userId },
+		where: { id: paymentId },
 		data: {
 			status: PaymentStatus.EXPIRED
 		}
