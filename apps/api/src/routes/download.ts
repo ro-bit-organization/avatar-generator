@@ -52,7 +52,7 @@ app.get('/', async (c) => {
 			})
 		);
 
-		const zip = uzip.encode(buffers.reduce((a, v, i) => ({ ...a, [`avatar-${i}.webp`]: new Uint8Array(v) }), {}));
+		const zip = uzip.encode(buffers.reduce((a, v, i) => ({ ...a, [`avatar-${i}.png`]: new Uint8Array(v) }), {}));
 
 		return c.body(zip, 200, {
 			'Cache-Control': 'no-store',
